@@ -6,6 +6,10 @@
     "target": "es5",
     "downlevelIteration": true,
     "allowJs": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "lib": [
+      "ES2021",
+      "dom"
+    ]
   }
 }

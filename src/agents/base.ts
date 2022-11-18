@@ -32,7 +32,7 @@ export default class BaseAgent {
     let newItems = false;
     let links: Link[] = this.findLinks(records);
 
-    //console.log('onDomChange links', links);
+    // logger.log('onDomChange links', links);
 
     if (links.length > 0) {
       this.activeLinks = this.activeLinks.concat(links);
@@ -44,13 +44,13 @@ export default class BaseAgent {
   }
 
   async processLinks() {
-		logger.log('BaseAgent: findLinks');
+    logger.log('BaseAgent: findLinks');
 
-		this.processing = true;
-		this.currentProcess = this.activeLinks.find((link) => link.status === 'pending');
+    this.processing = true;
+    this.currentProcess = this.activeLinks.find((link) => link.status === 'pending');
 
-		if (this.currentProcess !== undefined) {
-			this.appendLink(this.currentProcess);
+    if (this.currentProcess !== undefined) {
+      this.appendLink(this.currentProcess);
 
       try {
         await this.currentProcess.getInfo();
@@ -59,12 +59,12 @@ export default class BaseAgent {
         logger.error(`There was a problem while fetching the link data ${this.currentProcess}, error ${error}`);
 
         this.currentProcess.disableLoading();
-				this.currentProcess.setTag('fa-exclamation-circle');
-				this.processLinks();
+        this.currentProcess.setTag('fa-exclamation-circle');
+        this.processLinks();
       }
-		} else 
-			this.processing = false;
-	}
+    } else
+      this.processing = false;
+  }
 
   findLinks(records: HTMLElement[]): Link[] {
     logger.log('BaseAgent: findLinks');
