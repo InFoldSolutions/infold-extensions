@@ -1,10 +1,100 @@
 import BaseAgent from './base';
 
+import Link from "../models/link";
+
 import logger from '../utils/logger';
+import config from '../utils/config';
 
 export default class RedditAgent extends BaseAgent {
-	constructor() {
+
+  contentBody: HTMLElement
+  contentObserver: MutationObserver
+  listBody: HTMLElement
+
+  providerType: string
+  linkClasses: string[]
+  contentID: string
+  listClass: string
+
+  constructor() {
+    logger.log('RedditAgent: constructor');
+
     super();
-		logger.log('RedditAgent: constructor');
+
+    this.providerType = config.agents.reddit.providerType;
+    this.linkClasses = config.agents.reddit.linkClasses;
+    this.contentID = config.agents.reddit.contentID;
+    this.listClass = config.agents.reddit.listClass;
+  }
+
+  start() {
+    logger.log('RedditAgent: start');
+
+    super.start();
+
+    this.contentBody = document.getElementById(this.contentID);
+    this.contentObserver = null;
+
+    this.listBody = document.querySelector('.' + this.listClass);
+
+    if (this.listBody) {
+      this.contentObserver = new MutationObserver(this.onDomChange.bind(this))
+      this.contentObserver.observe(this.listBody, {
+        childList: true
+      });
+    }
+
+    super.onDomChange();
+  }
+
+  findLinks(records: MutationRecord[]) {
+    logger.log('RedditAgent: findLinks');
+
+    let links: Link[] = [];
+    let elements: Element[] = [];
+
+    if (records) {
+      records.forEach((record) => {
+        if (record.addedNodes.length > 0) {
+          record.addedNodes.forEach((addedNode: Element) => {
+            const elementList: Element[] = Array.from(
+              addedNode.getElementsByClassName(this.linkClasses.join(' ')) // look for specific classes in newly added nodes
+            );
+
+            if (elementList.length > 0) {
+              elements = elements.concat(elementList);
+            }
+          });
+        }
+      })
+    } else if (this.listBody)
+      elements = Array.from(this.listBody.getElementsByClassName(this.linkClasses.join(' ')));
+
+    if (elements.length > 0) {
+      elements.forEach((element) => {
+        const parent = element.parentNode as HTMLAnchorElement;
+
+        if (parent.href && parent.classList.contains('styled-outbound-link')) {
+          links.push(new Link(
+            parent.href,
+            this.providerType,
+            parent
+          ));
+        }
+      });
+    }
+
+    return links;
+  }
+
+  appendLink(link: Link) {
+    logger.log('RedditAgent: appendLink');
+
+    super.appendLink(link);
+
+    if (link.node.parentNode.nextSibling)
+      link.node.parentNode.nextSibling.appendChild(link.elWrapper);
+    else if (link.node.parentNode.parentNode)
+      link.node.parentNode.parentNode.appendChild(link.elWrapper);
   }
 }

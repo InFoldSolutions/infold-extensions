@@ -26,7 +26,7 @@ export default class BaseAgent {
     link.preparetBaseHTML();
   }
 
-  onDomChange(records: HTMLElement[]) {
+  onDomChange(records?: MutationRecord[]) {
     logger.log('BaseAgent: findLinks');
 
     let newItems = false;
@@ -66,7 +66,7 @@ export default class BaseAgent {
       this.processing = false;
   }
 
-  findLinks(records: HTMLElement[]): Link[] {
+  findLinks(records: MutationRecord[]): Link[] {
     logger.log('BaseAgent: findLinks');
 
     // Must be overwritten by child

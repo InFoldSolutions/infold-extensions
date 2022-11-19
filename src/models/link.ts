@@ -3,8 +3,10 @@ import logger from '../utils/logger';
 export default class Link {
 
   status: string
-  
-  constructor() {
+  node: HTMLElement
+  elWrapper: HTMLElement
+
+  constructor(url: string, type: string, node: HTMLElement) {
     logger.log('Link: constructor');
   }
 
