@@ -71,6 +71,7 @@ export default class RedditAgent extends BaseAgent {
       elements = Array.from(this.listBody.getElementsByClassName(this.linkClasses.join(' ')));
 
     if (elements.length > 0) {
+      console.log('elements', elements)
       elements.forEach((element) => {
         const parent = element.parentNode as HTMLAnchorElement;
 

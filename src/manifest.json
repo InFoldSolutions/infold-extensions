@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "InFold",
+  "description": "MAKING NEWS INFORMATIVE SINCE 2018",
+  "version": "0.7.3",
+  "permissions": [
+    "https://www.infold.com/api/*"
+  ],
+  "icons": {
+    "64": "images/icons/icon_64.png",
+    "128": "images/icons/icon_128.png"
+  },
+  "content_security_policy": {
+    "extension_pages": "img-src 'self' https://www.infold.com/*; object-src 'self'; script-src 'self';"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.reddit.com/*"
+      ],
+      "js": [
+        "app.js"
+      ],
+      "css": [
+        "css/all.min.css"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "images/*",
+        "fonts/*"
+      ],
+      "matches": [
+        "<all_urls>",
+        "<all_urls>"
+      ]
+    }
+  ]
+}
