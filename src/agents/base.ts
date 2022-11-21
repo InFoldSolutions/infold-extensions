@@ -20,14 +20,8 @@ export default class BaseAgent {
     }*/
   }
 
-  appendLink(link: Link) {
-    logger.log('BaseAgent: appendLink');
-
-    link.preparetBaseHTML();
-  }
-
   onDomChange(records?: MutationRecord[]) {
-    logger.log('BaseAgent: findLinks');
+    logger.log('BaseAgent: onDomChange');
 
     let newItems = false;
     let links: Link[] = this.findLinks(records);
@@ -44,10 +38,10 @@ export default class BaseAgent {
   }
 
   async processLinks() {
-    logger.log('BaseAgent: findLinks');
+    logger.log('BaseAgent: processLinks');
 
     this.processing = true;
-    this.currentProcess = this.activeLinks.find((link) => link.status === 'pending');
+    this.currentProcess = this.activeLinks.find((link: Link) => link.status === 'pending');
 
     if (this.currentProcess !== undefined) {
       this.appendLink(this.currentProcess);
@@ -73,5 +67,11 @@ export default class BaseAgent {
     // Needs an interface
 
     return [];
+  }
+
+  appendLink(link: Link) {
+    logger.log('BaseAgent: appendLink');
+
+    link.preparetBaseHTML();
   }
 }
