@@ -1,4 +1,4 @@
-import Link from "../models/link";
+import Link from "../components/link";
 
 import logger from "../utils/logger";
 

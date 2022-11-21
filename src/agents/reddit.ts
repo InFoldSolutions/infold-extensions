@@ -1,6 +1,6 @@
 import BaseAgent from './base';
 
-import Link from "../models/link";
+import Link from "../components/link";
 
 import logger from '../utils/logger';
 import config from '../utils/config';
