@@ -55,12 +55,15 @@ export default class RedditAgent extends BaseAgent {
 
     if (records) {
       records.forEach((record) => {
+        //console.log('record', record, record.addedNodes);
         if (record.addedNodes.length > 0) {
           record.addedNodes.forEach((addedNode: Element) => {
+            console.log('addedNode', addedNode)
             const elementList: Element[] = Array.from(
               addedNode.getElementsByClassName(this.linkClasses.join(' ')) // look for specific classes in newly added nodes
             );
 
+            console.log('elementList', elementList);
             if (elementList.length > 0) {
               elements = elements.concat(elementList);
             }
@@ -72,16 +75,12 @@ export default class RedditAgent extends BaseAgent {
 
     if (elements.length > 0) {
       console.log('elements', elements)
-      elements.forEach((element) => {
-        const parent = element.parentNode as HTMLAnchorElement;
-
-        if (parent.href && parent.classList.contains('styled-outbound-link')) {
-          links.push(new Link(
-            parent.href,
-            this.providerType,
-            parent
-          ));
-        }
+      elements.forEach((element: HTMLAnchorElement) => {
+        links.push(new Link(
+          element.href,
+          this.providerType,
+          element.parentNode as HTMLElement
+        ));
       });
     }
 

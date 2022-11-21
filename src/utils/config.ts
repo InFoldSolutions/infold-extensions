@@ -2,7 +2,7 @@ export default {
   'agents': {
     'reddit': {
       'providerType': 'reddit',
-      'linkClasses': ['icon-outboundLink'],
+      'linkClasses': ['styled-outbound-link'],
       'contentID': '2x-container',
       'listClass': 'rpBJOHq2PR60pnwJlUyP0'
     }
