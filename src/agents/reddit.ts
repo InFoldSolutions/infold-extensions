@@ -1,3 +1,5 @@
+import * as path from 'path';
+
 import BaseAgent from './base';
 
 import Link from "../components/link";
@@ -60,7 +62,7 @@ export default class RedditAgent extends BaseAgent {
         });
       })
     } else if (this.listBody) { // default to listBody
-      elements = this.getPotentialLinksFromElement(this.listBody)
+      elements = this.getPotentialLinksFromElement(this.listBody);
     }
 
     elements.forEach((element: HTMLAnchorElement) => {
@@ -87,8 +89,15 @@ export default class RedditAgent extends BaseAgent {
   getPotentialLinksFromElement(element: Element) {
     logger.log('RedditAgent: getPotentialLinksFromElement');
 
-    return Array.from(
+    const potentials = Array.from(
       element.getElementsByClassName(this.linkClasses.join(' ')) // look for specific classes in given element
     );
+
+    return potentials.filter((potential: HTMLAnchorElement) => {
+      const url: URL = new URL(potential.href);
+      const extension: string = path.extname(url.pathname);
+
+      return (!extension || extension === 'html');
+    });
   }
 }

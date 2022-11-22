@@ -8,9 +8,9 @@ export default class Link {
 
   constructor(type: string, element: HTMLAnchorElement) {
     logger.log('Link: constructor');
+    
     console.log('Link: constructor url', element.href);
     console.log('Link: constructor type', type);
-    console.log('Link: constructor node', element);
   }
 
   async getInfo() {
