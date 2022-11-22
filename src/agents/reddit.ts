@@ -47,42 +47,28 @@ export default class RedditAgent extends BaseAgent {
     super.onDomChange();
   }
 
-  findLinks(records: MutationRecord[]) {
+  findLinks(records?: MutationRecord[]) {
     logger.log('RedditAgent: findLinks');
 
     let links: Link[] = [];
     let elements: Element[] = [];
 
-    if (records) {
-      records.forEach((record) => {
-        //console.log('record', record, record.addedNodes);
-        if (record.addedNodes.length > 0) {
-          record.addedNodes.forEach((addedNode: Element) => {
-            console.log('addedNode', addedNode)
-            const elementList: Element[] = Array.from(
-              addedNode.getElementsByClassName(this.linkClasses.join(' ')) // look for specific classes in newly added nodes
-            );
-
-            console.log('elementList', elementList);
-            if (elementList.length > 0) {
-              elements = elements.concat(elementList);
-            }
-          });
-        }
+    if (records) { // check newly added nodes for potential links
+      records.forEach((record: MutationRecord) => {
+        record.addedNodes.forEach((addedNode: Element) => {
+          elements = elements.concat(this.getPotentialLinksFromElement(addedNode));
+        });
       })
-    } else if (this.listBody)
-      elements = Array.from(this.listBody.getElementsByClassName(this.linkClasses.join(' ')));
-
-    if (elements.length > 0) {
-      console.log('elements', elements)
-      elements.forEach((element: HTMLAnchorElement) => {
-        links.push(new Link(
-          element.href,
-          this.providerType,
-          element.parentNode as HTMLElement
-        ));
-      });
+    } else if (this.listBody) { // default to listBody
+      elements = this.getPotentialLinksFromElement(this.listBody)
     }
+
+    elements.forEach((element: HTMLAnchorElement) => {
+      links.push(new Link(
+        this.providerType,
+        element
+      ));
+    });
 
     return links;
   }
@@ -96,5 +82,13 @@ export default class RedditAgent extends BaseAgent {
       link.node.parentNode.nextSibling.appendChild(link.elWrapper);
     else if (link.node.parentNode.parentNode)
       link.node.parentNode.parentNode.appendChild(link.elWrapper);
+  }
+
+  getPotentialLinksFromElement(element: Element) {
+    logger.log('RedditAgent: getPotentialLinksFromElement');
+
+    return Array.from(
+      element.getElementsByClassName(this.linkClasses.join(' ')) // look for specific classes in given element
+    );
   }
 }

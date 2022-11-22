@@ -64,7 +64,7 @@ export default class BaseAgent {
     logger.log('BaseAgent: findLinks');
 
     // Must be overwritten by child
-    // Needs an interface
+    // Needs an abstract interface
 
     return [];
   }

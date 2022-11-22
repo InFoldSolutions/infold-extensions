@@ -3,11 +3,14 @@ import logger from '../utils/logger';
 export default class Link {
 
   status: string
-  node: HTMLElement
+  node: HTMLAnchorElement
   elWrapper: HTMLElement
 
-  constructor(url: string, type: string, node: HTMLElement) {
+  constructor(type: string, element: HTMLAnchorElement) {
     logger.log('Link: constructor');
+    console.log('Link: constructor url', element.href);
+    console.log('Link: constructor type', type);
+    console.log('Link: constructor node', element);
   }
 
   async getInfo() {
