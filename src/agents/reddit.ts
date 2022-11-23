@@ -1,5 +1,7 @@
 import * as path from 'path';
 
+import { mount } from 'redom';
+
 import BaseAgent from './base';
 
 import Link from "../components/link";
@@ -80,10 +82,10 @@ export default class RedditAgent extends BaseAgent {
 
     super.appendLink(link);
 
-    if (link.node.parentNode.nextSibling)
-      link.node.parentNode.nextSibling.appendChild(link.elWrapper);
-    else if (link.node.parentNode.parentNode)
-      link.node.parentNode.parentNode.appendChild(link.elWrapper);
+    console.log('link.node.parentNode.parentNode', link.node.parentNode.parentNode);
+    console.log('link', link);
+    if (link.node.parentNode.parentNode)
+      mount(link.node.parentNode.parentNode, link);
   }
 
   getPotentialLinksFromElement(element: Element) {
@@ -95,9 +97,10 @@ export default class RedditAgent extends BaseAgent {
 
     return potentials.filter((potential: HTMLAnchorElement) => {
       const url: URL = new URL(potential.href);
+      const outBindLink = (potential.dataset['testid'] === 'outbound-link') && !url.host.includes('reddit');
       const extension: string = path.extname(url.pathname);
 
-      return (!extension || extension === 'html');
+      return (outBindLink && (!extension || extension === '.html'));
     });
   }
 }

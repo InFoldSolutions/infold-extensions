@@ -10,6 +10,7 @@ export default class BaseAgent {
 
   constructor() {
     logger.log('BaseAgent: constructor');
+    this.processing = false;
   }
 
   start() {
@@ -23,16 +24,17 @@ export default class BaseAgent {
   onDomChange(records?: MutationRecord[]) {
     logger.log('BaseAgent: onDomChange');
 
-    let newItems = false;
+    let newItems: boolean = false;
     let links: Link[] = this.findLinks(records);
 
-    // logger.log('onDomChange links', links);
+    console.log('onDomChange links', links);
 
     if (links.length > 0) {
       this.activeLinks = this.activeLinks.concat(links);
       newItems = true;
     }
 
+    console.log('newItems', newItems);
     if (this.processing === false && newItems)
       this.processLinks();
   }

@@ -27,7 +27,7 @@
     {
       "resources": [
         "images/*",
-        "fonts/*"
+        "webfonts/*"
       ],
       "matches": [
         "<all_urls>",
