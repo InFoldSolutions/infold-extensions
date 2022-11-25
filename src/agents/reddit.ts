@@ -82,10 +82,8 @@ export default class RedditAgent extends BaseAgent {
 
     super.appendLink(link);
 
-    console.log('link.node.parentNode.parentNode', link.node.parentNode.parentNode);
-    console.log('link', link);
-    if (link.node.parentNode.parentNode)
-      mount(link.node.parentNode.parentNode, link);
+    if (link.node.parentNode)
+      mount(link.node.parentNode, link);
   }
 
   getPotentialLinksFromElement(element: Element) {

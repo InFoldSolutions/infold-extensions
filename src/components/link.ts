@@ -11,9 +11,7 @@ export default class Link {
 
   constructor(type: string, element: HTMLAnchorElement) {
     logger.log('Link: constructor');
-    /*console.log('Link: constructor url', element.href);
-    console.log('Link: constructor type', type);
-    console.log('Link: constructor node', element);*/
+    
     this.type = type;
     this.node = element;
     this.status = 'pending';
@@ -26,7 +24,7 @@ export default class Link {
 
   preparetBaseHTML() {
     logger.log('Link: preparetBaseHTML');
-    this.el = el('.SCWrapper', el('i.far.fa-spinner'));
+    this.el = el('.SCWrapper', el('i.far.fa-spinner-third.fa-spin'));
   }
 
   disableLoading() {

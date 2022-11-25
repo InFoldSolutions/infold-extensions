@@ -27,14 +27,11 @@ export default class BaseAgent {
     let newItems: boolean = false;
     let links: Link[] = this.findLinks(records);
 
-    console.log('onDomChange links', links);
-
     if (links.length > 0) {
       this.activeLinks = this.activeLinks.concat(links);
       newItems = true;
     }
 
-    console.log('newItems', newItems);
     if (this.processing === false && newItems)
       this.processLinks();
   }
