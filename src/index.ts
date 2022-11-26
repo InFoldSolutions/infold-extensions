@@ -1,5 +1,6 @@
 import BaseAgent from './agents/base';
 import RedditAgent from './agents/reddit';
+import TwitterAgent from './agents/twitter';
 import logger from './utils/logger';
 
 class Application {
@@ -19,6 +20,9 @@ class Application {
 
     if (/^www.reddit\.com/.test(host)) {
       Agent = RedditAgent;
+    }
+    if (/^twitter\.com/.test(host)) {
+      Agent = TwitterAgent;
     }
 
     if (Agent) {

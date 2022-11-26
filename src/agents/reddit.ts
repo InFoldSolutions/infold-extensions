@@ -11,14 +11,12 @@ import config from '../utils/config';
 
 export default class RedditAgent extends BaseAgent {
 
-  contentBody: HTMLElement
   contentObserver: MutationObserver
   listBody: HTMLElement
 
   providerType: string
   linkClasses: string[]
-  contentID: string
-  listClass: string
+  contentClass: string
   wrapperClass: string
   buttonClasses: string[]
   textClasses: string[]
@@ -30,8 +28,7 @@ export default class RedditAgent extends BaseAgent {
 
     this.providerType = config.agents.reddit.providerType;
     this.linkClasses = config.agents.reddit.linkClasses;
-    this.contentID = config.agents.reddit.contentID;
-    this.listClass = config.agents.reddit.listClass;
+    this.contentClass = config.agents.reddit.contentClass;
     this.wrapperClass = config.agents.reddit.wrapperClass;
     this.buttonClasses = config.agents.reddit.buttonClasses;
     this.textClasses = config.agents.reddit.textClasses;
@@ -42,10 +39,9 @@ export default class RedditAgent extends BaseAgent {
 
     super.start();
 
-    this.contentBody = document.getElementById(this.contentID);
     this.contentObserver = null;
 
-    this.listBody = document.querySelector('.' + this.listClass);
+    this.listBody = document.querySelector('.' + this.contentClass);
 
     if (this.listBody) {
       this.contentObserver = new MutationObserver(this.onDomChange.bind(this))
