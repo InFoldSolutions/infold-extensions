@@ -19,7 +19,8 @@
         "app.js"
       ],
       "css": [
-        "css/all.min.css"
+        "css/all.min.css",
+        "css/overwrites.css"
       ]
     }
   ],

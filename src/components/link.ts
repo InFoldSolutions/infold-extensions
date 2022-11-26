@@ -1,7 +1,5 @@
 import logger from '../utils/logger';
 
-import { el } from 'redom';
-
 export default class Link {
 
   status: string
@@ -22,9 +20,9 @@ export default class Link {
     this.status = 'success';
   }
 
-  preparetBaseHTML() {
+  preparetBaseHTML(element: HTMLElement) {
     logger.log('Link: preparetBaseHTML');
-    this.el = el('.SCWrapper', el('i.far.fa-spinner-third.fa-spin'));
+    this.el = element; //el('.SCWrapper', el('i.far.fa-spinner-third.fa-spin'));
   }
 
   disableLoading() {

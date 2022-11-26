@@ -1,0 +1,9 @@
+/* Reddit overwrites */
+
+.redditrelated {
+  color: #ff4500;
+}
+
+.redditrelated .fa-lightbulb {
+  font-size: 1.4em;
+}

@@ -71,6 +71,7 @@ export default class BaseAgent {
   appendLink(link: Link) {
     logger.log('BaseAgent: appendLink');
 
-    link.preparetBaseHTML();
+    // Must be overwritten by child
+    // Needs an abstract interface
   }
 }

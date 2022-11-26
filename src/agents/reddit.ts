@@ -1,6 +1,6 @@
 import * as path from 'path';
 
-import { mount } from 'redom';
+import { mount, el } from 'redom';
 
 import BaseAgent from './base';
 
@@ -19,6 +19,9 @@ export default class RedditAgent extends BaseAgent {
   linkClasses: string[]
   contentID: string
   listClass: string
+  wrapperClass: string
+  buttonClasses: string[]
+  textClasses: string[]
 
   constructor() {
     logger.log('RedditAgent: constructor');
@@ -29,6 +32,9 @@ export default class RedditAgent extends BaseAgent {
     this.linkClasses = config.agents.reddit.linkClasses;
     this.contentID = config.agents.reddit.contentID;
     this.listClass = config.agents.reddit.listClass;
+    this.wrapperClass = config.agents.reddit.wrapperClass;
+    this.buttonClasses = config.agents.reddit.buttonClasses;
+    this.textClasses = config.agents.reddit.textClasses;
   }
 
   start() {
@@ -80,10 +86,21 @@ export default class RedditAgent extends BaseAgent {
   appendLink(link: Link) {
     logger.log('RedditAgent: appendLink');
 
-    super.appendLink(link);
+    const parent: ParentNode = link.node.parentNode.parentNode;
+    const element: HTMLElement = el(`.${this.wrapperClass}`, 
+      el(`button.${this.buttonClasses.join('.')}`, 
+      [
+        el(`span.pthKOcceozMuXLYrLlbL1`, el(`i.fal.fa-lightbulb`)), 
+        el(`span.${this.textClasses.join('.')}`, '86 Related')
+      ]));
 
-    if (link.node.parentNode)
-      mount(link.node.parentNode, link);
+    const lastChild: Element = Array.from(
+      parent.lastElementChild.lastElementChild.getElementsByClassName(this.wrapperClass)
+    ).pop();
+
+    link.preparetBaseHTML(element);
+
+    mount(parent.lastElementChild.lastElementChild, link, lastChild.nextSibling);
   }
 
   getPotentialLinksFromElement(element: Element) {
