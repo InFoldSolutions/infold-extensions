@@ -4,7 +4,7 @@ import { mount, el } from 'redom';
 
 import BaseAgent from './base';
 
-import Link from "../components/link";
+import Link, { IPotentialLink } from "../components/link";
 
 import logger from '../utils/logger';
 import config from '../utils/config';
@@ -57,22 +57,22 @@ export default class RedditAgent extends BaseAgent {
     logger.log('RedditAgent: findLinks');
 
     let links: Link[] = [];
-    let elements: Element[] = [];
+    let potentialLinks: IPotentialLink[] = [];
 
     if (records) { // check newly added nodes for potential links
       records.forEach((record: MutationRecord) => {
         record.addedNodes.forEach((addedNode: Element) => {
-          elements = elements.concat(this.getPotentialLinksFromElement(addedNode));
+          potentialLinks = potentialLinks.concat(this.getPotentialLinksFromElement(addedNode));
         });
       })
     } else if (this.listBody) { // default to listBody
-      elements = this.getPotentialLinksFromElement(this.listBody);
+      potentialLinks = this.getPotentialLinksFromElement(this.listBody);
     }
 
-    elements.forEach((element: HTMLAnchorElement) => {
+    potentialLinks.forEach((potentialLink: IPotentialLink) => {
       links.push(new Link(
         this.providerType,
-        element
+        potentialLink
       ));
     });
 
@@ -112,6 +112,11 @@ export default class RedditAgent extends BaseAgent {
       const extension: string = path.extname(url.pathname);
 
       return (outBindLink && (!extension || extension === '.html'));
+    }).map((element: HTMLAnchorElement) => {
+      return {
+        element,
+        wrapperNode: element
+      }
     });
   }
 }

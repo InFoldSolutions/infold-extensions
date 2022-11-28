@@ -1,17 +1,36 @@
 import logger from '../utils/logger';
 
-export default class Link {
-
+export interface ILink {
   status: string
   type: string
   node: HTMLAnchorElement
+  wrapper: HTMLElement
   el: HTMLElement
 
-  constructor(type: string, element: HTMLAnchorElement) {
+  getInfo: () => void
+  preparetBaseHTML: (element: HTMLElement) => void
+  disableLoading: () => void
+  setTag: (tag: string) => void
+}
+
+export interface IPotentialLink {
+  element: HTMLAnchorElement,
+  wrapperNode: HTMLElement
+}
+
+export default class Link implements ILink {
+  status: string
+  type: string
+  node: HTMLAnchorElement
+  wrapper: HTMLElement
+  el: HTMLElement
+
+  constructor(type: string, potentialLInk: IPotentialLink) {
     logger.log('Link: constructor');
-    
+
     this.type = type;
-    this.node = element;
+    this.node = potentialLInk.element;
+    this.wrapper = potentialLInk.wrapperNode;
     this.status = 'pending';
   }
 

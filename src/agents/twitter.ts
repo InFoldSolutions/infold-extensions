@@ -2,7 +2,7 @@ import { mount, el } from 'redom';
 
 import BaseAgent from './base';
 
-import Link from "../components/link";
+import Link, { IPotentialLink } from "../components/link";
 
 import logger from '../utils/logger';
 import config from '../utils/config';
@@ -10,14 +10,13 @@ import config from '../utils/config';
 export default class TwitterAgent extends BaseAgent {
 
   contentBody: HTMLElement
-  contentObserver: MutationObserver
   bodyObserver: MutationObserver
+  contentObserver: MutationObserver
+  mainObserver: MutationObserver
   listBody: Element
+  mainBody: Element
   rootBody: HTMLElement
-
   providerType: string
-  linkClasses: string[]
-  contentClass: string
   rootID: string
 
   constructor() {
@@ -26,8 +25,6 @@ export default class TwitterAgent extends BaseAgent {
     super();
 
     this.providerType = config.agents.twitter.providerType;
-    this.linkClasses = config.agents.twitter.linkClasses;
-    this.contentClass = config.agents.twitter.contentClass;
     this.rootID = config.agents.twitter.rootID;
   }
 
@@ -39,41 +36,71 @@ export default class TwitterAgent extends BaseAgent {
     this.contentObserver = null;
     this.bodyObserver = null;
 
-    this.listBody = document.querySelector(`[data-testid="primaryColumn"]`);
-
-    if (!this.listBody) {
-      this.rootBody = document.getElementById(this.rootID);
-      this.bodyObserver = new MutationObserver(this.onBodyChange.bind(this));
-      this.bodyObserver.observe(this.rootBody, {
-        childList: true,
-        subtree: true
-      });
-    } else
-      this.startContentObserver();
+    this.rootBody = document.getElementById(this.rootID);
+    this.bodyObserver = new MutationObserver(this.onBodyChange.bind(this));
+    this.bodyObserver.observe(this.rootBody, {
+      childList: true,
+      subtree: true
+    });
   }
 
   onBodyChange(records?: MutationRecord[]) {
-    console.log('onBodyChange', records);
+    logger.log('TwitterAgent: onBodyChange');
 
     if (records) { // check newly added nodes for potential links
       records.forEach((record: MutationRecord) => {
         record.addedNodes.forEach((addedNode: Element) => {
-          let body = addedNode.querySelector(`[data-testid="primaryColumn"]`);
+          const main = addedNode.querySelector(`main > div`);
 
-          if (body) {
+          if (main && !this.mainBody) {
+            this.mainBody = main;
             this.bodyObserver.disconnect();
-            this.listBody = body;
+            this.startMainObserver();
           }
         });
       });
+    }
+  }
 
-      if (this.listBody) {
-        this.startContentObserver();
-      }
+  startMainObserver() {
+    logger.log('TwitterAgent: startMainObserver');
+
+    this.mainObserver = new MutationObserver(this.mainBodyChange.bind(this))
+    this.mainObserver.observe(this.mainBody, {
+      childList: true
+    });
+  }
+
+  mainBodyChange() {
+    logger.log('mainBodyChange');
+
+    const url: URL = new URL(location.href);
+    const pathname = url.pathname.split('/');
+    const pathArray = pathname.slice(Math.max(pathname.length - 2, 0));
+
+    let subpage: Boolean = false;
+
+    if (pathArray[0] === 'status' && /^-?\d+$/.test(pathArray[1]))
+      subpage = true;
+
+    console.log('subpage', subpage);
+
+    if (this.contentObserver)
+      this.stopContentObserver();
+
+    if (!subpage) {
+      this.startContentObserver();
     }
   }
 
   startContentObserver() {
+    logger.log('TwitterAgent: startContentObserver');
+
+    this.listBody = document.querySelector(`[data-testid="primaryColumn"]`);
+
+    if (!this.listBody)
+      return;
+
     this.contentObserver = new MutationObserver(this.onDomChange.bind(this))
     this.contentObserver.observe(this.listBody, {
       childList: true,
@@ -83,28 +110,33 @@ export default class TwitterAgent extends BaseAgent {
     super.onDomChange();
   }
 
+  stopContentObserver() {
+    logger.log('TwitterAgent: stopContentObserver');
+
+    this.contentObserver.disconnect();
+    this.contentObserver = null;
+  }
+
   findLinks(records?: MutationRecord[]) {
     logger.log('TwitterAgent: findLinks');
 
     let links: Link[] = [];
-    let elements: Element[] = [];
+    let potentialLinks: IPotentialLink[] = [];
 
     if (records) { // check newly added nodes for potential links
       records.forEach((record: MutationRecord) => {
         record.addedNodes.forEach((addedNode: Element) => {
-          elements = elements.concat(this.getPotentialLinksFromElement(addedNode));
+          potentialLinks = potentialLinks.concat(this.getPotentialLinksFromElement(addedNode));
         });
       })
     } else if (this.listBody) { // default to listBody
-      elements = this.getPotentialLinksFromElement(this.listBody);
+      potentialLinks = this.getPotentialLinksFromElement(this.listBody);
     }
 
-    console.log('elements', elements);
-
-    elements.forEach((element: HTMLAnchorElement) => {
+    potentialLinks.forEach((potentialLink: IPotentialLink) => {
       links.push(new Link(
         this.providerType,
-        element
+        potentialLink
       ));
     });
 
@@ -114,27 +146,37 @@ export default class TwitterAgent extends BaseAgent {
   appendLink(link: Link) {
     logger.log('TwitterAgent: appendLink');
 
-    const parent: Element = link.node.parentNode.parentNode.parentNode.parentNode.lastElementChild.firstElementChild;
-    const element: HTMLElement = el(`.r-1h0z5md.r-18u37iz.r-bt1l66.r-1777fci`, [
-      el(`span.r-1bwzh9t`, el(`i.fal.fa-lightbulb`)), 
+    // Tries to re-create the element with Twitter css
+    const element: HTMLElement = el(`.r-1h0z5md.r-18u37iz.r-bt1l66.r-1777fci.r-rjixqe.r-a023e6`, [
+      el(`span.r-1bwzh9t`, el(`i.fal.fa-lightbulb`)),
       el(`span.r-1k6nrdp.r-1cwl3u0.r-n6v787.r-1e081e0.css-901oao.r-1bwzh9t`, '86')
     ])
 
     link.preparetBaseHTML(element);
 
-    mount(parent, link, parent.lastElementChild);
+    mount(link.wrapper, link, link.wrapper.lastElementChild);
   }
 
-  getPotentialLinksFromElement(element: Element) {
+  getPotentialLinksFromElement(element: Element): IPotentialLink[] {
     logger.log('TwitterAgent: getPotentialLinksFromElement');
 
-    const potentials = Array.from(
-      element.getElementsByClassName(this.linkClasses.join(' ')) // look for specific classes in given element
-    );
+    const potentials: IPotentialLink[] = [];
+    const article: Element = element.querySelector('article[data-testid="tweet"]');
 
-    return potentials.filter((potential: HTMLAnchorElement) => {
-      //const url: URL = new URL(potential.href);
-      return potential.getAttribute('role') === 'link';
-    });
+    if (article) {
+      const anchorElement: HTMLAnchorElement = article.querySelector('a[target="_blank"]');
+
+      if (anchorElement) {
+        const wrapperNode: HTMLElement = article.querySelector('div[role="group"]')
+        const potentialLink: IPotentialLink = {
+          element: anchorElement,
+          wrapperNode
+        }
+
+        potentials.push(potentialLink);
+      }
+    }
+
+    return potentials;
   }
 }
