@@ -157,23 +157,38 @@ export default class TwitterAgent extends BaseAgent {
     mount(link.wrapper, link, link.wrapper.lastElementChild);
   }
 
-  getPotentialLinksFromElement(element: Element): IPotentialLink[] {
+  getPotentialLinksFromElement(addedNode: Element): IPotentialLink[] {
     logger.log('TwitterAgent: getPotentialLinksFromElement');
 
     const potentials: IPotentialLink[] = [];
-    const article: Element = element.querySelector('article[data-testid="tweet"]');
+    const article: Element = addedNode.querySelector('article[data-testid="tweet"]');
 
     if (article) {
-      const anchorElement: HTMLAnchorElement = article.querySelector('a[target="_blank"]');
+      const elements: HTMLElement[] = Array.from(article.querySelectorAll('a[target="_blank"]'));
 
-      if (anchorElement) {
-        const wrapperNode: HTMLElement = article.querySelector('div[role="group"]')
-        const potentialLink: IPotentialLink = {
-          element: anchorElement,
+      for (let i = 0; i < elements.length; i++) {
+        const element = elements[i] as HTMLAnchorElement;
+
+        if (!element)
+          continue;
+
+        const url: URL = new URL(element.href);
+        const linksToTwitter: Boolean = url.host.includes('twitter.com');
+
+        if (linksToTwitter)
+          continue;
+
+        const wrapperNode: HTMLElement = article.querySelector('div[role="group"]');
+
+        if (!wrapperNode)
+          continue;
+
+        potentials.push({
+          element,
           wrapperNode
-        }
+        });
 
-        potentials.push(potentialLink);
+        break;
       }
     }
 
