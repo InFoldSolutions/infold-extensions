@@ -7,3 +7,66 @@
 .redditrelated .fa-lightbulb {
   font-size: 1.4em;
 }
+
+/* Twitter css */
+
+.SCbuttonWrapper {
+  display: flex;
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: horizontal;
+  flex-direction: row;
+
+  min-height: 20px;
+  font-size: 15px;
+  line-height: 20px;
+  color: rgb(113, 118, 123);
+  position: relative;
+  transition-property: background-color, box-shadow, color;
+  transition-duration: 0.2s;
+}
+
+.SCbuttonWrapper:hover {
+  color: rgba(255, 208, 0, 0.8);
+}
+
+.SCiconBackground {
+  margin: -6px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  bottom: 0px;
+  border-radius: 50%;
+  display: inline-flex;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.SCbuttonWrapper:hover .SCiconBackground {
+  background-color: rgba(255, 208, 0, 0.07);
+}
+
+.SCiconWrapper {
+  display: inline-block;
+  position: relative;
+  vertical-align: text-bottom;
+  width: 20px;
+  text-align: center;
+}
+
+.SCiconWrapper i {
+  top: 1px;
+  position: relative;
+}
+
+.SCtextWrapper {
+  top: 1px;
+  position: relative;
+  min-width: 1em;
+  line-height: 20px;
+  font-size: 13px;
+  padding: 0 10px;
+  user-select: none;
+  font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}

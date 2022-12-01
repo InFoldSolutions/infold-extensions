@@ -1,4 +1,4 @@
-import { mount, el } from 'redom';
+import { mount } from 'redom';
 
 import BaseAgent from './base';
 
@@ -146,13 +146,7 @@ export default class TwitterAgent extends BaseAgent {
   appendLink(link: Link) {
     logger.log('TwitterAgent: appendLink');
 
-    // Tries to re-create the element with Twitter css
-    const element: HTMLElement = el(`.r-1h0z5md.r-18u37iz.r-bt1l66.r-1777fci.r-rjixqe.r-a023e6`, [
-      el(`span.r-1bwzh9t`, el(`i.fal.fa-lightbulb`)),
-      el(`span.r-1k6nrdp.r-1cwl3u0.r-n6v787.r-1e081e0.css-901oao.r-1bwzh9t`, '86')
-    ])
-
-    link.preparetBaseHTML(element);
+    link.preparetBaseHTML();
 
     mount(link.wrapper, link, link.wrapper.lastElementChild);
   }
@@ -163,7 +157,7 @@ export default class TwitterAgent extends BaseAgent {
     const potentials: IPotentialLink[] = [];
     const article: Element = addedNode.querySelector('article[data-testid="tweet"]');
 
-    if (article) {
+    if (article && !article.classList.contains(config.defaults.processedClass)) {
       const elements: HTMLElement[] = Array.from(article.querySelectorAll('a[target="_blank"]'));
 
       for (let i = 0; i < elements.length; i++) {
@@ -188,7 +182,9 @@ export default class TwitterAgent extends BaseAgent {
           wrapperNode
         });
 
-        break;
+        article.classList.add(config.defaults.processedClass);
+
+        break; // we only want to identify 1 link per article
       }
     }
 

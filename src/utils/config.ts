@@ -14,5 +14,8 @@ export default {
       'contentClass': 'css-1dbjc4n',
       'rootID': 'react-root'
     }
+  },
+  'defaults': {
+    'processedClass': 'SCprocessed'
   }
 }
