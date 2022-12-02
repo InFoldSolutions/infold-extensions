@@ -1,31 +1,15 @@
 import { el } from 'redom';
 
 import logger from '../utils/logger';
+
 import Dialog from './dialog';
-
-export interface ILink {
-
-  status: string
-  type: string
-
-  node: HTMLAnchorElement
-  wrapper: HTMLElement
-  el: HTMLElement
-
-  dialog: Dialog
-
-  getInfo: () => void
-  preparetBaseHTML: (element: HTMLElement) => void
-  disableLoading: () => void
-  setTag: (tag: string) => void
-}
 
 export interface IPotentialLink {
   element: HTMLAnchorElement,
   wrapperNode: HTMLElement
 }
 
-export default class Link implements ILink {
+export default class Link {
 
   status: string
   type: string
@@ -54,10 +38,13 @@ export default class Link implements ILink {
     logger.log('Link: preparetBaseHTML');
 
     if (element)
-      this.el = element; //el('.SCWrapper', el('i.far.fa-spinner-third.fa-spin'));
+      this.el = element;
     else {
       this.el = el(`.SCbuttonWrapper`, [
-        el(`span.SCiconWrapper`, [el('span.SCiconBackground'), el(`i.fal.fa-lightbulb`)]),
+        el(`span.SCiconWrapper`, [
+          el('span.SCiconBackground'),
+          el(`i.fal.fa-lightbulb`)
+        ]),
         el(`span.SCtextWrapper`, '86')
       ]);
     }
@@ -66,7 +53,7 @@ export default class Link implements ILink {
       evt.preventDefault();
       evt.stopPropagation();
       console.log('CLICK EVENT');
-      
+
       this.dialog = new Dialog()
     };
   }

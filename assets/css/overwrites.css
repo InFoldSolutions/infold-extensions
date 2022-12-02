@@ -164,18 +164,63 @@
 }
 
 .SCSummaryInfo {
-  margin: 2px 0px;
+  margin: 3px 0px 6px;
+  color: rgb(113, 118, 123);
+  display: flex;
+  align-items: center;
+}
+
+.SCSummaryInfo svg {
+  height: 1.15em;
+}
+
+.SCKeywordsWrapper {
+  display: flex;
+  margin-top: 12px;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.SCKeyword {
+  display: inline-flex;
+  background-color: rgba(231, 233, 234, 0.1);
+  padding: 8px 12px;
+  border-radius: 16px;
+  cursor: pointer;
+}
+
+.SCKeyword:hover {
+  background-color: rgba(231, 233, 234, 0.3);
+}
+
+.SCIcon {
+  margin-right: 4px;
+  fill: currentColor;
+  display: flex;
+}
+
+.SCSeparator {
+  padding: 0px 4px;
 }
 
 .SCdate {
-  color: rgb(113, 118, 123);
   margin-right: 5px;
 }
 
 .SClink {
   color: rgb(29, 155, 240);
+  text-decoration: none;
 }
 
 .SCSummaryContent {
   margin: 0px;
+  color: rgb(113, 118, 123);
+}
+
+/**
+  Helpers
+**/
+
+.SCMarginRight {
+  margin-right: 12px;
 }
