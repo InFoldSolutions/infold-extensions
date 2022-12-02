@@ -21,7 +21,7 @@
       ],
       "css": [
         "css/all.min.css",
-        "css/overwrites.css"
+        "css/main.css"
       ]
     }
   ],
