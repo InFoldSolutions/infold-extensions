@@ -1,13 +1,18 @@
 import { el } from 'redom';
 
 import logger from '../utils/logger';
+import Dialog from './dialog';
 
 export interface ILink {
+
   status: string
   type: string
+
   node: HTMLAnchorElement
   wrapper: HTMLElement
   el: HTMLElement
+
+  dialog: Dialog
 
   getInfo: () => void
   preparetBaseHTML: (element: HTMLElement) => void
@@ -21,11 +26,15 @@ export interface IPotentialLink {
 }
 
 export default class Link implements ILink {
+
   status: string
   type: string
+
   node: HTMLAnchorElement
   wrapper: HTMLElement
   el: HTMLElement
+
+  dialog: Dialog
 
   constructor(type: string, potentialLInk: IPotentialLink) {
     logger.log('Link: constructor');
@@ -57,6 +66,8 @@ export default class Link implements ILink {
       evt.preventDefault();
       evt.stopPropagation();
       console.log('CLICK EVENT');
+      
+      this.dialog = new Dialog()
     };
   }
 
