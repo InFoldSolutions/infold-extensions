@@ -1,6 +1,7 @@
 import { el } from 'redom';
 
 import logger from '../utils/logger';
+import SummaryBody from './summaryBody';
 
 /**
  * 
@@ -18,22 +19,35 @@ interface ISlide {
   title?: string,
   author?: string,
   date?: string,
-  icon?: string
+  icon?: string,
+  link?: string
 }
 
 export default class Slideshow {
 
   el: HTMLElement
   slideshow: HTMLElement
+  title: HTMLElement
 
-  constructor(slides: Array<ISlide>, icon: string) {
+  constructor(slides: Array<ISlide>, title: string, icon: string) {
     logger.log('Slideshow: constructor');
 
-    this.slideshow = el('.SCSlideshow', slides.reduce((aggregator: Array<HTMLElement>, slide: ISlide, index: Number) => {
-      const img = el('img', {src: slide.icon})
+    this.title = el('.SCSlideshowHeader', title);
+    this.slideshow = el('.SCSlideshow', this.title, slides.reduce((aggregator: Array<HTMLElement>, slide: ISlide, index: Number) => {
+      const img = el('img', {src: slide.icon});
+      const articleBody = el('.SCSlide', new SummaryBody({
+        title: slide.title, 
+        description: slide.body, 
+        date: slide.date, 
+        link: slide.link, 
+        handle: slide.author, 
+        icon: slide.icon
+      }));
+
       aggregator.push(el('input', { type: 'radio', id: index, name: 'slider', checked: (index === 0) }));
       aggregator.push(el('label', img, { for: index }));
-      aggregator.push(el('.SCSlide', slide.body));
+      aggregator.push(articleBody);
+
       return aggregator;
     }, []));
 

@@ -1,31 +1,36 @@
 import { el } from 'redom';
 
 import logger from '../utils/logger';
-import CalendarIcon from './svgs/calendarIcon';
-import LinkIcon from './svgs/linkIcon';
+import SummaryBody from './summaryBody';
+
+interface ISummary {
+  title: string, 
+  description: string, 
+  icon: string, 
+  date: string, 
+  link: string, 
+  handle: string, 
+  keywords: Array<string>
+}
 
 export default class Summary {
 
   el: HTMLElement
 
-  constructor(title: string, description: string, icon: string, date: string, link: string, handle: string, keywords: Array<string>) {
+  constructor(summary: ISummary) {
     logger.log('Summary: constructor');
 
     this.el = el('.SCSummaryWrapper', [
       el('.SCSummaryImage',
-        el('img', { src: icon })),
-      el('.SCSummaryBody', [
-        el('.SCSummaryTitle', title),
-        el('.SCSummaryInfo', [
-          el('span.SCHandle.SCMarginRight', handle),
-          el('span.SCIcon', new CalendarIcon()),
-          el('span.SCdate.SCMarginRight', date),
-          el('span.SCIcon', new LinkIcon()),
-          el('a.SClink', link, { href: link, target: '_blank' })
-        ]),
-        el('.SCSummaryContent', description),
-        el('.SCKeywordsWrapper', keywords.map((keyword: string) => el('.SCKeyword', keyword)))
-      ])
+        el('img', { src: summary.icon })),
+      new SummaryBody({
+        title: summary.title, 
+        description: summary.description, 
+        date: summary.date, 
+        link: summary.link, 
+        handle: summary.handle, 
+        keywords: summary.keywords
+      })
     ]);
   }
 }
