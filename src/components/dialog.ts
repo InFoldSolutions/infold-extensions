@@ -4,6 +4,7 @@ import logger from '../utils/logger';
 
 import CloseIcon from './svgs/closeIcon';
 import Summary from './summary';
+import Slideshow from './slideshow';
 
 export default class Dialog {
 
@@ -35,7 +36,14 @@ export default class Dialog {
       ['Charlie Bartolo', 'Kearne Solanke', 'London', 'Murder', 'Thamesmead', 'Abbey Wood']
     );
 
-    this.el = el('.SCDialogWrapper', el('.SCDialogBody', [el('.SCDialogHeader', this.closeBtn), el('.SCDialogContent', this.itemSummary)]))
+    this.el = el('.SCDialogWrapper', 
+      el('.SCDialogBody', [
+        el('.SCDialogHeader', this.closeBtn), 
+        el('.SCDialogContent', [
+          this.itemSummary,
+          new Slideshow([{body: "Test content"}, {body: "Test content 2"}])
+        ])
+      ]))
 
     mount(document.body, this.el);
   }
