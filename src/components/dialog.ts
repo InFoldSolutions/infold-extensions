@@ -76,6 +76,13 @@ export default class Dialog {
             link: 'bloomberg.in/3B6arKW',
             author: 'CNBC',
             date: '52m ago'
+          }, {
+            title: 'Smithsonian exhibit explores how entertainment shaped',
+            body: '"Entertainment Nation/Nación del espectáculo," a new exhibition at the "Star Wars" and...',
+            icon: 'https://pbs.twimg.com/profile_images/1374394535883673604/4VIECtDH_400x400.jpg',
+            link: 'cbsnews.in/3B6arKW',
+            author: 'CBSNews',
+            date: '2d ago'
           }], 'Related News', 'fal.fa-newspaper')
         ])
       ]))

@@ -30,8 +30,8 @@ export default class SummaryBody {
       el('a.SClink', summaryBody.link, { href: summaryBody.link, target: '_blank' })
     ]
 
-    if (summaryBody.icon)
-      this.summaryInfo.unshift(el('img', { src: summaryBody.icon }));
+    /*if (summaryBody.icon)
+      this.summaryInfo.unshift(el('img', { src: summaryBody.icon }));*/
 
     this.el =
       el('.SCSummaryBody', [
