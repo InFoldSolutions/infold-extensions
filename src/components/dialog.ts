@@ -33,7 +33,7 @@ export default class Dialog {
       date: '7h ago',
       link: 'bbc.in/3B6arKW',
       handle: 'BBC News',
-      keywords: ['Charlie Bartolo', 'Kearne Solanke', 'London', 'Murder', 'Thamesmead', 'Abbey Wood']
+      keywords: ['Charlie Bartolo', 'Kearne Solanke', 'London Crime']
     });
 
     this.el = el('.SCDialogWrapper',

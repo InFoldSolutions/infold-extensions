@@ -38,7 +38,9 @@ export default class SummaryBody {
         el('.SCSummaryTitle', summaryBody.title),
         el('.SCSummaryInfo', this.summaryInfo),
         el('.SCSummaryContent', summaryBody.description),
-        el('.SCKeywordsWrapper', (summaryBody.keywords) ? summaryBody.keywords.map((keyword: string) => el('.SCKeyword', keyword)) : [])
+        el('.SCKeywordsWrapper', 
+          (summaryBody.keywords) ? 
+            summaryBody.keywords.map((keyword: string) => el('.SCKeyword', [el('i.fab.fa-wikipedia-w'), keyword])) : [])
       ])
   }
 }
