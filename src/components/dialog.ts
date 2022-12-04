@@ -27,21 +27,27 @@ export default class Dialog {
     };
 
     this.itemSummary = new Summary(
-      'Kearne Solanke and Charlie Bartolo deaths: Two teens charged', 
-      "Two boys are charged with murdering Kearne Solanke and Charlie Bartolo a mile apart in London.",
-      "https://pbs.twimg.com/profile_images/1150716997254209536/M7gkjsv5_400x400.jpg",
+      'Kearne Solanke and Charlie Bartolo deaths: Two teens charged',
+      'Two boys are charged with murdering Kearne Solanke and Charlie Bartolo a mile apart in London.',
+      'https://pbs.twimg.com/profile_images/1150716997254209536/M7gkjsv5_400x400.jpg',
       '7h ago',
       'bbc.in/3B6arKW',
       'BBC News',
       ['Charlie Bartolo', 'Kearne Solanke', 'London', 'Murder', 'Thamesmead', 'Abbey Wood']
     );
 
-    this.el = el('.SCDialogWrapper', 
+    this.el = el('.SCDialogWrapper',
       el('.SCDialogBody', [
-        el('.SCDialogHeader', this.closeBtn), 
+        el('.SCDialogHeader', this.closeBtn),
         el('.SCDialogContent', [
           this.itemSummary,
-          new Slideshow([{body: "Test content"}, {body: "Test content 2"}])
+          new Slideshow([{
+            body: 'Test content',
+            icon: 'https://pbs.twimg.com/profile_images/1150716997254209536/M7gkjsv5_bigger.jpg'
+          }, {
+            body: 'Test content 2',
+            icon: 'https://pbs.twimg.com/profile_images/1150716997254209536/M7gkjsv5_bigger.jpg'
+          }], 'fal.fa-newspaper')
         ])
       ]))
 

@@ -222,14 +222,38 @@
 * inspired by https://codepen.io/KamilDyrek/pen/ejmRxV
 **/
 
+.SCSlideshowWrapper {
+  display: flex;
+  width: 100%;
+  margin: 15px 0px;
+}
+
+.SCSlideshowIcon {
+  flex-basis: 48px;
+  margin-right: 12px;
+}
+
+.SCSlideshowIconWrapper {
+  display: flex;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(231, 233, 234, 0.1);
+  color: rgba(231, 233, 234, 0.5);
+  font-size: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
 .SCSlideshow {
   padding: 0;
-  margin: 0;
+  margin: 10px 0;
+  min-height: 100px;
   width: 100%;
-  height: 100%;
-  text-align: center;
+  text-align: left;
   overflow: hidden;
   user-select: none;
+  position: relative;
 }
 
 .SCSlideshow .sr-only {
@@ -242,41 +266,44 @@
 }
 
 .SCSlideshow input {
-  position: absolute;  
+  position: absolute;
   opacity: 0;
-  margin-top: 95vh;
+  margin: 0px;
   cursor: pointer;
 }
 
 .SCSlideshow label {
   display: inline-block;
-  width: 12px;
-  height: 12px;
-  border: solid 2px white;
-  border-radius: 999px;
-  background-color: transparent;
-  margin: 95vh 6px 0 6px;
+  width: 22px;
+  height: 22px;
+  margin: 0 -3px 0 0;
   z-index: 2;
   cursor: pointer;
-  transition-duration: .4s;
-  box-shadow: 0 0 20px 0 #000;
+  overflow: hidden;
+  border-radius: 50%;
+  border: solid 1px rgba(239, 243, 244, 0);
 }
 
-.SCSlideshow input:checked + label{
-  background-color: white;
+.SCSlideshow label img {
+  width: 100%;
+  border-radius: 50%;
 }
 
-.SCSlideshow input + label::after{
+.SCSlideshow input:checked+label {
+  border-color: rgb(239, 243, 244);
+}
+
+/*.SCSlideshow input + label::after{
   content: '';
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 512' width='100' style='fill:white'%3E%3Cpath d='M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z' /%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: center 55%;
   background-size: 80px 80px;
-  line-height: 100vh;
+  line-height: 50px;
   transition: background-size 200ms;
   position: absolute;
   color: white;
-  height: calc(95vh - 12px);
+  height: calc(50% - 12px);
   width: 80px;
   top: 0;
   left: 0;
@@ -289,7 +316,7 @@
 
 .SCSlideshow input:checked + label::after {
   background-image: none;
-  width: 100vw;
+  width: 100%;
   left: 0;
   z-index: 10;
 }
@@ -305,10 +332,7 @@
   right: 0;
   left: auto;
 }
-
-.SCSlideshow input:focus + label{
-  box-shadow: 0 0 0 2px teal, 0 0 18px white;
-}
+*/
 
 .SCSlideshow .SCSlide {
   position: absolute;
@@ -317,21 +341,24 @@
   background-repeat: no-repeat;
   width: 100%;
   height: 100%;
-  top: 0;
+  top: 20px;
+  margin-top: 20px;
   left: 0;
   z-index: -1;
   transform: translateX(-100%);
   transition-duration: .4s;
   opacity: 1;
+  color: rgb(239, 243, 244);
 }
 
-.SCSlideshow input:checked ~ .slide {
+.SCSlideshow input:checked~.SCSlideshow .SCSlide {
   transform: translateX(100%);
 }
 
-.SCSlideshow input:checked + label + .slide {
+.SCSlideshow input:checked+label+.SCSlide {
   transform: translateX(0);
   opacity: 1;
+  z-index: 1;
 }
 
 /**
