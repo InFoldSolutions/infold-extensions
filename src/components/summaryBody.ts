@@ -4,6 +4,10 @@ import logger from '../utils/logger';
 import CalendarIcon from './svgs/calendarIcon';
 import LinkIcon from './svgs/linkIcon';
 
+interface IKeyword {
+  icon: string,
+  word: string
+}
 interface ISummaryBody {
   title: string,
   description: string,
@@ -11,7 +15,7 @@ interface ISummaryBody {
   link: string,
   handle: string,
   icon?: string,
-  keywords?: Array<string>
+  keywords?: Array<IKeyword>
 }
 
 export default class SummaryBody {
@@ -30,17 +34,20 @@ export default class SummaryBody {
       el('a.SClink', summaryBody.link, { href: summaryBody.link, target: '_blank' })
     ]
 
-    /*if (summaryBody.icon)
-      this.summaryInfo.unshift(el('img', { src: summaryBody.icon }));*/
+    let keywords: Array<HTMLElement>;
+
+    if (summaryBody.keywords) {
+      keywords = summaryBody.keywords.map((keyword: IKeyword) => {
+        return el('.SCKeyword', [el(`i.${keyword.icon}`), keyword.word])
+      });
+    }
 
     this.el =
       el('.SCSummaryBody', [
         el('.SCSummaryTitle', summaryBody.title),
         el('.SCSummaryInfo', this.summaryInfo),
         el('.SCSummaryContent', summaryBody.description),
-        el('.SCKeywordsWrapper', 
-          (summaryBody.keywords) ? 
-            summaryBody.keywords.map((keyword: string) => el('.SCKeyword', [el('i.fab.fa-wikipedia-w'), keyword])) : [])
+        el('.SCKeywordsWrapper', keywords)
       ])
   }
 }

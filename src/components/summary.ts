@@ -3,6 +3,10 @@ import { el } from 'redom';
 import logger from '../utils/logger';
 import SummaryBody from './summaryBody';
 
+interface IKeyword { // needs to be moved
+  icon: string,
+  word: string
+}
 interface ISummary {
   title: string, 
   description: string, 
@@ -10,7 +14,7 @@ interface ISummary {
   date: string, 
   link: string, 
   handle: string, 
-  keywords: Array<string>
+  keywords: Array<IKeyword>
 }
 
 export default class Summary {

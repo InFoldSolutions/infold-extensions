@@ -21,7 +21,6 @@ export default class Dialog {
     this.closeBtn.onclick = (evt: Event) => {
       evt.preventDefault();
       evt.stopPropagation();
-      console.log('CLICK EVENT');
 
       this.close();
     };
@@ -33,7 +32,16 @@ export default class Dialog {
       date: '7h ago',
       link: 'bbc.in/3B6arKW',
       handle: 'BBC News',
-      keywords: ['Charlie Bartolo', 'Kearne Solanke', 'London Crime']
+      keywords: [{
+        icon: 'fab.fa-youtube',
+        word: 'Charlie Bartolo'
+      }, {
+        icon: 'fab.fa-google',
+        word: 'Kearne Solanke'
+      }, {
+        icon: 'fab.fa-wikipedia-w',
+        word: 'London Crime'
+      }]
     });
 
     this.el = el('.SCDialogWrapper',
