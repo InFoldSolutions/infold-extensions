@@ -1,0 +1,32 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
+<metadata>
+Created by FontForge 20201107 at Mon Dec  5 08:26:05 2022
+ By root
+Copyright (c) Font Awesome
+</metadata>
+<!-- Font Awesome Pro 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) --><defs>
+<font id="FontAwesome5Pro-Regular" horiz-adv-x="576" >
+  <font-face 
+    font-family="Font Awesome 5 Pro Regular"
+    font-weight="400"
+    font-stretch="normal"
+    units-per-em="512"
+    panose-1="2 0 5 3 0 0 0 0 0 0"
+    ascent="448"
+    descent="-64"
+    bbox="0 0 576 384"
+    underline-thickness="25"
+    underline-position="-50"
+    unicode-range="U+0020-F1EA"
+  />
+    <missing-glyph />
+    <glyph glyph-name="newspaper" unicode="&#xf1ea;" 
+d="M552 384c13.2549 0 24 -10.7451 24 -24v-336c0 -13.2549 -10.7451 -24 -24 -24h-496c-30.9277 0 -56 25.0723 -56 56v272c0 13.2549 10.7451 24 24 24h42.752c6.60547 18.623 24.3896 32 45.248 32h440zM48 56c0 -4.41113 3.58887 -8 8 -8s8 3.58887 8 8v248h-16v-248z
+M528 48v288h-416v-280c0 -2.7168 -0.204102 -5.38574 -0.578125 -8h416.578zM172 168c-6.62695 0 -12 5.37305 -12 12v96c0 6.62695 5.37305 12 12 12h136c6.62695 0 12 -5.37305 12 -12v-96c0 -6.62695 -5.37305 -12 -12 -12h-136zM200 248v-40h80v40h-80zM160 108v24
+c0 6.62695 5.37305 12 12 12h136c6.62695 0 12 -5.37305 12 -12v-24c0 -6.62695 -5.37305 -12 -12 -12h-136c-6.62695 0 -12 5.37305 -12 12zM352 108v24c0 6.62695 5.37305 12 12 12h104c6.62695 0 12 -5.37305 12 -12v-24c0 -6.62695 -5.37305 -12 -12 -12h-104
+c-6.62695 0 -12 5.37305 -12 12zM352 252v24c0 6.62695 5.37305 12 12 12h104c6.62695 0 12 -5.37305 12 -12v-24c0 -6.62695 -5.37305 -12 -12 -12h-104c-6.62695 0 -12 5.37305 -12 12zM352 180v24c0 6.62695 5.37305 12 12 12h104c6.62695 0 12 -5.37305 12 -12v-24
+c0 -6.62695 -5.37305 -12 -12 -12h-104c-6.62695 0 -12 5.37305 -12 12z" />
+  </font>
+</defs></svg>
