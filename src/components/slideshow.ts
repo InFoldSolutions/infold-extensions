@@ -1,18 +1,9 @@
 import { el } from 'redom';
 
+import { convertToSlug } from '../utils/helpers';
 import logger from '../utils/logger';
-import SummaryBody from './summaryBody';
 
-/**
- * 
- *   <input type="radio" id="trigger1" name="slider">
- *   <label for="trigger1">
- *       <span class="sr-only">
- *           Slide 1 of 5. A photo of a mountain pass with a winding path along the river and a view of distant mountains hiding in the mist.
- *       </span>
- *   </label>
- *   <div class="slide bg1"></div>
- */
+import SummaryBody from './summaryBody';
 
 interface ISlide {
   body: string,
@@ -29,28 +20,42 @@ export default class Slideshow {
   slideshow: HTMLElement
   title: HTMLElement
 
-  constructor(slides: Array<ISlide>, title: string, icon: string) {
+  constructor(slides: Array<ISlide>, title: string, icon: string, type: string) {
     logger.log('Slideshow: constructor');
-
+    
     this.title = el('.SCSlideshowHeader', title);
     this.slideshow = el('.SCSlideshow', this.title, slides.reduce((aggregator: Array<HTMLElement>, slide: ISlide, index: Number) => {
-      const img = el('img', {src: slide.icon});
       const articleBody = el('.SCSlide', new SummaryBody({
-        title: slide.title, 
-        description: slide.body, 
-        date: slide.date, 
-        link: slide.link, 
-        handle: slide.author, 
-        icon: slide.icon
+        title: slide.title,
+        description: slide.body,
+        date: slide.date,
+        link: slide.link,
+        handle: slide.author,
+        icon: slide.icon,
+        type
       }));
 
-      aggregator.push(el('input', { type: 'radio', id: index, name: 'slider', checked: (index === 0) }));
-      aggregator.push(el('label', img, { for: index }));
+      let labelImg: HTMLElement;
+
+      if (slide.icon && type === 'news') {
+        labelImg = el('img', { src: slide.icon });
+      }
+
+      const titleSlug = convertToSlug(title);
+      const slideIndex = titleSlug + index; 
+
+      aggregator.push(el('input', { type: 'radio', id: slideIndex, name: titleSlug, checked: (index === 0) }));
+      aggregator.push(el('label.SCNav', labelImg || '', { for: slideIndex }));
       aggregator.push(articleBody);
 
       return aggregator;
     }, []));
 
-    this.el = el('.SCSlideshowWrapper', [el('.SCSlideshowIcon', el('.SCSlideshowIconWrapper', el(`i.${icon}`))), this.slideshow])
+    this.el = el(`.SCSlideshowWrapper.${type}`, [
+      el('.SCSlideshowIcon', 
+      el('.SCSlideshowIconWrapper', 
+      el(`i.${icon}`))), 
+      this.slideshow
+    ])
   }
 }

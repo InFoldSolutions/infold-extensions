@@ -3,6 +3,7 @@ import { el } from 'redom';
 import logger from '../utils/logger';
 import CalendarIcon from './svgs/calendarIcon';
 import LinkIcon from './svgs/linkIcon';
+import RedditIcon from './svgs/redditIcon';
 
 interface IKeyword {
   icon: string,
@@ -15,6 +16,7 @@ interface ISummaryBody {
   link: string,
   handle: string,
   icon?: string,
+  type?: string,
   keywords?: Array<IKeyword>
 }
 
@@ -35,6 +37,17 @@ export default class SummaryBody {
     ]
 
     let keywords: Array<HTMLElement>;
+
+    if (summaryBody.type === 'social' && summaryBody.icon) {
+      switch (summaryBody.icon) {
+        case 'reddit':
+          this.summaryInfo.unshift(el('.SCIcon', new RedditIcon()));
+          break;
+        default:
+          this.summaryInfo.unshift(el(`i.${summaryBody.icon}`));
+          break;
+      }
+    }
 
     if (summaryBody.keywords) {
       keywords = summaryBody.keywords.map((keyword: IKeyword) => {
