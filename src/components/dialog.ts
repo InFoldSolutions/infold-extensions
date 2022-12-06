@@ -14,7 +14,7 @@ export default class Dialog {
 
   itemSummary: Summary
 
-  constructor() {
+  constructor(agent: string) {
     logger.log('Dialog: constructor');
 
     this.closeBtn = el('.SCDialogCloseWrapper', new CloseIcon());
@@ -45,7 +45,7 @@ export default class Dialog {
       }]
     });
 
-    this.el = el('.SCDialogWrapper',
+    this.el = el(`.SCDialogWrapper.${agent}`,
       el('.SCDialogBody', [
         el('.SCDialogHeader', this.closeBtn),
         el('.SCDialogContent', [

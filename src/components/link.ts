@@ -12,7 +12,7 @@ export interface IPotentialLink {
 export default class Link {
 
   status: string
-  type: string
+  agent: string
 
   node: HTMLAnchorElement
   wrapper: HTMLElement
@@ -20,10 +20,10 @@ export default class Link {
 
   dialog: Dialog
 
-  constructor(type: string, potentialLInk: IPotentialLink) {
+  constructor(agent: string, potentialLInk: IPotentialLink) {
     logger.log('Link: constructor');
 
-    this.type = type;
+    this.agent = agent;
     this.node = potentialLInk.element;
     this.wrapper = potentialLInk.wrapperNode;
     this.status = 'pending';
@@ -52,9 +52,8 @@ export default class Link {
     this.el.onclick = (evt: Event) => {
       evt.preventDefault();
       evt.stopPropagation();
-      console.log('CLICK EVENT');
 
-      this.dialog = new Dialog()
+      this.dialog = new Dialog(this.agent)
     };
   }
 

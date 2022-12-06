@@ -162,10 +162,11 @@
 
 .SCSummaryTitle {
   font-weight: 700;
+  margin-bottom: 3px;
 }
 
 .SCSummaryInfo {
-  margin: 3px 0px 6px;
+  margin: 0px 0px 6px;
   color: rgb(113, 118, 123);
   display: flex;
   align-items: center;
@@ -284,7 +285,6 @@
   width: 100%;
   text-align: left;
   overflow: hidden;
-  user-select: none;
   position: relative;
   display: flex;
 }
@@ -408,9 +408,94 @@
 }
 
 .SCSlideshowWrapper.social .SCSlideshow {
-  min-height: 95px;
+  min-height: 95px !important;
 }
 
+/** Reddit Dialog overwrites **/
+
+.SCDialogWrapper.reddit {
+  background-color: rgba(26, 26, 27, 0.6);
+  font-family: IBMPlexSans, Arial, sans-serif;
+  color: #D7DADC;
+}
+
+.SCDialogWrapper.reddit .SCDialogContent {
+  margin-top: 20px;
+}
+
+.SCDialogWrapper.reddit .SCDialogHeader {
+  border-bottom: 1px solid rgba(215,218,220,0.03);
+  height: 50px;
+}
+
+.SCDialogWrapper.reddit .SCDialogBody {
+  background-color: rgb(32, 32, 33);
+  border: 1px solid rgb(46, 47, 48);
+  border-radius: 4px;
+  box-shadow: 0 2px 20px 0 rgb(0 0 0 / 30%);
+  margin: auto;
+  top: 50%;
+  transform: translateY(-50%);
+  position: relative;
+  padding-bottom: 34px;
+}
+
+.SCDialogWrapper.reddit .SCDialogHeader .SCDialogCloseWrapper {
+  margin-left: auto;
+}
+
+.SCDialogWrapper.reddit .SCDialogHeader .SCDialogCloseWrapper svg {
+  color: #818384;
+  width: 16px;
+}
+
+.SCDialogWrapper.reddit .SCDialogHeader .SCDialogCloseWrapper:hover {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.SCDialogWrapper.reddit .SCSlideshowWrapper {
+  margin-top: 30px;
+}
+
+.SCDialogWrapper.reddit .SCSlideshow  {
+  min-height: 130px;
+}
+
+.SCDialogWrapper.reddit .SCSlideshow .SCSlide {
+  color: #D7DADC;
+  top: 21px;
+}
+
+.SCDialogWrapper.reddit .SCSummaryTitle {
+  font-weight: normal;
+  font-size: 16px;
+}
+
+.SCDialogWrapper.reddit .SCSlideshowHeader {
+  font-weight: normal;
+  color: #818384;
+}
+
+.SCDialogWrapper.reddit .SCSlideshowIconWrapper {
+  color: rgba(231, 233, 234, 0.5);
+}
+
+.SCDialogWrapper.reddit .SCSlideshow input+label::after {
+  color: #818384;
+}
+
+.SCDialogWrapper.reddit .SCSummaryInfo,
+.SCDialogWrapper.reddit .SCSummaryContent {
+  color: #818384;
+}
+
+.SCDialogWrapper.reddit .SCKeyword {
+  border: 1px solid rgba(129,131,132,0.2);
+  background-color: transparent;
+  border-radius: 20px;
+  color: #818384;
+  font-weight: 500;
+}
 
 /**
   Helpers
