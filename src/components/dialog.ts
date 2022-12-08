@@ -26,32 +26,23 @@ export default class Dialog {
       this.close();
     };
 
-    this.itemSummary = new Summary({
+    /*this.itemSummary = new Summary({
       title: 'Kearne Solanke and Charlie Bartolo deaths: Two teens charged',
       description: 'Two boys are charged with murdering Kearne Solanke and Charlie Bartolo a mile apart in London.',
       icon: 'https://pbs.twimg.com/profile_images/1150716997254209536/M7gkjsv5_400x400.jpg',
       date: '7h ago',
       link: 'bbc.in/3B6arKW',
       handle: 'BBC News',
-      keywords: [{
-        icon: 'fab.fa-youtube',
-        word: 'Charlie Bartolo'
-      }, {
-        icon: 'fab.fa-google',
-        word: 'Kearne Solanke'
-      }, {
-        icon: 'fab.fa-wikipedia-w',
-        word: 'London Crime'
-      }]
-    });
+
+    });*/
 
     this.el = el(`.SCDialogWrapper.${agent}`,
       el('.SCDialogBody', [
-        el('.SCDialogHeader', this.closeBtn),
+        //el('.SCDialogHeader', this.closeBtn),
         el('.SCDialogContent', [
           this.itemSummary,
           new Slideshow(config.mock.relatedNews, 'Related News', 'fal.fa-newspaper', 'news'),
-          new Slideshow(config.mock.relatedSocialPosts, 'Social Posts', 'fal.fa-comments', 'social')
+          //new Slideshow(config.mock.relatedSocialPosts, 'Social Posts', 'fal.fa-comments', 'social')
         ])
       ]))
 

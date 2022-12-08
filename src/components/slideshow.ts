@@ -5,13 +5,18 @@ import logger from '../utils/logger';
 
 import SummaryBody from './summaryBody';
 
+interface IKeyword {
+  icon: string,
+  word: string
+}
 interface ISlide {
   body: string,
   title?: string,
   author?: string,
   date?: string,
   icon?: string,
-  link?: string
+  link?: string,
+  keywords?: Array<IKeyword>
 }
 
 export default class Slideshow {
@@ -23,7 +28,7 @@ export default class Slideshow {
   constructor(slides: Array<ISlide>, title: string, icon: string, type: string) {
     logger.log('Slideshow: constructor');
     
-    this.title = el('.SCSlideshowHeader', title);
+    //this.title = el('.SCSlideshowHeader', title);
     this.slideshow = el('.SCSlideshow', this.title, slides.reduce((aggregator: Array<HTMLElement>, slide: ISlide, index: Number) => {
       const articleBody = el('.SCSlide', new SummaryBody({
         title: slide.title,
@@ -32,6 +37,7 @@ export default class Slideshow {
         link: slide.link,
         handle: slide.author,
         icon: slide.icon,
+        keywords: slide.keywords,
         type
       }));
 
@@ -52,9 +58,9 @@ export default class Slideshow {
     }, []));
 
     this.el = el(`.SCSlideshowWrapper.${type}`, [
-      el('.SCSlideshowIcon', 
+      /*el('.SCSlideshowIcon', 
       el('.SCSlideshowIconWrapper', 
-      el(`i.${icon}`))), 
+      el(`i.${icon}`))),*/ 
       this.slideshow
     ])
   }
