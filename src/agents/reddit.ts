@@ -5,6 +5,7 @@ import { mount, el } from 'redom';
 import BaseAgent from './base';
 
 import Link, { IPotentialLink } from "../components/link";
+import Dialog from '../components/dialog';
 
 import logger from '../utils/logger';
 import config from '../utils/config';
@@ -20,6 +21,12 @@ export default class RedditAgent extends BaseAgent {
   wrapperClass: string
   buttonClasses: string[]
   textClasses: string[]
+
+  // from link this reference (stupid I know)
+  article: HTMLElement
+  wrapper: HTMLElement
+
+  dialog: Dialog
 
   constructor() {
     logger.log('RedditAgent: constructor');
@@ -83,20 +90,30 @@ export default class RedditAgent extends BaseAgent {
     logger.log('RedditAgent: appendLink');
 
     const parent: ParentNode = link.node.parentNode.parentNode;
-    const element: HTMLElement = el(`.${this.wrapperClass}`, 
-      el(`button.${this.buttonClasses.join('.')}`, 
-      [
-        el(`span.pthKOcceozMuXLYrLlbL1`, el(`i.fal.fa-lightbulb`)), 
-        el(`span.${this.textClasses.join('.')}`, '86 Related')
-      ]));
+    const element: HTMLElement = el(`.${this.wrapperClass}`,
+      el(`button.${this.buttonClasses.join('.')}`,
+        [
+          el(`span.pthKOcceozMuXLYrLlbL1`, el(`i.fal.fa-lightbulb`)),
+          el(`span.${this.textClasses.join('.')}`, '86 Related')
+        ]));
 
     const lastChild: Element = Array.from(
       parent.lastElementChild.lastElementChild.getElementsByClassName(this.wrapperClass)
     ).pop();
 
-    link.preparetBaseHTML(element);
+    link.preparetBaseHTML({
+      element,
+      onClick: this.onClick
+    });
 
     mount(parent.lastElementChild.lastElementChild, link, lastChild.nextSibling);
+  }
+
+  onClick(evt: MouseEvent) {
+    evt.preventDefault();
+    evt.stopPropagation();
+
+    this.dialog = new Dialog(this.providerType, el(`.${this.wrapperClass}`), this.article, this.wrapper);
   }
 
   getPotentialLinksFromElement(element: Element) {
@@ -115,7 +132,8 @@ export default class RedditAgent extends BaseAgent {
     }).map((element: HTMLAnchorElement) => {
       return {
         element,
-        wrapperNode: element
+        wrapperNode: element,
+        article: element.parentElement
       }
     });
   }

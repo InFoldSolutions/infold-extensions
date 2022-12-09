@@ -75,27 +75,30 @@
 /* Dialog */
 
 .SCDialogWrapper {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 999;
-
   background-color: transparent;
   font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   color: rgb(231, 233, 234);
   font-size: 15px;
 }
 
+.SCDialogBGWrapper {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+}
+
 .SCDialogBody {
-  top: 50%;
+  position: absolute;
   border-radius: 16px;
   min-height: 160px;
-  width: 500px;
+  width: 507px;
   position: relative;
   background-color: rgb(0, 0, 0);
   box-shadow: rgb(255 255 255 / 20%) 0px 0px 15px, rgb(255 255 255 / 15%) 0px 0px 3px 1px;
+  z-index: 2;
 }
 
 .SCDialogHeader {
@@ -277,7 +280,7 @@
 .SCSlideshow {
   padding: 0;
   margin: 0px;
-  min-height: 166px;
+  min-height: 171px;
   width: 100%;
   text-align: left;
   overflow: hidden;
@@ -407,6 +410,54 @@
   min-height: 95px !important;
 }
 
+/** Light mode **/
+
+@media (prefers-color-scheme: light) {
+  .SCSlideshow .SCSlide {
+    color: rgba(0, 0, 0, 1.00);
+  }
+
+  .SCDialogWrapper {
+    color: rgba(0, 0, 0, 1.00);
+  }
+
+  .SCDialogBody {
+    box-shadow: rgb(101 119 134 / 20%) 0px 0px 15px, rgb(101 119 134 / 15%) 0px 0px 3px 1px;
+    background-color: rgba(255, 255, 255, 1.00);
+  }
+
+  .SCKeyword {
+    background-color: rgba(231, 233, 234, 0.5);
+  }
+
+  .SCKeyword:hover {
+    background-color: rgba(231, 233, 234, 0.8);
+  }
+
+  .SCSlideshow input+label::after {
+    color: rgba(0, 0, 0, 1.00);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 512' style='fill:rgb(0, 0, 0)'%3E%3Cpath d='M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z' /%3E%3C/svg%3E");
+  }
+
+  .SCSlideshow input:checked+label+.SCSlide+input+label::after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 512' fill='rgb(0, 0, 0)'%3E%3Cpath d='M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z' /%3E%3C/svg%3E");
+  }
+}
+
+/** Dark mode **/
+
+@media (prefers-color-scheme: dark) {
+  .day.light-scheme {
+    background: white;
+    color: #555;
+  }
+
+  .night.light-scheme {
+    background: #eee;
+    color: black;
+  }
+}
+
 /** Reddit Dialog overwrites **/
 
 .SCDialogWrapper.reddit {
@@ -416,7 +467,7 @@
 }
 
 .SCDialogWrapper.reddit .SCDialogHeader {
-  border-bottom: 1px solid rgba(215,218,220,0.03);
+  border-bottom: 1px solid rgba(215, 218, 220, 0.03);
   height: 50px;
 }
 
@@ -445,7 +496,7 @@
   background-color: rgba(0, 0, 0, 0);
 }
 
-.SCDialogWrapper.reddit .SCSlideshow  {
+.SCDialogWrapper.reddit .SCSlideshow {
   min-height: 160px;
 }
 
@@ -478,7 +529,7 @@
 }
 
 .SCDialogWrapper.reddit .SCKeyword {
-  border: 1px solid rgba(129,131,132,0.2);
+  border: 1px solid rgba(129, 131, 132, 0.2);
   background-color: transparent;
   border-radius: 20px;
   color: #818384;

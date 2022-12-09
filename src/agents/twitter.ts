@@ -3,6 +3,7 @@ import { mount } from 'redom';
 import BaseAgent from './base';
 
 import Link, { IPotentialLink } from "../components/link";
+import Dialog from '../components/dialog';
 
 import logger from '../utils/logger';
 import config from '../utils/config';
@@ -16,8 +17,15 @@ export default class TwitterAgent extends BaseAgent {
   listBody: Element
   mainBody: Element
   rootBody: HTMLElement
+  article: HTMLElement
   providerType: string
   rootID: string
+
+  // from link this reference (stupid I know)
+  agent: string
+  wrapper: HTMLElement
+
+  dialog: Dialog
 
   constructor() {
     logger.log('TwitterAgent: constructor');
@@ -146,16 +154,29 @@ export default class TwitterAgent extends BaseAgent {
   appendLink(link: Link) {
     logger.log('TwitterAgent: appendLink');
 
-    link.preparetBaseHTML();
+    link.preparetBaseHTML({
+      onClick: this.onClick
+    });
 
     mount(link.wrapper, link, link.wrapper.lastElementChild);
+  }
+
+  onClick(evt: MouseEvent) {
+    evt.preventDefault();
+    evt.stopPropagation();
+
+    // "this" is relative to link Class (must be so..!)
+    // it's weird and wrong, I know
+
+    console.log('this.agent', this.agent);
+    this.dialog = new Dialog(this.agent, document.getElementById('layers'), this.article, this.wrapper);
   }
 
   getPotentialLinksFromElement(addedNode: Element): IPotentialLink[] {
     logger.log('TwitterAgent: getPotentialLinksFromElement');
 
     const potentials: IPotentialLink[] = [];
-    const article: Element = addedNode.querySelector('article[data-testid="tweet"]');
+    const article: HTMLElement = addedNode.querySelector('article[data-testid="tweet"]');
 
     if (article && !article.classList.contains(config.defaults.processedClass)) {
       const elements: HTMLElement[] = Array.from(article.querySelectorAll('a[target="_blank"]'));
@@ -179,7 +200,8 @@ export default class TwitterAgent extends BaseAgent {
 
         potentials.push({
           element,
-          wrapperNode
+          wrapperNode,
+          article
         });
 
         article.classList.add(config.defaults.processedClass);

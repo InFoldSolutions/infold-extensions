@@ -2,11 +2,15 @@ import { el } from 'redom';
 
 import logger from '../utils/logger';
 
-import Dialog from './dialog';
-
 export interface IPotentialLink {
   element: HTMLAnchorElement,
-  wrapperNode: HTMLElement
+  wrapperNode: HTMLElement,
+  article: HTMLElement
+}
+
+export interface IBaseHTMLPayload {
+  element?: HTMLElement,
+  onClick: (this: GlobalEventHandlers, evt: MouseEvent) => any
 }
 
 export default class Link {
@@ -16,14 +20,14 @@ export default class Link {
 
   node: HTMLAnchorElement
   wrapper: HTMLElement
+  article: HTMLElement
   el: HTMLElement
-
-  dialog: Dialog
 
   constructor(agent: string, potentialLInk: IPotentialLink) {
     logger.log('Link: constructor');
 
     this.agent = agent;
+    this.article = potentialLInk.article;
     this.node = potentialLInk.element;
     this.wrapper = potentialLInk.wrapperNode;
     this.status = 'pending';
@@ -34,11 +38,11 @@ export default class Link {
     this.status = 'success';
   }
 
-  preparetBaseHTML(element?: HTMLElement) {
+  preparetBaseHTML(payload: IBaseHTMLPayload) {
     logger.log('Link: preparetBaseHTML');
 
-    if (element)
-      this.el = element;
+    if (payload.element)
+      this.el = payload.element;
     else {
       this.el = el(`.SCbuttonWrapper`, [
         el(`span.SCiconWrapper`, [
@@ -49,12 +53,7 @@ export default class Link {
       ]);
     }
 
-    this.el.onclick = (evt: Event) => {
-      evt.preventDefault();
-      evt.stopPropagation();
-
-      this.dialog = new Dialog(this.agent)
-    };
+    this.el.onclick = payload.onClick.bind(this);
   }
 
   disableLoading() {
