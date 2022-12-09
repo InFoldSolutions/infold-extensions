@@ -383,7 +383,7 @@
   left: 0;
   z-index: -1;
   transform: translateX(-100%);
-  transition-duration: .4s;
+  transition-duration: 0.2s;
   opacity: 1;
   color: rgb(239, 243, 244);
 }
@@ -431,7 +431,7 @@
   }
 
   .SCKeyword:hover {
-    background-color: rgba(231, 233, 234, 0.8);
+    background-color: rgba(231, 233, 234, 0.9);
   }
 
   .SCSlideshow input+label::after {
