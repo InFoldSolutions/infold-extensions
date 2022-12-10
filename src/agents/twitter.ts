@@ -3,7 +3,7 @@ import { mount } from 'redom';
 import BaseAgent from './base';
 
 import Link, { IPotentialLink } from "../components/link";
-import Dialog from '../components/dialog';
+import TwitterDialog from '../components/dialog/twitter';
 
 import logger from '../utils/logger';
 import config from '../utils/config';
@@ -25,7 +25,7 @@ export default class TwitterAgent extends BaseAgent {
   agent: string
   wrapper: HTMLElement
 
-  dialog: Dialog
+  dialog: TwitterDialog
 
   constructor() {
     logger.log('TwitterAgent: constructor');
@@ -168,8 +168,7 @@ export default class TwitterAgent extends BaseAgent {
     // "this" is relative to link Class (must be so..!)
     // it's weird and wrong, I know
 
-    console.log('this.agent', this.agent);
-    this.dialog = new Dialog(this.agent, document.getElementById('layers'), this.article, this.wrapper);
+    this.dialog = new TwitterDialog(this.agent, document.getElementById('layers'), this.article, this.wrapper);
   }
 
   getPotentialLinksFromElement(addedNode: Element): IPotentialLink[] {

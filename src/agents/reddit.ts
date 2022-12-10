@@ -5,7 +5,7 @@ import { mount, el } from 'redom';
 import BaseAgent from './base';
 
 import Link, { IPotentialLink } from "../components/link";
-import Dialog from '../components/dialog';
+import RedditDialog from '../components/dialog/reddit';
 
 import logger from '../utils/logger';
 import config from '../utils/config';
@@ -26,7 +26,7 @@ export default class RedditAgent extends BaseAgent {
   article: HTMLElement
   wrapper: HTMLElement
 
-  dialog: Dialog
+  dialog: RedditDialog
 
   constructor() {
     logger.log('RedditAgent: constructor');
@@ -113,7 +113,7 @@ export default class RedditAgent extends BaseAgent {
     evt.preventDefault();
     evt.stopPropagation();
 
-    this.dialog = new Dialog(this.providerType, el(`.${this.wrapperClass}`), this.article, this.wrapper);
+    this.dialog = new RedditDialog(this.providerType, el(`.${this.wrapperClass}`), this.article, this.wrapper);
   }
 
   getPotentialLinksFromElement(element: Element) {
