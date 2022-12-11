@@ -165,6 +165,7 @@
 }
 
 .SCSummaryInfo {
+  font-size: 14px;
   margin: 0px 0px 8px;
   color: rgb(113, 118, 123);
   display: flex;
@@ -522,7 +523,7 @@
 }
 
 .SCDialogWrapper.reddit .SCSummaryInfo {
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .SCDialogWrapper.reddit .SCMarginRight {
@@ -544,6 +545,10 @@
 
 .SCDialogWrapper.reddit .SCKeyword:hover {
   background-color: rgba(215, 218, 220, 0.1);
+}
+
+.SCDialogWrapper.reddit .SClink {
+  color: #4FBCFF;
 }
 
 /** Reddit Light mode **/
