@@ -17,22 +17,21 @@ export default class TwitterDialog extends Dialog {
   mainElement: HTMLElement
   sectionElement: HTMLElement
 
-  constructor(agent: string, parent: HTMLElement, article: HTMLElement, btnWrapper: HTMLElement) {
-    super(agent, parent, article);
+  constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement) {
+    super(agent, article);
 
     logger.log('TwitterDialog: constructor');
 
     this.btnWrapper = btnWrapper;
     this.mainElement = document.querySelector('main');
     this.sectionElement = this.mainElement.querySelector('section');
+    this.parent = document.getElementById('layers');
 
     // This is messed up
     // Need to account for offest top that the custom scroll mechanism has
 
-    this.dialogBody = el('.SCDialogBody', { style: { top: `${this.topOffset}px`, left: `${this.leftOffset}px` } }, [
-      el('.SCDialogContent', [
-        new Slideshow(config.mock.relatedNews, 'Related News', 'fal.fa-newspaper', 'news'),
-      ])
+    this.dialogBody = el('.SCDialogBody', { style: { top: `${this.offsetTop}px`, left: `${this.offsetLeft}px` } }, [
+      el('.SCDialogContent', new Slideshow(config.mock.relatedNews, 'Related News', 'fal.fa-newspaper', 'news'))
     ]);
 
     this.dialogCloseWrapper = el('.SCDialogBGWrapper');
@@ -54,7 +53,7 @@ export default class TwitterDialog extends Dialog {
     mount(this.parent, this.el);
   }
 
-  get leftOffset() {
+  get offsetLeft(): number {
     let offsetLeft: number = 0;
 
     // calculate offset left
@@ -71,7 +70,7 @@ export default class TwitterDialog extends Dialog {
     return offsetLeft
   }
 
-  get topOffset() {
+  get offsetTop(): number {
     let offsetTop: number = 0;
 
     // calculate offset top
@@ -118,5 +117,11 @@ export default class TwitterDialog extends Dialog {
       (this.btnWrapper.clientHeight + 15); // 15 accounts for the btnWrapper margin value, needs refactor
 
     return topPixels;
+  }
+
+  close() {
+    logger.log('Dialog: close');
+
+    unmount(this.parent, this.el);
   }
 }

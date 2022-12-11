@@ -16,17 +16,10 @@ export default class Dialog {
 
   itemSummary: Summary
 
-  constructor(agent: string, parent: HTMLElement, article: HTMLElement) {
+  constructor(agent: string, article: HTMLElement) {
     logger.log('Dialog: constructor');
 
-    this.parent = parent;
     this.agent = agent;
     this.article = article;
-  }
-
-  close() {
-    logger.log('Dialog: close');
-    
-    unmount(this.parent, this.el);
   }
 }

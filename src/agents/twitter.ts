@@ -17,13 +17,13 @@ export default class TwitterAgent extends BaseAgent {
   listBody: Element
   mainBody: Element
   rootBody: HTMLElement
-  article: HTMLElement
   providerType: string
   rootID: string
 
   // from link this reference (stupid I know)
-  agent: string
+  article: HTMLElement
   wrapper: HTMLElement
+  agent: string
 
   dialog: TwitterDialog
 
@@ -168,7 +168,11 @@ export default class TwitterAgent extends BaseAgent {
     // "this" is relative to link Class (must be so..!)
     // it's weird and wrong, I know
 
-    this.dialog = new TwitterDialog(this.agent, document.getElementById('layers'), this.article, this.wrapper);
+    this.dialog = new TwitterDialog(
+      this.agent,
+      this.article,
+      this.wrapper
+    );
   }
 
   getPotentialLinksFromElement(addedNode: Element): IPotentialLink[] {

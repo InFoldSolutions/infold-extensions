@@ -10,6 +10,8 @@ import RedditDialog from '../components/dialog/reddit';
 import logger from '../utils/logger';
 import config from '../utils/config';
 
+import { getParentByCls } from '../utils/helpers';
+
 export default class RedditAgent extends BaseAgent {
 
   contentObserver: MutationObserver
@@ -25,6 +27,7 @@ export default class RedditAgent extends BaseAgent {
   // from link this reference (stupid I know)
   article: HTMLElement
   wrapper: HTMLElement
+  agent: string
 
   dialog: RedditDialog
 
@@ -69,10 +72,13 @@ export default class RedditAgent extends BaseAgent {
     if (records) { // check newly added nodes for potential links
       records.forEach((record: MutationRecord) => {
         record.addedNodes.forEach((addedNode: Element) => {
-          potentialLinks = potentialLinks.concat(this.getPotentialLinksFromElement(addedNode));
+          potentialLinks = potentialLinks.concat(
+            this.getPotentialLinksFromElement(addedNode as HTMLElement)
+          );
         });
       })
     } else if (this.listBody) { // default to listBody
+      console.log('defaulting to listBody check');
       potentialLinks = this.getPotentialLinksFromElement(this.listBody);
     }
 
@@ -113,12 +119,18 @@ export default class RedditAgent extends BaseAgent {
     evt.preventDefault();
     evt.stopPropagation();
 
-    this.dialog = new RedditDialog(this.providerType, el(`.${this.wrapperClass}`), this.article, this.wrapper);
+    console.log('Reddit agent onClick', this, evt);
+
+    // "this" is relative to the link..
+    this.dialog = new RedditDialog(
+      this.agent,
+      this.article
+    );
   }
 
-  getPotentialLinksFromElement(element: Element) {
+  getPotentialLinksFromElement(element: HTMLElement) {
     logger.log('RedditAgent: getPotentialLinksFromElement');
-
+    console.log('getPotentialLinksFromElement element', element);
     const potentials = Array.from(
       element.getElementsByClassName(this.linkClasses.join(' ')) // look for specific classes in given element
     );
@@ -129,11 +141,13 @@ export default class RedditAgent extends BaseAgent {
       const extension: string = path.extname(url.pathname);
 
       return (outBindLink && (!extension || extension === '.html'));
-    }).map((element: HTMLAnchorElement) => {
+    }).map((potentialElement: HTMLAnchorElement) => {
+      const article = getParentByCls(potentialElement, 'scrollerItem');
+
       return {
-        element,
+        element: potentialElement,
         wrapperNode: element,
-        article: element.parentElement
+        article: article
       }
     });
   }

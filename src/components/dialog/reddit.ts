@@ -15,18 +15,17 @@ export default class RedditDialog extends Dialog {
   dialogBody: HTMLElement
   dialogCloseWrapper: HTMLElement
 
-  itemSummary: Summary
-
-  constructor(agent: string, parent: HTMLElement, article: HTMLElement, btnWrapper: HTMLElement) {
-    super(agent, parent, article);
+  constructor(agent: string, article: HTMLElement) {
+    super(agent, article);
 
     logger.log('RedditDialog: constructor');
 
-    this.dialogBody = el('.SCDialogBody', [
-      el('.SCDialogContent', [
-        this.itemSummary,
-        new Slideshow(config.mock.relatedNews, 'Related News', 'fal.fa-newspaper', 'news'),
-      ])
+    console.log('offsetLeft', this.offsetLeft);
+
+    this.parent = article.parentElement.parentElement;
+
+    this.dialogBody = el('.SCDialogBody', { style: { left: `${this.offsetLeft}px` } }, [
+      el('.SCDialogContent', new Slideshow(config.mock.relatedNews, 'Related News', 'fal.fa-newspaper', 'news'))
     ]);
 
     this.dialogCloseWrapper = el('.SCDialogBGWrapper');
@@ -43,8 +42,22 @@ export default class RedditDialog extends Dialog {
       [
         this.dialogCloseWrapper,
         this.dialogBody
-      ])
+      ]);
 
     mount(this.parent, this.el);
+  }
+
+  get offsetLeft(): number {
+    return parseInt(getComputedStyle(this.article, null).getPropertyValue('padding-left').replace('px', '')) + 2; // 2 accounts for margin
+  }
+
+  get offsetTop(): number {
+    return this.article.clientHeight;
+  }
+
+  close() {
+    logger.log('Dialog: close');
+
+    unmount(this.parent, this.el);
   }
 }
