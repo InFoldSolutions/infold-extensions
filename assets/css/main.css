@@ -165,6 +165,7 @@
 }
 
 .SCSummaryInfo {
+  font-size: 14px;
   margin: 0px 0px 8px;
   color: rgb(113, 118, 123);
   display: flex;
@@ -461,9 +462,9 @@
 /** Reddit Dialog overwrites **/
 
 .SCDialogWrapper.reddit {
-  background-color: rgba(26, 26, 27, 0.6);
   font-family: IBMPlexSans, Arial, sans-serif;
   color: #D7DADC;
+  position: absolute;
 }
 
 .SCDialogWrapper.reddit .SCDialogHeader {
@@ -472,13 +473,11 @@
 }
 
 .SCDialogWrapper.reddit .SCDialogBody {
-  background-color: rgb(26, 26, 27);
-  border: 1px solid rgb(46, 47, 48);
-  border-radius: 4px;
-  box-shadow: 0 2px 20px 0 rgb(0 0 0 / 30%);
+  background-color: #161617;
+  border: 1px solid #343536;
+  border-radius: 0px;
+  box-shadow: none;
   margin: auto;
-  top: 50%;
-  transform: translateY(-50%);
   position: relative;
   min-height: 160px;
 }
@@ -523,6 +522,14 @@
   color: #818384;
 }
 
+.SCDialogWrapper.reddit .SCSummaryInfo {
+  font-size: 13px;
+}
+
+.SCDialogWrapper.reddit .SCMarginRight {
+  margin-right: 8px;
+}
+
 .SCDialogWrapper.reddit .SCSummaryInfo,
 .SCDialogWrapper.reddit .SCSummaryContent {
   color: #818384;
@@ -534,6 +541,60 @@
   border-radius: 20px;
   color: #818384;
   font-weight: 500;
+}
+
+.SCDialogWrapper.reddit .SCKeyword:hover {
+  background-color: rgba(215, 218, 220, 0.1);
+}
+
+.SCDialogWrapper.reddit .SClink {
+  color: #4FBCFF;
+}
+
+/** Reddit Light mode **/
+
+.theme-light .SCDialogWrapper.reddit {
+  color: #1A1A1B;
+}
+
+.theme-light .SCDialogWrapper.reddit .SCDialogBody {
+  background-color: #FFF;
+  border-color: #ccc;
+}
+
+.theme-light .SCDialogWrapper.reddit .SCSlideshow .SCSlide {
+  color: #1A1A1B;
+}
+
+.theme-light .SCDialogWrapper.reddit .SCSummaryTitle {
+  color: #222222;
+  font-weight: 500;
+}
+
+.theme-light .SCDialogWrapper.reddit .SCKeyword {
+  background-color: rgba(237, 239, 241, 0.5);
+  border-color: rgba(237, 239, 241, 1);
+  color: #1A1A1B;
+}
+
+.theme-light .SCDialogWrapper.reddit .SCKeyword:hover {
+  background-color: rgba(237, 239, 241, 1);
+}
+
+.theme-light .SCDialogWrapper.reddit .SCSummaryContent {
+  color: #1c1c1c;
+}
+
+.theme-light .SCDialogWrapper.reddit .SCSlideshow input+label::after {
+  color: #1c1c1c;
+}
+
+.theme-light .SCDialogWrapper.reddit .SCSummaryInfo {
+  color: #787C7E
+}
+
+.theme-light .SCDialogWrapper.reddit .SClink {
+  color: #014980;
 }
 
 /**
