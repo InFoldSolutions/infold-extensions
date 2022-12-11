@@ -17,10 +17,7 @@ export default class RedditDialog extends Dialog {
 
   constructor(agent: string, article: HTMLElement) {
     super(agent, article);
-
     logger.log('RedditDialog: constructor');
-
-    console.log('offsetLeft', this.offsetLeft);
 
     this.parent = article.parentElement.parentElement;
 

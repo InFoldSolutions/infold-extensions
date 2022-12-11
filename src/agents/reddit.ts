@@ -78,7 +78,6 @@ export default class RedditAgent extends BaseAgent {
         });
       })
     } else if (this.listBody) { // default to listBody
-      console.log('defaulting to listBody check');
       potentialLinks = this.getPotentialLinksFromElement(this.listBody);
     }
 
@@ -119,8 +118,6 @@ export default class RedditAgent extends BaseAgent {
     evt.preventDefault();
     evt.stopPropagation();
 
-    console.log('Reddit agent onClick', this, evt);
-
     // "this" is relative to the link..
     this.dialog = new RedditDialog(
       this.agent,
@@ -130,7 +127,7 @@ export default class RedditAgent extends BaseAgent {
 
   getPotentialLinksFromElement(element: HTMLElement) {
     logger.log('RedditAgent: getPotentialLinksFromElement');
-    console.log('getPotentialLinksFromElement element', element);
+
     const potentials = Array.from(
       element.getElementsByClassName(this.linkClasses.join(' ')) // look for specific classes in given element
     );
