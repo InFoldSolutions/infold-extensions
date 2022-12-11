@@ -383,7 +383,7 @@
   left: 0;
   z-index: -1;
   transform: translateX(-100%);
-  transition-duration: 0.2s;
+  transition-duration: 0.3s;
   opacity: 1;
   color: rgb(239, 243, 244);
 }
