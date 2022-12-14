@@ -14,15 +14,24 @@ import { getParentByCls } from '../utils/helpers';
 
 export default class RedditAgent extends BaseAgent {
 
+  postObserver: MutationObserver
+  pageObserver: MutationObserver
   contentObserver: MutationObserver
-  listBody: HTMLElement
 
   providerType: string
+
   linkClasses: string[]
-  contentClass: string
   wrapperClass: string
   buttonClasses: string[]
   textClasses: string[]
+
+  contentBodyClass: string
+  postWrapperID: string
+  pageWrapperID: string
+
+  pageWrapper: HTMLElement
+  postWrapper: HTMLElement
+  contentBody: HTMLElement
 
   // from link this reference (stupid I know)
   article: HTMLElement
@@ -38,10 +47,13 @@ export default class RedditAgent extends BaseAgent {
 
     this.providerType = config.agents.reddit.providerType;
     this.linkClasses = config.agents.reddit.linkClasses;
-    this.contentClass = config.agents.reddit.contentClass;
     this.wrapperClass = config.agents.reddit.wrapperClass;
     this.buttonClasses = config.agents.reddit.buttonClasses;
     this.textClasses = config.agents.reddit.textClasses;
+
+    this.contentBodyClass = config.agents.reddit.contentClass;
+    this.postWrapperID = 'SHORTCUT_FOCUSABLE_DIV';
+    this.pageWrapperID = 'AppRouter-main-content';
   }
 
   start() {
@@ -49,16 +61,69 @@ export default class RedditAgent extends BaseAgent {
 
     super.start();
 
-    this.contentObserver = null;
+    this.pageWrapper = document.getElementById(this.pageWrapperID);
 
-    this.listBody = document.querySelector('.' + this.contentClass);
+    this.pageObserver = new MutationObserver(this.onPageChange.bind(this));
+    this.pageObserver.observe(this.pageWrapper, {
+      childList: true
+    });
 
-    if (this.listBody) {
-      this.contentObserver = new MutationObserver(this.onDomChange.bind(this))
-      this.contentObserver.observe(this.listBody, {
-        childList: true
+    this.postWrapper = document.getElementById(this.postWrapperID);
+
+    this.postObserver = new MutationObserver(this.onPostChange.bind(this));
+    this.postObserver.observe(this.postWrapper, {
+      childList: true
+    });
+
+    this.contentBody = document.querySelector('.' + this.contentBodyClass);
+
+    if (this.contentBody)
+      this.startContentObserver();
+  }
+
+  onPageChange(records: MutationRecord[]) {
+    logger.log('RedditAgent: onPageChange');
+
+    if (records) {
+      records.forEach((record: MutationRecord) => {
+        record.addedNodes.forEach((addedNode: Element) => {
+          console.log('onPageChange addedNone', addedNode);
+        });
       });
     }
+  }
+
+  onPostChange(records: MutationRecord[]) {
+    logger.log('RedditAgent: onPostChange');
+
+    if (records) {
+      records.forEach((record: MutationRecord) => {
+        record.addedNodes.forEach((addedNode: Element) => {
+          console.log('onPostChange addedNone', addedNode);
+        });
+      });
+    }
+  }
+
+  stopContentObserver() {
+    logger.log('RedditAgent: stopContentObserver');
+
+    this.contentObserver.disconnect();
+    this.contentObserver = null;
+    this.contentBody = null;
+  }
+
+  startContentObserver() {
+    logger.log('RedditAgent: startContentObserver');
+    this.contentObserver = null;
+
+    if (!this.contentBody)
+      this.contentBody = document.querySelector('.' + this.contentBodyClass);
+
+    this.contentObserver = new MutationObserver(this.onDomChange.bind(this))
+    this.contentObserver.observe(this.contentBody, {
+      childList: true
+    });
 
     super.onDomChange();
   }
@@ -69,16 +134,16 @@ export default class RedditAgent extends BaseAgent {
     let links: Link[] = [];
     let potentialLinks: IPotentialLink[] = [];
 
-    if (records) { // check newly added nodes for potential links
+    if (records) {
       records.forEach((record: MutationRecord) => {
         record.addedNodes.forEach((addedNode: Element) => {
           potentialLinks = potentialLinks.concat(
             this.getPotentialLinksFromElement(addedNode as HTMLElement)
           );
         });
-      })
-    } else if (this.listBody) { // default to listBody
-      potentialLinks = this.getPotentialLinksFromElement(this.listBody);
+      });
+    } else if (this.contentBody) {
+      potentialLinks = this.getPotentialLinksFromElement(this.contentBody);
     }
 
     potentialLinks.forEach((potentialLink: IPotentialLink) => {

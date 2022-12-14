@@ -10,10 +10,11 @@ import config from '../utils/config';
 
 export default class TwitterAgent extends BaseAgent {
 
-  contentBody: HTMLElement
   bodyObserver: MutationObserver
   contentObserver: MutationObserver
   mainObserver: MutationObserver
+
+  contentBody: HTMLElement
   listBody: Element
   mainBody: Element
   rootBody: HTMLElement
