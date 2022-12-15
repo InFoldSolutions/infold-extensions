@@ -79,6 +79,7 @@
   font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   color: rgb(231, 233, 234);
   font-size: 15px;
+  z-index: 10;
 }
 
 .SCDialogBGWrapper {
@@ -459,9 +460,7 @@
 
 /** Dark mode **/
 
-@media (prefers-color-scheme: dark) {
-
-}
+@media (prefers-color-scheme: dark) {}
 
 /** Reddit Dialog overwrites **/
 
@@ -477,10 +476,10 @@
 }
 
 .SCDialogWrapper.reddit .SCDialogBody {
-  background-color: #161617;
+  background-color: #1A1A1B;
   border: 1px solid #343536;
-  border-radius: 0px;
-  box-shadow: none;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px 0 rgba(215,218,220,0.2);
   margin: auto;
   position: relative;
   min-height: 160px;
@@ -569,7 +568,8 @@
 
 .theme-light .SCDialogWrapper.reddit .SCDialogBody {
   background-color: #FFF;
-  border-color: #ccc;
+  border-color: #EDEFF1;
+  box-shadow: 0 2px 4px 0 rgba(28,28,28,0.2);
 }
 
 .theme-light .SCDialogWrapper.reddit .SCSlideshow .SCSlide {

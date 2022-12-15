@@ -36,6 +36,7 @@ export default class RedditAgent extends BaseAgent {
   // from link this reference (stupid I know)
   article: HTMLElement
   wrapper: HTMLElement
+  el: HTMLElement
   agent: string
 
   dialog: RedditDialog
@@ -159,7 +160,6 @@ export default class RedditAgent extends BaseAgent {
   appendLink(link: Link) {
     logger.log('RedditAgent: appendLink');
 
-    const parent: ParentNode = link.node.parentNode.parentNode;
     const element: HTMLElement = el(`.${this.wrapperClass}`,
       el(`button.${this.buttonClasses.join('.')}`,
         [
@@ -167,16 +167,12 @@ export default class RedditAgent extends BaseAgent {
           el(`span.${this.textClasses.join('.')}`, '86 Related')
         ]));
 
-    const lastChild: Element = Array.from(
-      parent.lastElementChild.lastElementChild.getElementsByClassName(this.wrapperClass)
-    ).pop();
-
     link.preparetBaseHTML({
       element,
       onClick: this.onClick
     });
 
-    mount(parent.lastElementChild.lastElementChild, link, lastChild.nextSibling);
+    mount(link.wrapper, link, link.wrapper.firstElementChild.nextElementSibling);
   }
 
   onClick(evt: MouseEvent) {
@@ -186,7 +182,9 @@ export default class RedditAgent extends BaseAgent {
     // "this" is relative to the link..
     this.dialog = new RedditDialog(
       this.agent,
-      this.article
+      this.article,
+      this.wrapper,
+      this.el
     );
   }
 
@@ -204,12 +202,13 @@ export default class RedditAgent extends BaseAgent {
 
       return (outBindLink && (!extension || extension === '.html'));
     }).map((potentialElement: HTMLAnchorElement) => {
-      const article = getParentByCls(potentialElement, 'scrollerItem');
+      const article: HTMLElement = getParentByCls(potentialElement, 'scrollerItem');
+      const wrapperNode: HTMLElement = article.querySelector('._3-miAEojrCvx_4FQ8x3P-s');
 
       return {
         element: potentialElement,
-        wrapperNode: element,
-        article: article
+        wrapperNode,
+        article
       }
     });
   }

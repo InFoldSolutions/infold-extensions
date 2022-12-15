@@ -2,7 +2,6 @@ import { el, svg, mount, unmount } from 'redom';
 
 import logger from '../../utils/logger';
 
-import Summary from '../summary';
 import Slideshow from '../slideshow';
 import config from '../../utils/config';
 
@@ -14,14 +13,16 @@ export default class RedditDialog extends Dialog {
   parent: HTMLElement
   dialogBody: HTMLElement
   dialogCloseWrapper: HTMLElement
+  linkElement: HTMLElement
 
-  constructor(agent: string, article: HTMLElement) {
-    super(agent, article);
+  constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement) {
+    super(agent, article, btnWrapper);
     logger.log('RedditDialog: constructor');
 
+    this.linkElement = linkElement;
     this.parent = article.parentElement.parentElement;
 
-    this.dialogBody = el('.SCDialogBody', { style: { left: `${this.offsetLeft}px` } }, [
+    this.dialogBody = el('.SCDialogBody', { style: { left: `${this.offsetLeft}px`, top: `${this.offsetTop}px` } }, [
       el('.SCDialogContent', new Slideshow(config.mock.relatedNews, 'Related News', 'fal.fa-newspaper', 'news'))
     ]);
 
@@ -45,11 +46,32 @@ export default class RedditDialog extends Dialog {
   }
 
   get offsetLeft(): number {
-    return parseInt(getComputedStyle(this.article, null).getPropertyValue('padding-left').replace('px', '')) + 2; // 2 accounts for margin
+    let offsetLeft: number = 0;
+
+    const paddingLeft = parseInt(getComputedStyle(this.article, null).getPropertyValue('padding-left').replace('px', ''));
+
+    if (paddingLeft) {
+      offsetLeft += paddingLeft + 2; // 2 accounts for margin;
+    }
+
+    const btnWrapperParentElement: HTMLElement = this.btnWrapper.parentElement.parentElement;
+
+    if (btnWrapperParentElement && btnWrapperParentElement.offsetLeft !== paddingLeft) {
+      offsetLeft += btnWrapperParentElement.offsetLeft;
+    }
+
+    const linkWrapperElement: HTMLElement = this.linkElement.parentElement;
+
+    if (linkWrapperElement) {
+      offsetLeft += linkWrapperElement.offsetLeft;
+    }
+
+    return offsetLeft;
   }
 
   get offsetTop(): number {
-    return this.article.clientHeight;
+    const marginBottom: number = parseInt(getComputedStyle(this.article).marginBottom, 10) + 2;
+    return (marginBottom) ? -marginBottom : 0;
   }
 
   close() {

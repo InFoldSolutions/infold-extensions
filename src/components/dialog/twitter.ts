@@ -13,16 +13,14 @@ export default class TwitterDialog extends Dialog {
   parent: HTMLElement
   dialogBody: HTMLElement
   dialogCloseWrapper: HTMLElement
-  btnWrapper: HTMLElement
   mainElement: HTMLElement
   sectionElement: HTMLElement
 
   constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement) {
-    super(agent, article);
+    super(agent, article, btnWrapper);
 
     logger.log('TwitterDialog: constructor');
 
-    this.btnWrapper = btnWrapper;
     this.mainElement = document.querySelector('main');
     this.sectionElement = this.mainElement.querySelector('section');
     this.parent = document.getElementById('layers');

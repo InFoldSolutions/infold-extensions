@@ -9,6 +9,7 @@ export default class Dialog {
   el: HTMLElement
   parent: HTMLElement
   article: HTMLElement
+  btnWrapper: HTMLElement
   dialogBody: HTMLElement
   dialogCloseWrapper: HTMLElement
 
@@ -16,9 +17,10 @@ export default class Dialog {
 
   itemSummary: Summary
 
-  constructor(agent: string, article: HTMLElement) {
+  constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement) {
     logger.log('Dialog: constructor');
 
+    this.btnWrapper = btnWrapper;
     this.agent = agent;
     this.article = article;
   }
