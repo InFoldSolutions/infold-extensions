@@ -16,6 +16,7 @@ export default class RedditAgent extends BaseAgent {
 
   postObserver: MutationObserver
   pageObserver: MutationObserver
+  contentWrapperObserver: MutationObserver
   contentObserver: MutationObserver
 
   providerType: string
@@ -76,10 +77,10 @@ export default class RedditAgent extends BaseAgent {
       childList: true
     });
 
-    this.contentBody = document.querySelector('.' + this.contentBodyClass);
+    const contentBody: HTMLElement = document.querySelector('.' + this.contentBodyClass);
 
-    if (this.contentBody)
-      this.startContentObserver();
+    if (contentBody)
+      this.startContentObserver(contentBody);
   }
 
   onPageChange(records: MutationRecord[]) {
@@ -88,7 +89,25 @@ export default class RedditAgent extends BaseAgent {
     if (records) {
       records.forEach((record: MutationRecord) => {
         record.addedNodes.forEach((addedNode: Element) => {
-          console.log('onPageChange addedNone', addedNode);
+          console.log('onPageChange addedNode', addedNode);
+
+          let contentBody: HTMLElement;
+
+          const contentWrapper: HTMLElement = addedNode.querySelector('._1OVBBWLtHoSPfGCRaPzpTf');
+          console.log('onPageChange contentWrapper', contentWrapper);
+
+          if (contentWrapper) {
+            contentBody = addedNode.querySelector('.rpBJOHq2PR60pnwJlUyP0');
+            console.log('onPageChange contentBody', contentBody);
+          }
+
+          if (contentWrapper) {
+            this.startContentWrapperObserver(contentWrapper);
+          } 
+
+          if (contentBody) {
+            this.startContentObserver(contentBody);
+          }
         });
       });
     }
@@ -106,6 +125,43 @@ export default class RedditAgent extends BaseAgent {
     }
   }
 
+  startContentWrapperObserver(contentWrapper: HTMLElement) {
+    logger.log('RedditAgent: startContentWrapperObserver');
+    if (this.contentWrapperObserver)
+      this.stopContentWrapperObserver();
+
+    this.contentWrapperObserver = new MutationObserver(this.contentWrapperChange.bind(this))
+    this.contentWrapperObserver.observe(contentWrapper, {
+      childList: true
+    });
+  }
+
+  stopContentWrapperObserver() {
+    logger.log('RedditAgent: stopContentWrapperObserver');
+
+    this.contentWrapperObserver.disconnect();
+    this.contentWrapperObserver = null;
+  }
+
+  contentWrapperChange(records: MutationRecord[]) {
+    records.forEach((record: MutationRecord) => {
+      record.addedNodes.forEach((addedNode: Element) => {
+        console.log('contentWrapperChange addedNone', addedNode);
+        let contentBody: HTMLElement;
+
+        if (addedNode.classList.contains('rpBJOHq2PR60pnwJlUyP0')) {
+          contentBody = addedNode as HTMLElement;
+        } else {
+          contentBody = addedNode.querySelector('.rpBJOHq2PR60pnwJlUyP0');
+        }
+
+        if (contentBody) {
+          this.startContentObserver(contentBody);
+        }
+      });
+    });
+  }
+
   stopContentObserver() {
     logger.log('RedditAgent: stopContentObserver');
 
@@ -114,13 +170,15 @@ export default class RedditAgent extends BaseAgent {
     this.contentBody = null;
   }
 
-  startContentObserver() {
+  startContentObserver(contentBody: HTMLElement) {
     logger.log('RedditAgent: startContentObserver');
-    this.contentObserver = null;
 
-    if (!this.contentBody)
-      this.contentBody = document.querySelector('.' + this.contentBodyClass);
+    /*if (this.contentWrapperObserver)
+      this.stopContentWrapperObserver();*/
+    if (this.contentObserver)
+      this.stopContentObserver();
 
+    this.contentBody = contentBody;
     this.contentObserver = new MutationObserver(this.onDomChange.bind(this))
     this.contentObserver.observe(this.contentBody, {
       childList: true
@@ -172,7 +230,7 @@ export default class RedditAgent extends BaseAgent {
       onClick: this.onClick
     });
 
-    mount(link.wrapper, link, link.wrapper.firstElementChild.nextElementSibling);
+    mount(link.wrapper, link, link.wrapper.firstElementChild);
   }
 
   onClick(evt: MouseEvent) {
