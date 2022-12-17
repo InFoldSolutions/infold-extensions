@@ -16,17 +16,14 @@ export default class TwitterDialog extends Dialog {
   mainElement: HTMLElement
   sectionElement: HTMLElement
 
-  constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement) {
-    super(agent, article, btnWrapper);
-
+  constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement) {
     logger.log('TwitterDialog: constructor');
+
+    super(agent, article, btnWrapper, linkElement);
 
     this.mainElement = document.querySelector('main');
     this.sectionElement = this.mainElement.querySelector('section');
     this.parent = document.getElementById('layers');
-
-    // This is messed up
-    // Need to account for offest top that the custom scroll mechanism has
 
     this.dialogBody = el('.SCDialogBody', { style: { top: `${this.offsetTop}px`, left: `${this.offsetLeft}px` } }, [
       el('.SCDialogContent', new Slideshow(config.mock.relatedNews, 'Related News', 'fal.fa-newspaper', 'news'))

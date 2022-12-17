@@ -3,7 +3,6 @@ import { mount } from 'redom';
 import BaseAgent from './base';
 
 import Link, { IPotentialLink } from "../components/link";
-import TwitterDialog from '../components/dialog/twitter';
 
 import logger from '../utils/logger';
 import config from '../utils/config';
@@ -20,13 +19,6 @@ export default class TwitterAgent extends BaseAgent {
   rootBody: HTMLElement
   providerType: string
   rootID: string
-
-  // from link this reference (stupid I know)
-  article: HTMLElement
-  wrapper: HTMLElement
-  agent: string
-
-  dialog: TwitterDialog
 
   constructor() {
     logger.log('TwitterAgent: constructor');
@@ -155,25 +147,9 @@ export default class TwitterAgent extends BaseAgent {
   appendLink(link: Link) {
     logger.log('TwitterAgent: appendLink');
 
-    link.preparetBaseHTML({
-      onClick: this.onClick
-    });
+    link.preparetBaseHTML();
 
     mount(link.wrapper, link, link.wrapper.lastElementChild);
-  }
-
-  onClick(evt: MouseEvent) {
-    evt.preventDefault();
-    evt.stopPropagation();
-
-    // "this" is relative to link Class (must be so..!)
-    // it's weird and wrong, I know
-
-    this.dialog = new TwitterDialog(
-      this.agent,
-      this.article,
-      this.wrapper
-    );
   }
 
   getPotentialLinksFromElement(addedNode: Element): IPotentialLink[] {

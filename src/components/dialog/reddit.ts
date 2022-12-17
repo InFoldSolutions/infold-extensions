@@ -16,10 +16,10 @@ export default class RedditDialog extends Dialog {
   linkElement: HTMLElement
 
   constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement) {
-    super(agent, article, btnWrapper);
     logger.log('RedditDialog: constructor');
+    
+    super(agent, article, btnWrapper, linkElement);
 
-    this.linkElement = linkElement;
     this.parent = article.parentElement.parentElement;
 
     this.dialogBody = el('.SCDialogBody', { style: { left: `${this.offsetLeft}px`, top: `${this.offsetTop}px` } }, [

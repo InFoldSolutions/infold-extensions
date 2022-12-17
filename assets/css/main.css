@@ -8,7 +8,7 @@
   font-size: 1.4em;
 }
 
-/* Twitter css */
+/* Button css */
 
 .SCbuttonWrapper {
   display: flex;
@@ -71,6 +71,48 @@
   font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
+/** Reddit Button overwrites **/
+
+.SCbuttonWrapper.reddit {
+  padding: 8px;
+  word-break: normal;
+  align-items: center;
+  border-radius: 2px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+  box-sizing: border-box;
+  color: #ff4500;
+}
+
+.SCbuttonWrapper.reddit:hover {
+  background-color: rgba(215,218,220,0.1);
+}
+
+.SCbuttonWrapper.reddit .SCtextWrapper {
+  font-size: 12px;
+  font-weight: 700;
+  font-family: IBMPlexSans, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  padding: 0;
+}
+
+.SCbuttonWrapper.reddit .SCiconWrapper {
+  font-size: 19px;
+  font-weight: 400;
+  height: 20px;
+  line-height: 21px;
+  width: 20px;
+  margin-right: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: -1px;
+}
+
+.SCbuttonWrapper.reddit:hover .SCiconBackground {
+  background: transparent;
+}
 
 /* Dialog */
 
@@ -479,7 +521,7 @@
   background-color: #1A1A1B;
   border: 1px solid #343536;
   border-radius: 4px;
-  box-shadow: 0 2px 4px 0 rgba(215,218,220,0.2);
+  box-shadow: 0 2px 4px 0 rgba(215, 218, 220, 0.2);
   margin: auto;
   position: relative;
   min-height: 160px;
@@ -569,7 +611,7 @@
 .theme-light .SCDialogWrapper.reddit .SCDialogBody {
   background-color: #FFF;
   border-color: #EDEFF1;
-  box-shadow: 0 2px 4px 0 rgba(28,28,28,0.2);
+  box-shadow: 0 2px 4px 0 rgba(28, 28, 28, 0.2);
 }
 
 .theme-light .SCDialogWrapper.reddit .SCSlideshow .SCSlide {

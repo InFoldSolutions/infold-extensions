@@ -5,7 +5,6 @@ import { mount, el } from 'redom';
 import BaseAgent from './base';
 
 import Link, { IPotentialLink } from "../components/link";
-import RedditDialog from '../components/dialog/reddit';
 
 import logger from '../utils/logger';
 import config from '../utils/config';
@@ -33,14 +32,6 @@ export default class RedditAgent extends BaseAgent {
   pageWrapper: HTMLElement
   postWrapper: HTMLElement
   contentBody: HTMLElement
-
-  // from link this reference (stupid I know)
-  article: HTMLElement
-  wrapper: HTMLElement
-  el: HTMLElement
-  agent: string
-
-  dialog: RedditDialog
 
   constructor() {
     logger.log('RedditAgent: constructor');
@@ -218,32 +209,10 @@ export default class RedditAgent extends BaseAgent {
   appendLink(link: Link) {
     logger.log('RedditAgent: appendLink');
 
-    const element: HTMLElement = el(`.${this.wrapperClass}`,
-      el(`button.${this.buttonClasses.join('.')}`,
-        [
-          el(`span.pthKOcceozMuXLYrLlbL1`, el(`i.fal.fa-lightbulb`)),
-          el(`span.${this.textClasses.join('.')}`, '86 Related')
-        ]));
+    link.preparetBaseHTML();
 
-    link.preparetBaseHTML({
-      element,
-      onClick: this.onClick
-    });
-
+    // mounting can differ based on agent
     mount(link.wrapper, link, link.wrapper.firstElementChild);
-  }
-
-  onClick(evt: MouseEvent) {
-    evt.preventDefault();
-    evt.stopPropagation();
-
-    // "this" is relative to the link..
-    this.dialog = new RedditDialog(
-      this.agent,
-      this.article,
-      this.wrapper,
-      this.el
-    );
   }
 
   getPotentialLinksFromElement(element: HTMLElement) {
