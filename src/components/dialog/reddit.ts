@@ -6,6 +6,7 @@ import Slideshow from '../slideshow';
 import config from '../../utils/config';
 
 import Dialog from './dialog';
+import { isPostPage } from '../../utils/reddit';
 
 export default class RedditDialog extends Dialog {
 
@@ -15,15 +16,30 @@ export default class RedditDialog extends Dialog {
   dialogCloseWrapper: HTMLElement
   linkElement: HTMLElement
 
+  dialogStyle: Object
+
   constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement) {
     logger.log('RedditDialog: constructor');
-    
+
     super(agent, article, btnWrapper, linkElement);
 
-    this.parent = article.parentElement.parentElement;
+    this.dialogStyle = {};
 
-    this.dialogBody = el('.SCDialogBody', { style: { left: `${this.offsetLeft}px`, top: `${this.offsetTop}px` } }, [
-      el('.SCDialogContent', new Slideshow(config.mock.relatedNews, 'Related News', 'fal.fa-newspaper', 'news'))
+    if (isPostPage()) {
+      this.parent = article;
+    } else {
+      this.parent = article.parentElement.parentElement;
+      this.dialogStyle = { style: { left: `${this.offsetLeft}px`, top: `${this.offsetTop}px` } };
+    }
+
+    this.dialogBody = el('.SCDialogBody', this.dialogStyle, [
+      el('.SCDialogContent',
+        new Slideshow(
+          config.mock.relatedNews,
+          'Related News',
+          'fal.fa-newspaper',
+          'news'
+        ))
     ]);
 
     this.dialogCloseWrapper = el('.SCDialogBGWrapper');

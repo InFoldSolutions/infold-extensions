@@ -9,7 +9,8 @@ import Link, { IPotentialLink } from "../components/link";
 import logger from '../utils/logger';
 import config from '../utils/config';
 
-import { findParentByCls } from '../utils/helpers';
+import { findParentByAttribute, findParentByCls } from '../utils/helpers';
+import { isPostPage } from '../utils/reddit';
 
 export default class RedditAgent extends BaseAgent {
 
@@ -21,9 +22,6 @@ export default class RedditAgent extends BaseAgent {
   providerType: string
 
   linkClasses: string[]
-  wrapperClass: string
-  buttonClasses: string[]
-  textClasses: string[]
 
   contentBodyClass: string
   postWrapperID: string
@@ -40,9 +38,6 @@ export default class RedditAgent extends BaseAgent {
 
     this.providerType = config.agents.reddit.providerType;
     this.linkClasses = config.agents.reddit.linkClasses;
-    this.wrapperClass = config.agents.reddit.wrapperClass;
-    this.buttonClasses = config.agents.reddit.buttonClasses;
-    this.textClasses = config.agents.reddit.textClasses;
 
     this.contentBodyClass = config.agents.reddit.contentClass;
     this.postWrapperID = 'SHORTCUT_FOCUSABLE_DIV';
@@ -107,17 +102,14 @@ export default class RedditAgent extends BaseAgent {
   onPostChange(records: MutationRecord[]) {
     logger.log('RedditAgent: onPostChange');
 
-    if (records) {
-      records.forEach((record: MutationRecord) => {
-        record.addedNodes.forEach((addedNode: Element) => {
-          console.log('onPostChange addedNone', addedNode);
-        });
-      });
+    if (isPostPage()) {
+      super.onDomChange(records);
     }
   }
 
   startContentWrapperObserver(contentWrapper: HTMLElement) {
     logger.log('RedditAgent: startContentWrapperObserver');
+    
     if (this.contentWrapperObserver)
       this.stopContentWrapperObserver();
 
@@ -229,7 +221,7 @@ export default class RedditAgent extends BaseAgent {
 
       return (outBindLink && (!extension || extension === '.html'));
     }).map((potentialElement: HTMLAnchorElement) => {
-      const article: HTMLElement = findParentByCls(potentialElement, 'scrollerItem');
+      const article: HTMLElement = findParentByAttribute(potentialElement, 'data-testid', 'post-container');
       const wrapperNode: HTMLElement = article.querySelector('._3-miAEojrCvx_4FQ8x3P-s');
 
       return {
