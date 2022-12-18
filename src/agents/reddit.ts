@@ -109,7 +109,7 @@ export default class RedditAgent extends BaseAgent {
 
   startContentWrapperObserver(contentWrapper: HTMLElement) {
     logger.log('RedditAgent: startContentWrapperObserver');
-    
+
     if (this.contentWrapperObserver)
       this.stopContentWrapperObserver();
 
@@ -204,7 +204,7 @@ export default class RedditAgent extends BaseAgent {
     link.preparetBaseHTML();
 
     // mounting can differ based on agent
-    mount(link.wrapper, link, link.wrapper.firstElementChild);
+    mount(link.wrapper, link, link.wrapper.firstElementChild.nextElementSibling);
   }
 
   getPotentialLinksFromElement(element: HTMLElement) {
