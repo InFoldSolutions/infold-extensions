@@ -9,7 +9,7 @@ import Link, { IPotentialLink } from "../components/link";
 import logger from '../utils/logger';
 import config from '../utils/config';
 
-import { getParentByCls } from '../utils/helpers';
+import { findParentByCls } from '../utils/helpers';
 
 export default class RedditAgent extends BaseAgent {
 
@@ -229,7 +229,7 @@ export default class RedditAgent extends BaseAgent {
 
       return (outBindLink && (!extension || extension === '.html'));
     }).map((potentialElement: HTMLAnchorElement) => {
-      const article: HTMLElement = getParentByCls(potentialElement, 'scrollerItem');
+      const article: HTMLElement = findParentByCls(potentialElement, 'scrollerItem');
       const wrapperNode: HTMLElement = article.querySelector('._3-miAEojrCvx_4FQ8x3P-s');
 
       return {

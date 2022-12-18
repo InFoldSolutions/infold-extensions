@@ -6,6 +6,7 @@ import Slideshow from '../slideshow';
 import config from '../../utils/config';
 
 import Dialog from './dialog';
+import { aggregateOffsetTop, findChildByText, findParentByAttribute } from '../../utils/helpers';
 
 export default class TwitterDialog extends Dialog {
 
@@ -66,43 +67,31 @@ export default class TwitterDialog extends Dialog {
   }
 
   get offsetTop(): number {
-    let offsetTop: number = 0;
+    let offsetTop: number = aggregateOffsetTop(this.sectionElement);
 
-    // calculate offset top
-    if (this.sectionElement) {
-      offsetTop += this.sectionElement.offsetTop;
-    }
+    // compensate for "Show this thread" btn
+    const showThreadElement: HTMLElement = findChildByText(this.article, 'span', 'Show this thread');
 
-    const sectionParentElement: HTMLElement = this.sectionElement.parentElement.parentElement;
+    if (showThreadElement) {
+      const showThreadParentElement: HTMLElement = showThreadElement.parentElement.parentElement;
 
-    if (sectionParentElement) {
-      offsetTop += sectionParentElement.offsetTop;
-    }
-
-    const sectionParentParentElement: HTMLElement = this.sectionElement.parentElement.parentElement.parentElement;
-
-    if (sectionParentParentElement) {
-      offsetTop += sectionParentParentElement.offsetTop;
-    }
-
-    const showThreadXPathResult: XPathResult = 
-      document.evaluate(".//span[contains(., 'Show this thread')]", 
-      this.article, 
-      null, 
-      XPathResult.FIRST_ORDERED_NODE_TYPE, 
-      null
-    );
-
-    if (showThreadXPathResult.singleNodeValue) {
-      const showThreadElement: HTMLElement = showThreadXPathResult.singleNodeValue.parentElement;
-
-      if (showThreadElement) {
-        offsetTop -= (showThreadElement.parentElement.clientHeight + 2); // 2 accounts for margin
+      if (showThreadParentElement) {
+        offsetTop -= (showThreadParentElement.clientHeight + 2); // 2 accounts for margin
       }
     }
 
-    // this is nasty, needs refactor
-    const currentParent: HTMLElement = this.article.parentElement.parentElement.parentElement.parentElement as HTMLElement;
+    // compensate for "Promoted" btn
+    const promotedElement: HTMLElement = findChildByText(this.article, 'span', 'Promoted');
+
+    if (promotedElement) {
+      const promotedParentElement: HTMLElement = promotedElement.parentElement.parentElement.parentElement;
+
+      if (promotedParentElement) {
+        offsetTop -= (promotedParentElement.clientHeight + 12); // 12 accounts for margin
+      }
+    }
+
+    const currentParent: HTMLElement = findParentByAttribute(this.article, 'data-testid', 'cellInnerDiv');
     const transform: string = currentParent.style.transform;
 
     const topPixels: number =
