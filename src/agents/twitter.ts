@@ -118,7 +118,7 @@ export default class TwitterAgent extends BaseAgent {
     this.contentObserver = null;
   }
 
-  findLinks(records?: MutationRecord[]) {
+  async findLinks(records?: MutationRecord[]) {
     logger.log('TwitterAgent: findLinks');
 
     let links: Link[] = [];

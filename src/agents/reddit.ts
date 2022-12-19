@@ -1,6 +1,6 @@
 import * as path from 'path';
 
-import { mount, el } from 'redom';
+import { mount } from 'redom';
 
 import BaseAgent from './base';
 
@@ -20,9 +20,6 @@ export default class RedditAgent extends BaseAgent {
   contentObserver: MutationObserver
 
   providerType: string
-
-  linkClasses: string[]
-
   contentBodyClass: string
   postWrapperID: string
   pageWrapperID: string
@@ -37,7 +34,6 @@ export default class RedditAgent extends BaseAgent {
     super();
 
     this.providerType = config.agents.reddit.providerType;
-    this.linkClasses = config.agents.reddit.linkClasses;
 
     this.contentBodyClass = config.agents.reddit.contentClass;
     this.postWrapperID = 'SHORTCUT_FOCUSABLE_DIV';
@@ -80,16 +76,14 @@ export default class RedditAgent extends BaseAgent {
           let contentBody: HTMLElement;
 
           const contentWrapper: HTMLElement = addedNode.querySelector('._1OVBBWLtHoSPfGCRaPzpTf');
-          console.log('onPageChange contentWrapper', contentWrapper);
 
           if (contentWrapper) {
             contentBody = addedNode.querySelector('.rpBJOHq2PR60pnwJlUyP0');
-            console.log('onPageChange contentBody', contentBody);
           }
 
           if (contentWrapper) {
             this.startContentWrapperObserver(contentWrapper);
-          } 
+          }
 
           if (contentBody) {
             this.startContentObserver(contentBody);
@@ -101,6 +95,12 @@ export default class RedditAgent extends BaseAgent {
 
   onPostChange(records: MutationRecord[]) {
     logger.log('RedditAgent: onPostChange');
+
+    records.forEach((record: MutationRecord) => {
+      record.addedNodes.forEach((addedNode: Element) => {
+        console.log('onPostChange addedNode', addedNode);
+      })
+    });
 
     if (isPostPage()) {
       super.onDomChange(records);
@@ -129,13 +129,12 @@ export default class RedditAgent extends BaseAgent {
   contentWrapperChange(records: MutationRecord[]) {
     records.forEach((record: MutationRecord) => {
       record.addedNodes.forEach((addedNode: Element) => {
-        console.log('contentWrapperChange addedNone', addedNode);
         let contentBody: HTMLElement;
 
-        if (addedNode.classList.contains('rpBJOHq2PR60pnwJlUyP0')) {
+        if (addedNode.classList.contains(this.contentBodyClass)) {
           contentBody = addedNode as HTMLElement;
         } else {
-          contentBody = addedNode.querySelector('.rpBJOHq2PR60pnwJlUyP0');
+          contentBody = addedNode.querySelector('.' + this.contentBodyClass);
         }
 
         if (contentBody) {
@@ -156,8 +155,6 @@ export default class RedditAgent extends BaseAgent {
   startContentObserver(contentBody: HTMLElement) {
     logger.log('RedditAgent: startContentObserver');
 
-    /*if (this.contentWrapperObserver)
-      this.stopContentWrapperObserver();*/
     if (this.contentObserver)
       this.stopContentObserver();
 
@@ -170,10 +167,11 @@ export default class RedditAgent extends BaseAgent {
     super.onDomChange();
   }
 
-  findLinks(records?: MutationRecord[]) {
+  async findLinks(records?: MutationRecord[]) {
     logger.log('RedditAgent: findLinks');
 
-    let links: Link[] = [];
+    const links: Link[] = [];
+
     let potentialLinks: IPotentialLink[] = [];
 
     if (records) {
@@ -185,7 +183,7 @@ export default class RedditAgent extends BaseAgent {
         });
       });
     } else if (this.contentBody) {
-      potentialLinks = this.getPotentialLinksFromElement(this.contentBody);
+      potentialLinks = await this.delayInitialLinkCheck();
     }
 
     potentialLinks.forEach((potentialLink: IPotentialLink) => {
@@ -211,24 +209,38 @@ export default class RedditAgent extends BaseAgent {
     logger.log('RedditAgent: getPotentialLinksFromElement');
 
     const potentials = Array.from(
-      element.getElementsByClassName(this.linkClasses.join(' ')) // look for specific classes in given element
+      element.getElementsByClassName('styled-outbound-link')
     );
 
     return potentials.filter((potential: HTMLAnchorElement) => {
       const url: URL = new URL(potential.href);
-      const outBindLink = (potential.dataset['testid'] === 'outbound-link') && !url.host.includes('reddit');
       const extension: string = path.extname(url.pathname);
+      const isProcessed = potential.classList.contains(config.defaults.processedClass);
 
-      return (outBindLink && (!extension || extension === '.html'));
-    }).map((potentialElement: HTMLAnchorElement) => {
-      const article: HTMLElement = findParentByAttribute(potentialElement, 'data-testid', 'post-container');
+      return (!isProcessed && !url.host.includes('reddit') && (!extension || extension === '.html'));
+    }).map((potential: HTMLAnchorElement) => {
+      const article: HTMLElement = findParentByAttribute(potential, 'data-testid', 'post-container');
       const wrapperNode: HTMLElement = article.querySelector('._3-miAEojrCvx_4FQ8x3P-s');
 
+      potential.classList.add(config.defaults.processedClass);
+
       return {
-        element: potentialElement,
+        element: potential,
         wrapperNode,
         article
       }
     });
+  }
+
+  delayInitialLinkCheck(): Promise<IPotentialLink[]>  {
+    logger.log('RedditAgent: getPotentialLinksFromElement');
+
+    const _self = this;
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const potentialLinks = _self.getPotentialLinksFromElement(_self.contentBody);
+        resolve(potentialLinks);
+      }, 500)
+    })
   }
 }

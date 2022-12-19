@@ -45,7 +45,7 @@ export default class Link {
     this.el = el(`.SCbuttonWrapper.${this.agent}`, [
       el(`span.SCiconWrapper`, [
         el('span.SCiconBackground'),
-        el(`i.fal.fa-lightbulb`)
+        el(`i.far.fa-lightbulb`)
       ]),
       el(`span.SCtextWrapper`, (btnText !== '') ? `86 ${btnText}` : '86')
     ]);
