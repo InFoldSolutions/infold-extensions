@@ -21,11 +21,11 @@ export default class BaseAgent {
     }*/
   }
 
-  async onDomChange(records?: MutationRecord[]) {
+  async onDomChange(records?: MutationRecord[], delay?: boolean) {
     logger.log('BaseAgent: onDomChange');
 
     let newItems: boolean = false;
-    let links: Link[] = await this.findLinks(records);
+    let links: Link[] = await this.findLinks(records, delay);
 
     if (links.length > 0) {
       this.activeLinks = this.activeLinks.concat(links);
@@ -59,7 +59,7 @@ export default class BaseAgent {
       this.processing = false;
   }
 
-  async findLinks(records: MutationRecord[]): Promise<Link[]> {
+  async findLinks(records: MutationRecord[], delay: boolean): Promise<Link[]> {
     logger.log('BaseAgent: findLinks');
 
     // Must be overwritten by child
