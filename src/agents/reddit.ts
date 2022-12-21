@@ -14,21 +14,25 @@ import { isPostPage } from '../utils/reddit';
 
 export default class RedditAgent extends BaseAgent {
 
-  postObserver: MutationObserver
+  bodyObserver: MutationObserver
   pageObserver: MutationObserver
   contentWrapperObserver: MutationObserver
   contentObserver: MutationObserver
 
   providerType: string
+
   contentBodyClass: string
   contentWrapperClass: string
   outboundLinkClass: string
-  postWrapperID: string
+  postWrapperClass: string
+
+  bodyWrapperID: string
   pageWrapperID: string
 
   pageWrapper: HTMLElement
-  postWrapper: HTMLElement
+  bodyWrapper: HTMLElement
   contentBody: HTMLElement
+  postBody: HTMLElement
 
   constructor() {
     logger.log('RedditAgent: constructor');
@@ -40,8 +44,9 @@ export default class RedditAgent extends BaseAgent {
     this.outboundLinkClass = 'styled-outbound-link';
     this.contentWrapperClass = '_1OVBBWLtHoSPfGCRaPzpTf';
     this.contentBodyClass = config.agents.reddit.contentClass;
-    this.postWrapperID = 'SHORTCUT_FOCUSABLE_DIV';
+    this.bodyWrapperID = 'SHORTCUT_FOCUSABLE_DIV';
     this.pageWrapperID = 'AppRouter-main-content';
+    this.postWrapperClass = 'uI_hDmU5GSiudtABRz_37'
   }
 
   start() {
@@ -56,10 +61,10 @@ export default class RedditAgent extends BaseAgent {
       childList: true
     });
 
-    this.postWrapper = document.getElementById(this.postWrapperID);
+    this.bodyWrapper = document.getElementById(this.bodyWrapperID);
 
-    this.postObserver = new MutationObserver(this.onPostChange.bind(this));
-    this.postObserver.observe(this.postWrapper, {
+    this.bodyObserver = new MutationObserver(this.onBodyChange.bind(this));
+    this.bodyObserver.observe(this.bodyWrapper, {
       childList: true
     });
 
@@ -70,8 +75,17 @@ export default class RedditAgent extends BaseAgent {
 
     const contentBody: HTMLElement = document.querySelector(`.${this.contentBodyClass}`);
 
-    if (contentBody)
+    if (contentBody) {
       this.startContentObserver(contentBody);
+      return;
+    }
+
+    const postBody: HTMLElement = document.querySelector(`.${this.postWrapperClass}`);
+
+    if (postBody) {
+      this.postBody = postBody;
+      this.onDomChange();
+    }
   }
 
   onPageChange(records: MutationRecord[]) {
@@ -101,21 +115,12 @@ export default class RedditAgent extends BaseAgent {
     }
   }
 
-  onPostChange(records: MutationRecord[]) {
-    logger.log('RedditAgent: onPostChange');
-
-    /*records.forEach((record: MutationRecord) => {
-      record.addedNodes.forEach((addedNode: Element) => {
-        console.log('onPostChange addedNode', addedNode);
-      })
-    });*/
+  onBodyChange(records: MutationRecord[]) {
+    logger.log('RedditAgent: onBodyChange');
 
     if (isPostPage()) {
       super.onDomChange(records, true);
-    } /*else {
-      const contentWrapper: HTMLElement = this.pageWrapper.querySelector('.' + this.contentWrapperClass);
-      this.startContentWrapperObserver(contentWrapper);
-    }*/
+    }
   }
 
   startContentWrapperObserver(contentWrapper: HTMLElement) {
@@ -200,6 +205,8 @@ export default class RedditAgent extends BaseAgent {
       });
     } else if (this.contentBody) {
       potentialLinks = this.getPotentialLinksFromElement(this.contentBody);
+    } else if (this.postBody) {
+      potentialLinks = this.getPotentialLinksFromElement(this.postBody);
     }
 
     potentialLinks.forEach((potentialLink: IPotentialLink) => {
