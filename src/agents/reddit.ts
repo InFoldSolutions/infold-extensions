@@ -9,8 +9,8 @@ import Link, { IPotentialLink } from "../components/link";
 import logger from '../utils/logger';
 import config from '../utils/config';
 
-import { findParentByAttribute, findParentByCls } from '../utils/helpers';
-import { isPostPage } from '../utils/reddit';
+import { findParentByAttribute } from '../utils/helpers';
+import { isPostPage } from '../utils/helpers';
 
 export default class RedditAgent extends BaseAgent {
 

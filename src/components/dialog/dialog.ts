@@ -1,8 +1,4 @@
-import { el, svg, mount, unmount } from 'redom';
-
 import logger from '../../utils/logger';
-
-import Summary from '../summary';
 
 export default class Dialog {
 

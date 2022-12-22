@@ -1,4 +1,4 @@
-import { el, svg, mount, unmount } from 'redom';
+import { el, mount, unmount } from 'redom';
 
 import logger from '../../utils/logger';
 

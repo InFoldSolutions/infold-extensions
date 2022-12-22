@@ -1,9 +1,11 @@
 import { el } from 'redom';
+import { isPostPage } from '../utils/helpers';
 
 import logger from '../utils/logger';
 
 import RedditDialog from './dialog/reddit';
 import TwitterDialog from './dialog/twitter';
+import Post from './post/post';
 export interface IPotentialLink {
   element: HTMLAnchorElement,
   wrapperNode: HTMLElement,
@@ -21,6 +23,7 @@ export default class Link {
   el: HTMLElement
 
   dialog: RedditDialog | TwitterDialog
+  post: Post
 
   constructor(agent: string, potentialLInk: IPotentialLink) {
     logger.log('Link: constructor');
@@ -59,9 +62,37 @@ export default class Link {
     evt.preventDefault();
     evt.stopPropagation();
 
+    console.log('isPostPage', isPostPage());
+
+    if (!isPostPage())
+      this.openDialog();
+    else 
+      this.togglePostView();
+  }
+
+  togglePostView() {
+    logger.log('Link: togglePostView');
+
+    if (this.post) {
+      this.post.close();
+      this.post = null;
+      return;
+    }
+
+    this.post = new Post(
+      this.agent,
+      this.article,
+      this.wrapper,
+      this.el
+    );
+  }
+
+  openDialog() {
+    logger.log('Link: openDialog');
+
     let Dialog;
 
-    switch(this.agent) {
+    switch (this.agent) {
       case 'reddit':
         Dialog = RedditDialog;
         break;

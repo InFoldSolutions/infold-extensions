@@ -51,3 +51,20 @@ export function aggregateOffsetTop(node: HTMLElement): number {
 
   return offsetTop;
 }
+
+export function isPostPage() {
+  const url: URL = new URL(location.href);
+  const pathname = url.pathname.split('/');
+
+  // reddit post page
+  if (pathname[3] && pathname[3] === 'comments')
+    return true;
+
+  const pathArray = pathname.slice(Math.max(pathname.length - 2, 0));
+
+  // twitter post page
+  if (pathArray[0] === 'status' && /^-?\d+$/.test(pathArray[1]))
+    return true;
+
+  return false;
+}

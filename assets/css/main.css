@@ -108,7 +108,45 @@
   background: transparent;
 }
 
-/* Dialog */
+/* Post display */
+
+.SCPostBodyWrapper.reddit {
+  margin: 0px 46px 0 14px;
+  border-top: 1px solid #343536;
+}
+
+.SCPostBodyWrapper.reddit .SCSlideshow {
+  min-height: 175px;
+}
+
+.SCPostBodyWrapper.reddit .SCSummaryTitle {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.SCPostBodyWrapper.reddit .SCSummaryInfo {
+  margin-bottom: 11px;
+}
+
+.SCPostBodyWrapper.reddit .SCSummaryContent {
+  font-family: Noto Sans,Arial,sans-serif;
+  font-size: 14px;
+  line-height: 19px;
+}
+
+.SCPostBodyWrapper.reddit .SCKeywordsWrapper {
+  margin-top: 13px;
+}
+
+.SCPostBodyWrapper.reddit .SCSlideshowWrapper {
+  margin: 15px 0px;
+}
+
+/*.SCPostBodyWrapper.reddit .SCSummaryContent {
+  font-size: 14px;
+}*/
+
+/* Dialog display */
 
 .SCDialogWrapper {
   background-color: transparent;
@@ -539,13 +577,14 @@
 }
 
 .SCDialogWrapper.reddit .SCSlideshow .SCSlide {
-  color: #D7DADC;
+  color: rgb(215, 218, 220);
   top: 0px;
 }
 
 .SCDialogWrapper.reddit .SCSummaryTitle {
   font-weight: 500;
   font-size: 16px;
+  color: rgb(215, 218, 220);
 }
 
 .SCDialogWrapper.reddit .SCSlideshowHeader {
@@ -574,7 +613,7 @@
 }
 
 .SCDialogWrapper.reddit .SCSummaryContent {
-  color: #D7DADC;
+  color: rgb(215, 218, 220);
   font-size: 14px;
   line-height: 16px;
 }
@@ -598,8 +637,13 @@
 
 /** Reddit Light mode **/
 
+.theme-light .SCPostBodyWrapper.reddit,
 .theme-light .SCDialogWrapper.reddit {
   color: #1A1A1B;
+}
+
+.theme-light .SCPostBodyWrapper.reddit {
+  border-top-color: #EDEFF1;
 }
 
 .theme-light .SCDialogWrapper.reddit .SCDialogBody {
@@ -608,37 +652,45 @@
   box-shadow: 0 2px 4px 0 rgba(28, 28, 28, 0.2);
 }
 
+.theme-light .SCPostBodyWrapper.reddit .SCSlideshow .SCSlide,
 .theme-light .SCDialogWrapper.reddit .SCSlideshow .SCSlide {
   color: #1A1A1B;
 }
 
+.theme-light .SCPostBodyWrapper.reddit .SCSummaryTitle,
 .theme-light .SCDialogWrapper.reddit .SCSummaryTitle {
   color: #222222;
 }
 
+.theme-light .SCPostBodyWrapper.reddit .SCKeyword,
 .theme-light .SCDialogWrapper.reddit .SCKeyword {
   background-color: rgba(237, 239, 241, 0.5);
   border-color: rgba(237, 239, 241, 1);
   color: #444;
 }
 
+.theme-light .SCPostBodyWrapper.reddit .SCKeyword:hover,
 .theme-light .SCDialogWrapper.reddit .SCKeyword:hover {
   background-color: rgba(237, 239, 241, 1);
   color: #1A1A1B;
 }
 
+.theme-light .SCPostBodyWrapper.reddit .SCSummaryContent,
 .theme-light .SCDialogWrapper.reddit .SCSummaryContent {
   color: #1c1c1c;
 }
 
+.theme-light .SCPostBodyWrapper.reddit .SCSlideshow input+label::after,
 .theme-light .SCDialogWrapper.reddit .SCSlideshow input+label::after {
   color: #1c1c1c;
 }
 
+.theme-light .SCPostBodyWrapper.reddit .SCSummaryInfo,
 .theme-light .SCDialogWrapper.reddit .SCSummaryInfo {
   color: #787C7E
 }
 
+.theme-light .SCPostBodyWrapper.reddit .SClink,
 .theme-light .SCDialogWrapper.reddit .SClink {
   color: #0079D3;
 }

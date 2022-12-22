@@ -6,6 +6,7 @@ import Link, { IPotentialLink } from "../components/link";
 
 import logger from '../utils/logger';
 import config from '../utils/config';
+import { isPostPage } from '../utils/helpers';
 
 export default class TwitterAgent extends BaseAgent {
 
@@ -75,21 +76,10 @@ export default class TwitterAgent extends BaseAgent {
   mainBodyChange() {
     logger.log('mainBodyChange');
 
-    const url: URL = new URL(location.href);
-    const pathname = url.pathname.split('/');
-    const pathArray = pathname.slice(Math.max(pathname.length - 2, 0));
-
-    let subpage: Boolean = false;
-
-    if (pathArray[0] === 'status' && /^-?\d+$/.test(pathArray[1]))
-      subpage = true;
-
-    console.log('subpage', subpage);
-
     if (this.contentObserver)
       this.stopContentObserver();
 
-    if (!subpage) {
+    if (!isPostPage()) {
       this.startContentObserver();
     }
   }

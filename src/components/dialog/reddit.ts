@@ -1,4 +1,4 @@
-import { el, svg, mount, unmount } from 'redom';
+import { el, mount, unmount } from 'redom';
 
 import logger from '../../utils/logger';
 
@@ -6,7 +6,6 @@ import Slideshow from '../slideshow';
 import config from '../../utils/config';
 
 import Dialog from './dialog';
-import { isPostPage } from '../../utils/reddit';
 
 export default class RedditDialog extends Dialog {
 
@@ -25,12 +24,8 @@ export default class RedditDialog extends Dialog {
 
     this.dialogStyle = {};
 
-    if (isPostPage()) {
-      this.parent = article;
-    } else {
-      this.parent = article.parentElement.parentElement;
-      this.dialogStyle = { style: { left: `${this.offsetLeft}px`, top: `${this.offsetTop}px` } };
-    }
+    this.parent = article.parentElement.parentElement;
+    this.dialogStyle = { style: { left: `${this.offsetLeft}px`, top: `${this.offsetTop}px` } };
 
     this.dialogBody = el('.SCDialogBody', this.dialogStyle, [
       el('.SCDialogContent',
