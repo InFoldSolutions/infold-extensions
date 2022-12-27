@@ -144,6 +144,11 @@
   margin: 15px 0px;
 }
 
+.SCPostBodyWrapper.reddit .SCKeyword {
+  font-family: Noto Sans,Arial,sans-serif;
+  font-size: 14px;
+}
+
 /*.SCPostBodyWrapper.reddit .SCSummaryContent {
   font-size: 14px;
 }*/

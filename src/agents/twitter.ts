@@ -6,7 +6,7 @@ import Link, { IPotentialLink } from "../components/link";
 
 import logger from '../utils/logger';
 import config from '../utils/config';
-import { isPostPage } from '../utils/helpers';
+import { isPostPage, timeDelay } from '../utils/helpers';
 
 export default class TwitterAgent extends BaseAgent {
 
@@ -79,9 +79,9 @@ export default class TwitterAgent extends BaseAgent {
     if (this.contentObserver)
       this.stopContentObserver();
 
-    if (!isPostPage()) {
-      this.startContentObserver();
-    }
+    //if (!isPostPage()) {
+    this.startContentObserver();
+    //}
   }
 
   startContentObserver() {
@@ -108,8 +108,13 @@ export default class TwitterAgent extends BaseAgent {
     this.contentObserver = null;
   }
 
-  async findLinks(records?: MutationRecord[]) {
+  async findLinks(records?: MutationRecord[], delay?: boolean) {
     logger.log('TwitterAgent: findLinks');
+
+    console.log('findLinks', records);
+    console.log('findLinks', this.listBody);
+    if (delay || !records)
+      await timeDelay(500);
 
     let links: Link[] = [];
     let potentialLinks: IPotentialLink[] = [];
@@ -121,6 +126,7 @@ export default class TwitterAgent extends BaseAgent {
         });
       })
     } else if (this.listBody) { // default to listBody
+      console.log('defaulting to ')
       potentialLinks = this.getPotentialLinksFromElement(this.listBody);
     }
 
@@ -175,6 +181,7 @@ export default class TwitterAgent extends BaseAgent {
         });
 
         article.classList.add(config.defaults.processedClass);
+        console.log('tabindex', article.getAttribute('tabindex'));
 
         break; // we only want to identify 1 link per article
       }
