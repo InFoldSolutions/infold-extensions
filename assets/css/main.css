@@ -120,7 +120,8 @@
 }
 
 .SCPostBodyWrapper.reddit .SCSummaryTitle {
-  font-size: 18px;
+  color: rgb(215, 218, 220);
+  font-size: 16px;
   font-weight: 500;
 }
 
@@ -129,6 +130,7 @@
 }
 
 .SCPostBodyWrapper.reddit .SCSummaryContent {
+  color: rgb(215, 218, 220);
   font-family: Noto Sans,Arial,sans-serif;
   font-size: 14px;
   line-height: 19px;
@@ -659,7 +661,7 @@
 
 .theme-light .SCPostBodyWrapper.reddit .SCSummaryTitle,
 .theme-light .SCDialogWrapper.reddit .SCSummaryTitle {
-  color: #222222;
+  color: rgb(26,26,27);
 }
 
 .theme-light .SCPostBodyWrapper.reddit .SCKeyword,
