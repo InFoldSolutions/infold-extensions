@@ -9,7 +9,7 @@ import Link, { IPotentialLink } from "../components/link";
 import logger from '../utils/logger';
 import config from '../utils/config';
 
-import { findParentByAttribute } from '../utils/helpers';
+import { findParentByAttribute, timeDelay } from '../utils/helpers';
 import { isPostPage } from '../utils/helpers';
 
 export default class RedditAgent extends BaseAgent {
@@ -189,7 +189,7 @@ export default class RedditAgent extends BaseAgent {
     logger.log('RedditAgent: findLinks');
 
     if (delay || !records)
-      await this.delayInitialLinkCheck();
+      await timeDelay(500);
 
     const links: Link[] = [];
 
@@ -253,10 +253,5 @@ export default class RedditAgent extends BaseAgent {
         article
       }
     });
-  }
-
-  delayInitialLinkCheck() {
-    logger.log('RedditAgent: delayInitialLinkCheck');
-    return new Promise(resolve => setTimeout(resolve, 500));
   }
 }
