@@ -43,16 +43,30 @@ export default class Link {
   preparetBaseHTML() {
     logger.log('Link: preparetBaseHTML');
 
-    const btnText = (this.agent === 'reddit') ? 'Related' : '';
+    const buttonContent: Array<HTMLElement> = [];
+    const textContent: Array<HTMLElement> = [];
 
-    this.el = el(`.SCbuttonWrapper.${this.agent}`, [
-      el(`span.SCiconWrapper`, [
+    let btnWrapperClass = (this.isDialog) ? 'SCDialog' : 'SCPost';
+    let btnText: string = (this.agent === 'reddit') ? 'Related' : '';
+    let relatedCount: string = '86';
+
+    if (!this.isTextVersion) {
+      buttonContent.push(el(`span.SCIconWrapper`, [
         el('span.SCiconBackground'),
         el(`i.far.fa-lightbulb-on`)
-      ]),
-      el(`span.SCtextWrapper`, (btnText !== '') ? `86 ${btnText}` : '86')
-    ]);
+      ]));
+    } else {
+      btnText = 'Related';
+    }
 
+    textContent.push(el('span.SCcount', relatedCount))
+
+    if (btnText && btnText !== '')
+      textContent.push(el('span.SCText', btnText));
+
+    buttonContent.push(el(`span.SCTextWrapper`, textContent));
+
+    this.el = el(`.SCbuttonWrapper.${this.agent}.${btnWrapperClass}`, buttonContent);
     this.el.onclick = this.onClick.bind(this);
   }
 
@@ -62,16 +76,18 @@ export default class Link {
     evt.preventDefault();
     evt.stopPropagation();
 
-    console.log('isPostPage', isPostPage());
-
-    if (!isPostPage())
+    if (this.isDialog)
       this.openDialog();
-    else 
+    else
       this.togglePostView();
   }
 
   togglePostView() {
     logger.log('Link: togglePostView');
+
+    if (this.agent === 'twitter') {
+      this.article.style.flexWrap = 'wrap';
+    }
 
     if (this.post) {
       this.post.close();
@@ -115,5 +131,20 @@ export default class Link {
 
   setTag(tag: string) {
     logger.log('Link: setTag');
+  }
+
+  get isDialog(): boolean {
+    return !isPostPage() || isPostPage() && Number(this.article.getAttribute('tabindex')) !== -1;
+  }
+
+  get isTextVersion(): boolean {
+    let isTextOnly: boolean = false;
+
+    switch (this.agent) {
+      case 'twitter':
+        return !this.isDialog;
+    }
+
+    return isTextOnly;
   }
 }

@@ -11,7 +11,9 @@
   min-height: 20px;
   font-size: 15px;
   line-height: 20px;
-  color: rgb(29, 155, 240); /* #4FBCFF; */ /*#ff4500;*/
+  color: rgb(29, 155, 240);
+  /* #4FBCFF; */
+  /*#ff4500;*/
   position: relative;
   transition-property: background-color, box-shadow, color;
   transition-duration: 0.2s;
@@ -22,7 +24,7 @@
 }*/
 
 .SCiconBackground {
-  margin: -6px;
+  margin: -7px;
   position: absolute;
   top: 0px;
   right: 0px;
@@ -34,10 +36,10 @@
 }
 
 .SCbuttonWrapper:hover .SCiconBackground {
-  background-color: rgba(255, 208, 0, 0.07);
+  background-color: rgba(29, 155, 240, 0.08);
 }
 
-.SCiconWrapper {
+.SCIconWrapper {
   display: inline-block;
   position: relative;
   vertical-align: text-bottom;
@@ -45,12 +47,12 @@
   text-align: center;
 }
 
-.SCiconWrapper i {
+.SCIconWrapper i {
   top: 1px;
   position: relative;
 }
 
-.SCtextWrapper {
+.SCTextWrapper {
   top: 1px;
   position: relative;
   min-width: 1em;
@@ -59,6 +61,31 @@
   padding: 0 10px;
   user-select: none;
   font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/** Twitter Button overwrites **/
+
+.SCbuttonWrapper.twitter.SCPost {
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+.SCbuttonWrapper.twitter.SCPost:hover {
+  /*border-bottom: 1px solid rgb(231, 233, 234);*/
+  text-decoration: underline;
+}
+
+.SCbuttonWrapper.twitter.SCPost .SCTextWrapper {
+  font-size: 14px;
+  line-height: 20px;
+  top: 0;
+  padding: 0;
+}
+
+.SCbuttonWrapper.twitter.SCPost .SCcount {
+  color: rgb(231, 233, 234);
+  margin-right: 4px;
+  font-weight: 700;
 }
 
 /** Reddit Button overwrites **/
@@ -79,10 +106,10 @@
 }
 
 .SCbuttonWrapper.reddit:hover {
-  background-color: rgba(215,218,220,0.1);
+  background-color: rgba(215, 218, 220, 0.1);
 }
 
-.SCbuttonWrapper.reddit .SCtextWrapper {
+.SCbuttonWrapper.reddit .SCTextWrapper {
   font-size: 12px;
   line-height: 12px;
   font-weight: 700;
@@ -91,7 +118,7 @@
   padding: 0;
 }
 
-.SCbuttonWrapper.reddit .SCiconWrapper {
+.SCbuttonWrapper.reddit .SCIconWrapper {
   font-size: 16px;
   font-weight: 400;
   height: auto;
@@ -104,11 +131,37 @@
   top: -1px;
 }
 
+.SCbuttonWrapper.reddit .SCcount {
+  margin-right: 2px;
+}
+
 .SCbuttonWrapper.reddit:hover .SCiconBackground {
   background: transparent;
 }
 
-/* Post display */
+/* Post display --TWITTER-- */
+
+.SCPostBodyWrapper.twitter {
+  display: flex;
+  min-width: 100%;
+  border-bottom: 1px solid rgb(47, 51, 54);
+  font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.SCPostBodyWrapper.twitter .SCPostBody {
+  width: 100%;
+}
+
+.SCPostBodyWrapper.twitter .SCSlideshowWrapper {
+  margin: 16px 0px;
+  padding: 0px 4px;
+}
+
+.SCPostBodyWrapper.twitter .SCSlideshow {
+  width: calc(100% - 8px);
+}
+
+/* Post display --REDDIT-- */
 
 .SCPostBodyWrapper.reddit {
   margin: 0px 46px 0 14px;
@@ -131,7 +184,7 @@
 
 .SCPostBodyWrapper.reddit .SCSummaryContent {
   color: rgb(215, 218, 220);
-  font-family: Noto Sans,Arial,sans-serif;
+  font-family: Noto Sans, Arial, sans-serif;
   font-size: 14px;
   line-height: 19px;
 }
@@ -145,7 +198,7 @@
 }
 
 .SCPostBodyWrapper.reddit .SCKeyword {
-  font-family: Noto Sans,Arial,sans-serif;
+  font-family: Noto Sans, Arial, sans-serif;
   font-size: 14px;
 }
 
@@ -537,6 +590,14 @@
   .SCSlideshow input:checked+label+.SCSlide+input+label::after {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 512' fill='rgb(0, 0, 0)'%3E%3Cpath d='M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z' /%3E%3C/svg%3E");
   }
+
+  .SCbuttonWrapper.twitter.SCPost .SCcount {
+    color: rgb(15, 20, 25);
+  }
+
+  .SCPostBodyWrapper.twitter {
+    border-bottom-color: rgb(239, 243, 244);
+  }
 }
 
 /** Dark mode **/
@@ -666,7 +727,7 @@
 
 .theme-light .SCPostBodyWrapper.reddit .SCSummaryTitle,
 .theme-light .SCDialogWrapper.reddit .SCSummaryTitle {
-  color: rgb(26,26,27);
+  color: rgb(26, 26, 27);
 }
 
 .theme-light .SCPostBodyWrapper.reddit .SCKeyword,
@@ -703,7 +764,7 @@
 }
 
 .theme-light .SCbuttonWrapper.reddit:hover {
-  background-color: rgba(26,26,27,0.1);
+  background-color: rgba(26, 26, 27, 0.1);
 }
 
 /**
