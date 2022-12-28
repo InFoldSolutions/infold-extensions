@@ -110,7 +110,7 @@ export default class TwitterAgent extends BaseAgent {
     logger.log('TwitterAgent: findLinks');
 
     if (delay || !records)
-      await timeDelay(700);
+      await timeDelay(1100);
 
     let links: Link[] = [];
     let potentialLinks: IPotentialLink[] = [];
