@@ -25,6 +25,7 @@ export default class RedditAgent extends BaseAgent {
   contentWrapperClass: string
   outboundLinkClass: string
   postWrapperClass: string
+  groupWrapperClass: string
 
   bodyWrapperID: string
   pageWrapperID: string
@@ -46,7 +47,8 @@ export default class RedditAgent extends BaseAgent {
     this.contentBodyClass = config.agents.reddit.contentClass;
     this.bodyWrapperID = 'SHORTCUT_FOCUSABLE_DIV';
     this.pageWrapperID = 'AppRouter-main-content';
-    this.postWrapperClass = 'uI_hDmU5GSiudtABRz_37'
+    this.postWrapperClass = 'uI_hDmU5GSiudtABRz_37';
+    this.groupWrapperClass = '_3-miAEojrCvx_4FQ8x3P-s';
   }
 
   start() {
@@ -243,7 +245,7 @@ export default class RedditAgent extends BaseAgent {
       return (!isProcessed && !url.host.includes('reddit') && (!extension || extension === '.html'));
     }).map((potential: HTMLAnchorElement) => {
       const article: HTMLElement = findParentByAttribute(potential, 'data-testid', 'post-container');
-      const wrapperNode: HTMLElement = article.querySelector('._3-miAEojrCvx_4FQ8x3P-s');
+      const wrapperNode: HTMLElement = article.querySelector(`.${this.groupWrapperClass}`);
 
       potential.classList.add(config.defaults.processedClass);
 
