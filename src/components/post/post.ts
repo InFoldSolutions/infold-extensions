@@ -29,7 +29,6 @@ export default class Post {
         new Slideshow(
           config.mock.relatedNews,
           'Related News',
-          'fal.fa-newspaper',
           'news'
         ))
     ]);

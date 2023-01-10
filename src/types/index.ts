@@ -30,3 +30,9 @@ export interface IDateGroup {
   className: string
   label: string
 }
+
+export interface IPotentialLink {
+  element: HTMLAnchorElement,
+  wrapperNode: HTMLElement,
+  article: HTMLElement
+}

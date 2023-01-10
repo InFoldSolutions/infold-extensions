@@ -1,16 +1,13 @@
 import { el } from 'redom';
-import { isPostPage } from '../utils/helpers';
 
+import { IPotentialLink } from '../types';
+
+import { isPostPage } from '../utils/helpers';
 import logger from '../utils/logger';
 
 import RedditDialog from './dialog/reddit';
 import TwitterDialog from './dialog/twitter';
 import Post from './post/post';
-export interface IPotentialLink {
-  element: HTMLAnchorElement,
-  wrapperNode: HTMLElement,
-  article: HTMLElement
-}
 
 export default class Link {
 

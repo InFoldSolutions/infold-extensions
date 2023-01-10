@@ -1,8 +1,10 @@
 import { mount } from 'redom';
 
+import { IPotentialLink } from '../types';
+
 import BaseAgent from './base';
 
-import Link, { IPotentialLink } from "../components/link";
+import Link from "../components/link";
 
 import logger from '../utils/logger';
 import config from '../utils/config';

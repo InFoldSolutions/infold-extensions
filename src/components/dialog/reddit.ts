@@ -32,7 +32,6 @@ export default class RedditDialog extends Dialog {
         new Slideshow(
           config.mock.relatedNews,
           'Related News',
-          'fal.fa-newspaper',
           'news'
         ))
     ]);

@@ -15,7 +15,7 @@ export default class Slideshow {
   title: HTMLElement
   slides: Array<HTMLElement>
 
-  constructor(slides: Array<ISlide>, title: string, icon: string, type: string) {
+  constructor(slides: Array<ISlide>, title: string, type: string) {
     logger.log('Slideshow: constructor');
 
     slides.sort((a, b) => {
