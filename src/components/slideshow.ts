@@ -27,7 +27,7 @@ export default class Slideshow {
 
   constructor(slides: Array<ISlide>, title: string, icon: string, type: string) {
     logger.log('Slideshow: constructor');
-    
+
     //this.title = el('.SCSlideshowHeader', title);
     this.slideshow = el('.SCSlideshow', this.title, slides.reduce((aggregator: Array<HTMLElement>, slide: ISlide, index: Number) => {
       const articleBody = el('.SCSlide', new SummaryBody({
@@ -48,7 +48,7 @@ export default class Slideshow {
       }
 
       const titleSlug = convertToSlug(title);
-      const slideIndex = titleSlug + index; 
+      const slideIndex = titleSlug + index;
 
       aggregator.push(el('input', { type: 'radio', id: slideIndex, name: titleSlug, checked: (index === 0) }));
       aggregator.push(el('label.SCNav', labelImg || '', { for: slideIndex }));
@@ -57,11 +57,6 @@ export default class Slideshow {
       return aggregator;
     }, []));
 
-    this.el = el(`.SCSlideshowWrapper.${type}`, [
-      /*el('.SCSlideshowIcon', 
-      el('.SCSlideshowIconWrapper', 
-      el(`i.${icon}`))),*/ 
-      this.slideshow
-    ])
+    this.el = el(`.SCSlideshowWrapper.${type}`, this.slideshow)
   }
 }

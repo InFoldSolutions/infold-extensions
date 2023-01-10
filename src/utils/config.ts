@@ -18,6 +18,52 @@ export default {
   'defaults': {
     'processedClass': 'SCprocessed'
   },
+  'dategroups': [{
+    'listName': 'last24hList',
+    'toDate': Date.now() - 1000 * 60 * 60 * 24,
+    'className': 'last24',
+    'label': '24h'
+  }, {
+    'listName': 'last48hList',
+    'toDate': Date.now() - 1000 * 60 * 60 * 48,
+    'className': 'last48',
+    'label': '48h'
+  }, {
+    'listName': 'last72hList',
+    'toDate': Date.now() - 1000 * 60 * 60 * 72,
+    'className': 'last72',
+    'label': '72h'
+  }, {
+    'listName': 'lastWeekList',
+    'toDate': Date.now() - 1000 * 60 * 60 * 24 * 7,
+    'className': 'lastWeek',
+    'label': '7d'
+  }, {
+    'listName': 'lastTwoWeekList',
+    'toDate': Date.now() - 1000 * 60 * 60 * 24 * 14,
+    'className': 'lastTwoWeek',
+    'label': '14d'
+  }, {
+    'listName': 'last30daysList',
+    'toDate': Date.now() - 1000 * 60 * 60 * 24 * 30,
+    'className': 'last30days',
+    'label': '30d'
+  }, {
+    'listName': 'last3MonthsList',
+    'toDate': Date.now() - 1000 * 60 * 60 * 24 * 91,
+    'className': 'last3months',
+    'label': '3mon'
+  }, {
+    'listName': 'last6MonthsList',
+    'toDate': Date.now() - 1000 * 60 * 60 * 24 * 183,
+    'className': 'last6months',
+    'label': '6mon'
+  }, {
+    'listName': 'lastYearList',
+    'toDate': Date.now() - 1000 * 60 * 60 * 24 * 365,
+    'className': 'lastYear',
+    'label': '1year'
+  }],
   'mock': {
     'relatedNews': [{
       title: 'G-7 joins EU on $60-per-barrel price cap on Russian oil',
