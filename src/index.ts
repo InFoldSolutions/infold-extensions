@@ -9,14 +9,9 @@ class Application {
   constructor() {
     logger.log('Application: constructor');
 
-    this.initAgent();
-  }
-
-  initAgent() {
-    logger.log('Application: initAgent');
+    let Agent;
 
     const host = location.hostname;
-    let Agent;
 
     if (/^www.reddit\.com/.test(host)) {
       Agent = RedditAgent;
@@ -24,7 +19,7 @@ class Application {
     if (/^twitter\.com/.test(host)) {
       Agent = TwitterAgent;
     }
-
+    
     if (Agent) {
       this.agent = new Agent();
       this.agent.start();
@@ -32,4 +27,5 @@ class Application {
   }
 }
 
-const app = new Application();
+// init
+new Application();

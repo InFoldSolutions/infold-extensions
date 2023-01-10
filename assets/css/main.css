@@ -455,6 +455,13 @@
   align-self: flex-end;
 }
 
+.SCSlideshow .SCDateGroup {
+  align-self: flex-end;
+  user-select: none;
+  cursor: default;
+  position: relative;
+}
+
 .SCSlideshow label {
   display: inline-block;
   width: 22px;
@@ -468,6 +475,8 @@
   align-self: flex-end;
   transition: opacity linear 0.1s;
   user-select: none;
+  position: relative;
+  bottom: 10px;
 }
 
 .SCSlideshow label img {

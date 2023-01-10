@@ -2,7 +2,7 @@ import { el, mount, unmount } from 'redom';
 
 import logger from '../../utils/logger';
 
-import Slideshow from '../slideshow';
+import Slideshow from '../slideshow/slideshow';
 import config from '../../utils/config';
 
 import Dialog from './dialog';

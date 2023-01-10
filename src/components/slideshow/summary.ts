@@ -1,26 +1,13 @@
 import { el } from 'redom';
 
-import logger from '../utils/logger';
-import CalendarIcon from './svgs/calendarIcon';
-import LinkIcon from './svgs/linkIcon';
-import RedditIcon from './svgs/redditIcon';
+import { ISummaryBody, IKeyword } from '../../types';
 
-interface IKeyword {
-  icon: string,
-  word: string
-}
-interface ISummaryBody {
-  title: string,
-  description: string,
-  date: string,
-  link: string,
-  handle: string,
-  icon?: string,
-  type?: string,
-  keywords?: Array<IKeyword>
-}
+import logger from '../../utils/logger';
+import CalendarIcon from '../svgs/calendarIcon';
+import LinkIcon from '../svgs/linkIcon';
+import RedditIcon from '../svgs/redditIcon';
 
-export default class SummaryBody {
+export default class Summary {
 
   el: HTMLElement
   summaryInfo: Array<HTMLElement>
@@ -31,7 +18,7 @@ export default class SummaryBody {
     this.summaryInfo = [
       el('span.SCHandle.SCMarginRight', summaryBody.handle),
       el('span.SCIcon', new CalendarIcon()),
-      el('span.SCdate.SCMarginRight', summaryBody.date),
+      el('span.SCdate.SCMarginRight', summaryBody.timestamp),
       el('span.SCIcon', new LinkIcon()),
       el('a.SClink', summaryBody.link, { href: summaryBody.link, target: '_blank' })
     ]
