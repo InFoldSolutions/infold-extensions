@@ -27,7 +27,7 @@ export default class Slideshow {
     //this.title = el('.SCSlideshowHeader', title);
     this.slides = slides.reduce((aggregator: Array<HTMLElement>, slide: ISlide, index: Number) => {
       const currentSlideDateGroup: IDateGroup = this.getDateGroupForSlide(slide);
-      const articleBody = el('.SCSlide', new Summary({
+      const articleBody: HTMLElement = el('.SCSlide', new Summary({
         title: slide.title,
         description: slide.body,
         timestamp: slide.timestamp,
@@ -44,8 +44,8 @@ export default class Slideshow {
         labelImg = el('img', { src: slide.icon });
       }
 
-      const titleSlug = convertToSlug(title);
-      const slideIndex = titleSlug + index;
+      const titleSlug: string = convertToSlug(title);
+      const slideIndex: string = titleSlug + index;
 
       if (index === 0 || currentSlideDateGroup !== initialDateGroup) 
         aggregator.push(el('span.SCDateGroup', currentSlideDateGroup.label));

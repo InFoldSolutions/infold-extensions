@@ -42,10 +42,10 @@ export default class Link {
 
     const buttonContent: Array<HTMLElement> = [];
     const textContent: Array<HTMLElement> = [];
+    const btnWrapperClass: string = (this.isDialog) ? 'SCDialog' : 'SCPost';
+    const relatedCount: string = '86';
 
-    let btnWrapperClass = (this.isDialog) ? 'SCDialog' : 'SCPost';
     let btnText: string = (this.agent === 'reddit') ? 'Related' : '';
-    let relatedCount: string = '86';
 
     if (!this.isTextVersion) {
       buttonContent.push(el(`span.SCIconWrapper`, [

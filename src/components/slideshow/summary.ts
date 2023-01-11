@@ -1,11 +1,18 @@
 import { el } from 'redom';
 
+import TimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en';
+
+TimeAgo.addDefaultLocale(en);
+
 import { ISummaryBody, IKeyword } from '../../types';
 
 import logger from '../../utils/logger';
 import CalendarIcon from '../svgs/calendarIcon';
 import LinkIcon from '../svgs/linkIcon';
 import RedditIcon from '../svgs/redditIcon';
+
+const timeAgo = new TimeAgo('en-US');
 
 export default class Summary {
 
@@ -18,7 +25,7 @@ export default class Summary {
     this.summaryInfo = [
       el('span.SCHandle.SCMarginRight', summaryBody.handle),
       el('span.SCIcon', new CalendarIcon()),
-      el('span.SCdate.SCMarginRight', summaryBody.timestamp),
+      el('span.SCdate.SCMarginRight', timeAgo.format(summaryBody.timestamp)),
       el('span.SCIcon', new LinkIcon()),
       el('a.SClink', summaryBody.link, { href: summaryBody.link, target: '_blank' })
     ]

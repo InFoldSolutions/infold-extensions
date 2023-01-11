@@ -1,22 +1,22 @@
 
-const debug = true;
+const debug: boolean = true;
 
 class Logger {
 
-  log(msg: string) {
+  log(msg: string): void {
     if (debug) {
       console.log(msg);
     }
   }
 
-  error(msg: string) {
+  error(msg: string): void {
     // report / handle error
     if (debug) {
       console.error(msg);
     }
   }
 
-  warn(msg: string) {
+  warn(msg: string): void {
     if (debug) {
       console.warn(msg);
     }
