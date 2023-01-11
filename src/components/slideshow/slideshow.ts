@@ -40,9 +40,8 @@ export default class Slideshow {
 
       let labelImg: HTMLElement;
 
-      if (slide.icon && type === 'news') {
-        labelImg = el('img', { src: slide.icon });
-      }
+      if (slide.icon && type === 'news') 
+        labelImg = el('img', { src: slide.icon, title: slide.author, alt: slide.author });
 
       const titleSlug: string = convertToSlug(title);
       const slideIndex: string = titleSlug + index;
