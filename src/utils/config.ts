@@ -105,7 +105,58 @@ export default {
       'icon': 'https://pbs.twimg.com/profile_images/1175141826870861825/K2qKoGla_400x400.png',
       'link': 'guardian.in/3B6arKW',
       'author': 'Guardian',
-      'timestamp': Date.now() - 1000 * 60 * 60 * 13,
+      'timestamp': Date.now() - 1000 * 60 * 60 * 78,
+      'keywords': [{
+        'icon': 'fab.fa-youtube',
+        'word': 'Charlie Bartolo'
+      }, {
+        'icon': 'fab.fa-google',
+        'word': 'Kearne Solanke'
+      }, {
+        'icon': 'fab.fa-wikipedia-w',
+        'word': 'London Crime'
+      }]
+    }, {
+      'title': 'Flights across US disrupted by technical glitch',
+      'body': 'US authorities have confirmed operations across the National Airspace System are affected.',
+      'icon': 'https://pbs.twimg.com/profile_images/1150716997254209536/M7gkjsv5_400x400.jpg',
+      'link': 'bbc.co.uk/3B6arKW',
+      'author': 'BBC Breaking',
+      'timestamp': Date.now() - 1000 * 60 * 60 * 72,
+      'keywords': [{
+        'icon': 'fab.fa-youtube',
+        'word': 'Charlie Bartolo'
+      }, {
+        'icon': 'fab.fa-google',
+        'word': 'Kearne Solanke'
+      }, {
+        'icon': 'fab.fa-wikipedia-w',
+        'word': 'London Crime'
+      }]
+    }, {
+      'title': 'Ronaldo in Saudi Arabia: bigger off the pitch than on',
+      'body': 'Shortly after the World Cup final in Qatar, the Middle East was back at the center of the football world as Saudi Arabian club Al-Nassr signed Cristiano Ronaldo. The deal is less about football and...',
+      'icon': 'https://pbs.twimg.com/profile_images/900261211509489666/-1Fu5hU8_400x400.jpg',
+      'link': 'dwnews.com/3B6arKW',
+      'author': 'DW News',
+      'timestamp': Date.now() - 1000 * 60 * 60 * 56,
+      'keywords': [{
+        'icon': 'fab.fa-youtube',
+        'word': 'Charlie Bartolo'
+      }, {
+        'icon': 'fab.fa-google',
+        'word': 'Kearne Solanke'
+      }, {
+        'icon': 'fab.fa-wikipedia-w',
+        'word': 'London Crime'
+      }]
+    }, {
+      'title': 'Heats Dewayne Dedmon ejected from game after slapping massage gun onto court',
+      'body': 'Miami Heat center Dewayne Dedmon was ejected from Tuesdays game against the Oklahoma City Thunder after he slapped a massage gun onto the court.',
+      'icon': 'https://pbs.twimg.com/profile_images/1591278197844414464/O6Fp0hFB_400x400.jpg',
+      'link': 'foxnews.com/3B6arKW',
+      'author': 'Fox News',
+      'timestamp': Date.now() - 1000 * 60 * 60 * 73,
       'keywords': [{
         'icon': 'fab.fa-youtube',
         'word': 'Charlie Bartolo'
@@ -139,7 +190,7 @@ export default {
       'icon': 'https://pbs.twimg.com/profile_images/1583214318719475713/rP1UOXbz_400x400.jpg',
       'link': 'bloomberg.in/3B6arKW',
       'author': 'CNBC',
-      'timestamp': Date.now() - 1000 * 60 * 50,
+      'timestamp': Date.now() - 1000 * 60 * 60 * 82,
       'keywords': [{
         'icon': 'fab.fa-youtube',
         'word': 'Charlie Bartolo'
@@ -156,7 +207,7 @@ export default {
       'icon': 'https://pbs.twimg.com/profile_images/1374394535883673604/4VIECtDH_400x400.jpg',
       'link': 'cbsnews.in/3B6arKW',
       'author': 'CBSNews',
-      'timestamp': Date.now() - 1000 * 60 * 60 * 48,
+      'timestamp': Date.now() - 1000 * 60 * 60 * 72,
       'keywords': [{
         'icon': 'fab.fa-youtube',
         'word': 'Charlie Bartolo'

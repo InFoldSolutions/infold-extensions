@@ -19,7 +19,7 @@ export default class Slideshow {
     logger.log('Slideshow: constructor');
 
     slides.sort((a, b) => {
-      return a.timestamp + b.timestamp;
+      return b.timestamp - a.timestamp;
     });
 
     let initialDateGroup: IDateGroup = this.getDateGroupForSlide(slides[0]);
@@ -47,8 +47,10 @@ export default class Slideshow {
       const titleSlug: string = convertToSlug(title);
       const slideIndex: string = titleSlug + index;
 
-      if (index === 0 || currentSlideDateGroup !== initialDateGroup) 
-        aggregator.push(el('span.SCDateGroup', currentSlideDateGroup.label));
+      if (index === 0 || currentSlideDateGroup !== initialDateGroup) {
+        aggregator.push(el('.SCDateGroup', el('span', currentSlideDateGroup.label)));
+        initialDateGroup = currentSlideDateGroup;
+      }
 
       aggregator.push(el('input', { type: 'radio', id: slideIndex, name: titleSlug, checked: (index === 0) }));
       aggregator.push(el('label.SCNav', labelImg || '', { for: slideIndex }));
