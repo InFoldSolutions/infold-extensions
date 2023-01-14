@@ -2,7 +2,7 @@ import { mount } from 'redom';
 
 import { IPotentialLink } from '../types';
 
-import BaseAgent from './base';
+import Agent from './agent';
 
 import Link from "../components/link";
 
@@ -10,7 +10,7 @@ import logger from '../utils/logger';
 import config from '../utils/config';
 import { timeDelay } from '../utils/helpers';
 
-export default class TwitterAgent extends BaseAgent {
+export default class TwitterAgent extends Agent {
 
   bodyObserver: MutationObserver
   contentObserver: MutationObserver

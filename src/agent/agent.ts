@@ -2,19 +2,20 @@ import Link from "../components/link";
 
 import logger from "../utils/logger";
 
-export default class BaseAgent {
+export default class Agent {
 
   processing: boolean
+  
   currentProcess: Link
   activeLinks: Link[] = []
 
   constructor() {
-    logger.log('BaseAgent: constructor');
+    logger.log('Agent: constructor');
     this.processing = false;
   }
 
   start() {
-    logger.log('BaseAgent: start');
+    logger.log('Agent: start');
 
     /*if (typeof chrome !== 'undefined') { // detect chrome (is global)
       chrome.runtime.onMessage.addListener(this.onExtensionMessage.bind(this));
@@ -22,7 +23,7 @@ export default class BaseAgent {
   }
 
   async onDomChange(records?: MutationRecord[], delay?: boolean) {
-    logger.log('BaseAgent: onDomChange');
+    logger.log('Agent: onDomChange');
 
     let newItems: boolean = false;
     let links: Link[] = await this.findLinks(records, delay);
@@ -37,7 +38,7 @@ export default class BaseAgent {
   }
 
   async processLinks() {
-    logger.log('BaseAgent: processLinks');
+    logger.log('Agent: processLinks');
 
     this.processing = true;
     this.currentProcess = this.activeLinks.find((link: Link) => link.status === 'pending');
@@ -52,7 +53,6 @@ export default class BaseAgent {
         logger.error(`There was a problem while fetching the link data ${this.currentProcess}, error ${error}`);
 
         this.currentProcess.disableLoading();
-        this.currentProcess.setTag('fa-exclamation-circle');
         this.processLinks();
       }
     } else
@@ -60,7 +60,7 @@ export default class BaseAgent {
   }
 
   async findLinks(records: MutationRecord[], delay: boolean): Promise<Link[]> {
-    logger.log('BaseAgent: findLinks');
+    logger.log('Agent: findLinks');
 
     // Must be overwritten by child
     // Needs an abstract interface
@@ -69,7 +69,7 @@ export default class BaseAgent {
   }
 
   appendLink(link: Link) {
-    logger.log('BaseAgent: appendLink');
+    logger.log('Agent: appendLink');
 
     // Must be overwritten by child
     // Needs an abstract interface

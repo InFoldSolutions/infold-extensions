@@ -7,6 +7,7 @@ import logger from '../utils/logger';
 
 import RedditDialog from './dialog/reddit';
 import TwitterDialog from './dialog/twitter';
+
 import Post from './post/post';
 
 export default class Link {
@@ -82,9 +83,8 @@ export default class Link {
   togglePostView() {
     logger.log('Link: togglePostView');
 
-    if (this.agent === 'twitter') {
+    if (this.agent === 'twitter') 
       this.article.style.flexWrap = 'wrap';
-    }
 
     if (this.post) {
       this.post.close();
@@ -124,10 +124,6 @@ export default class Link {
 
   disableLoading() {
     logger.log('Link: disableLoading');
-  }
-
-  setTag(tag: string) {
-    logger.log('Link: setTag');
   }
 
   get isDialog(): boolean {

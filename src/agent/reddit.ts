@@ -3,7 +3,7 @@ import { mount } from 'redom';
 
 import { IPotentialLink } from '../types';
 
-import BaseAgent from './base';
+import Agent from './agent';
 
 import Link from "../components/link";
 
@@ -13,7 +13,7 @@ import config from '../utils/config';
 import { findParentByAttribute, timeDelay } from '../utils/helpers';
 import { isPostPage } from '../utils/helpers';
 
-export default class RedditAgent extends BaseAgent {
+export default class RedditAgent extends Agent {
 
   bodyObserver: MutationObserver
   pageObserver: MutationObserver

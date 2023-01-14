@@ -1,27 +1,27 @@
-import BaseAgent from './agents/base';
-import RedditAgent from './agents/reddit';
-import TwitterAgent from './agents/twitter';
+import Agent from './agent/agent';
+import RedditAgent from './agent/reddit';
+import TwitterAgent from './agent/twitter';
 import logger from './utils/logger';
 
 class Application {
-  agent: BaseAgent
+  agent: Agent
 
   constructor() {
     logger.log('Application: constructor');
 
-    let Agent;
+    let ActiveAgent;
 
     const host = location.hostname;
 
     if (/^www.reddit\.com/.test(host)) {
-      Agent = RedditAgent;
+      ActiveAgent = RedditAgent;
     }
     if (/^twitter\.com/.test(host)) {
-      Agent = TwitterAgent;
+      ActiveAgent = TwitterAgent;
     }
     
-    if (Agent) {
-      this.agent = new Agent();
+    if (ActiveAgent) {
+      this.agent = new ActiveAgent();
       this.agent.start();
     }
   }
