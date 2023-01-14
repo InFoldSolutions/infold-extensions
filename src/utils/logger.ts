@@ -1,5 +1,5 @@
 
-const debug: boolean = true;
+const debug: boolean = false;
 
 class Logger {
 
@@ -25,4 +25,5 @@ class Logger {
 
 const logger = new Logger();
 
+// exports and instance of the class --singelton
 export default logger;

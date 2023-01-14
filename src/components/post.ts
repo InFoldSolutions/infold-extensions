@@ -1,9 +1,9 @@
 import { el, mount, unmount } from 'redom';
 
-import Slideshow from '../slideshow/slideshow';
+import Slideshow from './slideshow/slideshow';
 
-import logger from '../../utils/logger';
-import config from '../../utils/config';
+import logger from '../utils/logger';
+import config from '../utils/config';
 
 export default class Post {
 
@@ -26,13 +26,9 @@ export default class Post {
 
     this.postBody = el(`.SCPostBodyWrapper.${this.agent}`, [
       el('.SCPostBody',
-        new Slideshow(
-          config.mock.relatedNews,
-          'Related News',
-          'news'
-        ))
-    ]);
-  
+        new Slideshow(config.mock.relatedSources, 'Related News')
+      )]);
+
     mount(this.article, this.postBody);
   }
 

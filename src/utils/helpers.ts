@@ -72,3 +72,10 @@ export function isPostPage(): boolean {
 export function timeDelay(time: number): Promise<any> {
   return new Promise(resolve => setTimeout(resolve, time));
 }
+
+// https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+export function shuffleArray(array: any) {
+  return array.map((value: any) => ({ value, sort: Math.random() }))
+    .sort((a: any, b: any) => a.sort - b.sort)
+    .map((item: any) => item.value);
+}

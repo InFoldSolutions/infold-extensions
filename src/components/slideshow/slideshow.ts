@@ -1,68 +1,60 @@
 import { el } from 'redom';
 
-import { IDateGroup, ISlide } from '../../types';
+import { IArticle, IDataItem, ISourceGroup, ISlide, ISource } from '../../types';
 
 import { convertToSlug } from '../../utils/helpers';
 import logger from '../../utils/logger';
-import config from '../../utils/config';
 
 import Summary from './summary';
+import Groups from './groups';
 
 export default class Slideshow {
 
   el: HTMLElement
   slideshow: HTMLElement
-  title: HTMLElement
   slides: Array<HTMLElement>
 
-  constructor(slides: Array<ISlide>, title: string, type: string) {
+  groups: Array<ISourceGroup>
+  sourceGroups: Groups // HTML component
+
+  title: string
+
+  constructor(dataitems: Array<IDataItem>, title: string) {
     logger.log('Slideshow: constructor');
 
-    slides.sort((a, b) => {
-      return b.timestamp - a.timestamp;
-    });
+    this.title = title;
+    this.groups = Groups.mapToSourceGroups(dataitems);
+    this.sourceGroups = new Groups(this.groups); // HTML Component
+    this.slideshow = el('.SCSlideshow', this.slides);
 
-    let initialDateGroup: IDateGroup = this.getDateGroupForSlide(slides[0]);
+    this.el = el(`.SCSlideshowWrapper`, this.slideshow, this.sourceGroups);
+  }
 
-    //this.title = el('.SCSlideshowHeader', title);
-    this.slides = slides.reduce((aggregator: Array<HTMLElement>, slide: ISlide, index: Number) => {
-      const currentSlideDateGroup: IDateGroup = this.getDateGroupForSlide(slide);
+  setCurrentSlides(itemindex: number, groupindex: number) {
+    const currentSourceGroup: ISourceGroup = this.groups[groupindex];
+    const currentSource: IDataItem = currentSourceGroup.elements[itemindex];
+
+    const articles: Array<IArticle> = currentSource.articles;
+    const source: ISource = currentSource.source;
+
+    this.slides = el('.SCSlideshow', articles.reduce((aggregator: Array<HTMLElement>, article: IArticle, index: Number) => {
       const articleBody: HTMLElement = el('.SCSlide', new Summary({
-        title: slide.title,
-        description: slide.body,
-        timestamp: slide.timestamp,
-        link: slide.link,
-        handle: slide.author,
-        icon: slide.icon,
-        keywords: slide.keywords,
-        type
+        title: article.title,
+        description: article.body,
+        timestamp: article.timestamp,
+        link: article.link,
+        handle: source.name,
+        icon: source.icon,
+        keywords: article.keywords
       }));
 
-      let labelImg: HTMLElement;
-
-      if (slide.icon && type === 'news') 
-        labelImg = el('img', { src: slide.icon, title: slide.author, alt: slide.author });
-
-      const titleSlug: string = convertToSlug(title);
+      const titleSlug: string = convertToSlug(this.title);
       const slideIndex: string = titleSlug + index;
 
-      if (index === 0 || currentSlideDateGroup !== initialDateGroup) {
-        aggregator.push(el('.SCDateGroup', el('span', currentSlideDateGroup.label)));
-        initialDateGroup = currentSlideDateGroup;
-      }
-
       aggregator.push(el('input', { type: 'radio', id: slideIndex, name: titleSlug, checked: (index === 0) }));
-      aggregator.push(el('label.SCNav', labelImg || '', { for: slideIndex }));
       aggregator.push(articleBody);
 
       return aggregator;
-    }, []);
-
-    this.slideshow = el('.SCSlideshow', this.title, this.slides);
-    this.el = el(`.SCSlideshowWrapper.${type}`, this.slideshow);
-  }
-
-  getDateGroupForSlide(slide: ISlide): IDateGroup {
-    return config.dategroups.find(group => slide.timestamp >= group.toDate);
+    }, []));
   }
 }

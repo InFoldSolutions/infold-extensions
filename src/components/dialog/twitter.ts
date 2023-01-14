@@ -2,6 +2,7 @@ import { el, mount, unmount } from 'redom';
 
 import logger from '../../utils/logger';
 
+import Sources from '../slideshow/groups';
 import Slideshow from '../slideshow/slideshow';
 import config from '../../utils/config';
 
@@ -27,7 +28,7 @@ export default class TwitterDialog extends Dialog {
     this.parent = document.getElementById('layers');
 
     this.dialogBody = el('.SCDialogBody', { style: { top: `${this.offsetTop}px`, left: `${this.offsetLeft}px` } }, [
-      el('.SCDialogContent', new Slideshow(config.mock.relatedNews, 'Related News', 'news'))
+      el('.SCDialogContent', new Sources(config.mock.relatedSources))
     ]);
 
     this.dialogCloseWrapper = el('.SCDialogBGWrapper');

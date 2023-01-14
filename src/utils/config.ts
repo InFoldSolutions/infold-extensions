@@ -1,4 +1,143 @@
-export default {
+// Mock data --remove at some point..
+
+const mockArticles = [{
+  'title': 'G-7 joins EU on $60-per-barrel price cap on Russian oil',
+  'body': 'The Group of Seven nations and Australia agreed Friday to adopt a reached unanimous agreement on the...',
+  'link': 'vox.in/3B6arKW',
+  'timestamp': Date.now() - 1000 * 60 * 60 * 2,
+  'keywords': [{
+    'icon': 'fab.fa-youtube',
+    'word': 'Charlie Bartolo'
+  }, {
+    'icon': 'fab.fa-google',
+    'word': 'Kearne Solanke'
+  }, {
+    'icon': 'fab.fa-wikipedia-w',
+    'word': 'London Crime'
+  }]
+}, {
+  'title': 'Teenager canvassing for Warnock shot in Savannah ahead runoff',
+  'body': 'Police say no indication shooting politically motivated as teen working for Democrat is treated for non-life threatening injuries',
+  'link': 'guardian.in/3B6arKW',
+  'timestamp': Date.now() - 1000 * 60 * 60 * 78,
+  'keywords': [{
+    'icon': 'fab.fa-youtube',
+    'word': 'Charlie Bartolo'
+  }, {
+    'icon': 'fab.fa-google',
+    'word': 'Kearne Solanke'
+  }, {
+    'icon': 'fab.fa-wikipedia-w',
+    'word': 'London Crime'
+  }]
+}, {
+  'title': 'After Hawaii crash, NTSB calls for helicopters',
+  'body': 'Federal officials investigating a helicopter crash in Hawaii helicopters that are commonly used by air tour operators,...',
+  'link': 'apnews.in/3B6arKW',
+  'timestamp': Date.now() - 1000 * 60 * 60 * 1,
+  'keywords': [{
+    'icon': 'fab.fa-youtube',
+    'word': 'Charlie Bartolo'
+  }, {
+    'icon': 'fab.fa-google',
+    'word': 'Kearne Solanke'
+  }, {
+    'icon': 'fab.fa-wikipedia-w',
+    'word': 'London Crime'
+  }]
+}, {
+  'title': 'Flights across US disrupted by technical glitch',
+  'body': 'US authorities have confirmed operations across the National Airspace System are affected.',
+  'link': 'bbc.co.uk/3B6arKW',
+  'timestamp': Date.now() - 1000 * 60 * 60 * 72,
+  'keywords': [{
+    'icon': 'fab.fa-youtube',
+    'word': 'Charlie Bartolo'
+  }, {
+    'icon': 'fab.fa-google',
+    'word': 'Kearne Solanke'
+  }, {
+    'icon': 'fab.fa-wikipedia-w',
+    'word': 'London Crime'
+  }]
+}, {
+  'title': 'Ronaldo in Saudi Arabia: bigger off the pitch than on',
+  'body': 'Shortly after the World Cup final in Qatar, the Middle East was back at the center of the football world as Saudi Arabian club Al-Nassr signed Cristiano Ronaldo. The deal is less about football and...',
+  'link': 'dwnews.com/3B6arKW',
+  'timestamp': Date.now() - 1000 * 60 * 60 * 56,
+  'keywords': [{
+    'icon': 'fab.fa-youtube',
+    'word': 'Charlie Bartolo'
+  }, {
+    'icon': 'fab.fa-google',
+    'word': 'Kearne Solanke'
+  }, {
+    'icon': 'fab.fa-wikipedia-w',
+    'word': 'London Crime'
+  }]
+}, {
+  'title': 'Heats Dewayne Dedmon ejected from game after slapping massage gun onto court',
+  'body': 'Miami Heat center Dewayne Dedmon was ejected from Tuesdays game against the Oklahoma City Thunder after he slapped a massage gun onto the court.',
+  'link': 'foxnews.com/3B6arKW',
+  'timestamp': Date.now() - 1000 * 60 * 60 * 73,
+  'keywords': [{
+    'icon': 'fab.fa-youtube',
+    'word': 'Charlie Bartolo'
+  }, {
+    'icon': 'fab.fa-google',
+    'word': 'Kearne Solanke'
+  }, {
+    'icon': 'fab.fa-wikipedia-w',
+    'word': 'London Crime'
+  }]
+}, {
+  'title': 'Australia Set to Raise Rates as Tightening Cycle Approaches End',
+  'body': 'Australia is set to raise interest rates as it closes in on the end of its tightening cycle, while nearby New Zealand...',
+  'link': 'bloomberg.in/3B6arKW',
+  'timestamp': Date.now() - 1000 * 60 * 45,
+  'keywords': [{
+    'icon': 'fab.fa-youtube',
+    'word': 'Charlie Bartolo'
+  }, {
+    'icon': 'fab.fa-google',
+    'word': 'Kearne Solanke'
+  }, {
+    'icon': 'fab.fa-wikipedia-w',
+    'word': 'London Crime'
+  }]
+}, {
+  'title': 'Smithsonian exhibit explores how entertainment shaped',
+  'body': '"Entertainment Nation/Nación del espectáculo," a new exhibition at the "Star Wars" and...',
+  'link': 'cbsnews.in/3B6arKW',
+  'timestamp': Date.now() - 1000 * 60 * 60 * 72,
+  'keywords': [{
+    'icon': 'fab.fa-youtube',
+    'word': 'Charlie Bartolo'
+  }, {
+    'icon': 'fab.fa-google',
+    'word': 'Kearne Solanke'
+  }, {
+    'icon': 'fab.fa-wikipedia-w',
+    'word': 'London Crime'
+  }]
+}, {
+  'title': 'Americans think they’ll need $1.9 million to retire',
+  'body': 'Your main retirement goal should focus on savings and not on age, according to financial expert Chris Hogan.',
+  'link': 'bloomberg.in/3B6arKW',
+  'timestamp': Date.now() - 1000 * 60 * 60 * 82,
+  'keywords': [{
+    'icon': 'fab.fa-youtube',
+    'word': 'Charlie Bartolo'
+  }, {
+    'icon': 'fab.fa-google',
+    'word': 'Kearne Solanke'
+  }, {
+    'icon': 'fab.fa-wikipedia-w',
+    'word': 'London Crime'
+  }]
+}];
+
+const config = {
   'agents': {
     'reddit': {
       'providerType': 'reddit',
@@ -65,159 +204,69 @@ export default {
     'label': '1year'
   }],
   'mock': {
-    'relatedNews': [{
-      'title': 'G-7 joins EU on $60-per-barrel price cap on Russian oil',
-      'body': 'The Group of Seven nations and Australia agreed Friday to adopt a reached unanimous agreement on the...',
-      'icon': 'https://pbs.twimg.com/profile_images/807306191395241984/s8xmWAvU_400x400.jpg',
-      'link': 'vox.in/3B6arKW',
-      'author': 'Vox',
-      'timestamp': Date.now() - 1000 * 60 * 60 * 2,
-      'keywords': [{
-        'icon': 'fab.fa-youtube',
-        'word': 'Charlie Bartolo'
-      }, {
-        'icon': 'fab.fa-google',
-        'word': 'Kearne Solanke'
-      }, {
-        'icon': 'fab.fa-wikipedia-w',
-        'word': 'London Crime'
-      }]
+    'relatedSources': [{
+      'source': {
+        'name': 'BBC Breaking',
+        'url': 'http://bbc.co.uk',
+        'icon': 'https://pbs.twimg.com/profile_images/1150716997254209536/M7gkjsv5_400x400.jpg'
+      },
+      'articles': mockArticles
     }, {
-      'title': 'After Hawaii crash, NTSB calls for helicopters',
-      'body': 'Federal officials investigating a helicopter crash in Hawaii helicopters that are commonly used by air tour operators,...',
-      'icon': 'https://pbs.twimg.com/profile_images/576079042664738817/yT48F_Qq_400x400.jpeg',
-      'link': 'apnews.in/3B6arKW',
-      'author': 'AP News',
-      'timestamp': Date.now() - 1000 * 60 * 60 * 1,
-      'keywords': [{
-        'icon': 'fab.fa-youtube',
-        'word': 'Charlie Bartolo'
-      }, {
-        'icon': 'fab.fa-google',
-        'word': 'Kearne Solanke'
-      }, {
-        'icon': 'fab.fa-wikipedia-w',
-        'word': 'London Crime'
-      }]
+      'source': {
+        'name': 'CNBC',
+        'url': 'http://cnbc.com',
+        'icon': 'https://pbs.twimg.com/profile_images/1583214318719475713/rP1UOXbz_400x400.jpg'
+      },
+      'articles': mockArticles
     }, {
-      'title': 'Teenager canvassing for Warnock shot in Savannah ahead runoff',
-      'body': 'Police say no indication shooting politically motivated as teen working for Democrat is treated for non-life threatening injuries',
-      'icon': 'https://pbs.twimg.com/profile_images/1175141826870861825/K2qKoGla_400x400.png',
-      'link': 'guardian.in/3B6arKW',
-      'author': 'Guardian',
-      'timestamp': Date.now() - 1000 * 60 * 60 * 78,
-      'keywords': [{
-        'icon': 'fab.fa-youtube',
-        'word': 'Charlie Bartolo'
-      }, {
-        'icon': 'fab.fa-google',
-        'word': 'Kearne Solanke'
-      }, {
-        'icon': 'fab.fa-wikipedia-w',
-        'word': 'London Crime'
-      }]
+      'source': {
+        'name': 'CBSNews',
+        'url': 'http://CBSNews.com',
+        'icon': 'https://pbs.twimg.com/profile_images/1374394535883673604/4VIECtDH_400x400.jpg'
+      },
+      'articles': mockArticles
     }, {
-      'title': 'Flights across US disrupted by technical glitch',
-      'body': 'US authorities have confirmed operations across the National Airspace System are affected.',
-      'icon': 'https://pbs.twimg.com/profile_images/1150716997254209536/M7gkjsv5_400x400.jpg',
-      'link': 'bbc.co.uk/3B6arKW',
-      'author': 'BBC Breaking',
-      'timestamp': Date.now() - 1000 * 60 * 60 * 72,
-      'keywords': [{
-        'icon': 'fab.fa-youtube',
-        'word': 'Charlie Bartolo'
-      }, {
-        'icon': 'fab.fa-google',
-        'word': 'Kearne Solanke'
-      }, {
-        'icon': 'fab.fa-wikipedia-w',
-        'word': 'London Crime'
-      }]
+      'source': {
+        'name': 'Bloomberg',
+        'url': 'http://Bloomberg.com',
+        'icon': 'https://pbs.twimg.com/profile_images/991818020233404416/alrBF_dr_400x400.jpg'
+      },
+      'articles': mockArticles
     }, {
-      'title': 'Ronaldo in Saudi Arabia: bigger off the pitch than on',
-      'body': 'Shortly after the World Cup final in Qatar, the Middle East was back at the center of the football world as Saudi Arabian club Al-Nassr signed Cristiano Ronaldo. The deal is less about football and...',
-      'icon': 'https://pbs.twimg.com/profile_images/900261211509489666/-1Fu5hU8_400x400.jpg',
-      'link': 'dwnews.com/3B6arKW',
-      'author': 'DW News',
-      'timestamp': Date.now() - 1000 * 60 * 60 * 56,
-      'keywords': [{
-        'icon': 'fab.fa-youtube',
-        'word': 'Charlie Bartolo'
-      }, {
-        'icon': 'fab.fa-google',
-        'word': 'Kearne Solanke'
-      }, {
-        'icon': 'fab.fa-wikipedia-w',
-        'word': 'London Crime'
-      }]
+      'source': {
+        'name': 'Fox News',
+        'url': 'http://FoxNews.com',
+        'icon': 'https://pbs.twimg.com/profile_images/1591278197844414464/O6Fp0hFB_400x400.jpg'
+      },
+      'articles': mockArticles
     }, {
-      'title': 'Heats Dewayne Dedmon ejected from game after slapping massage gun onto court',
-      'body': 'Miami Heat center Dewayne Dedmon was ejected from Tuesdays game against the Oklahoma City Thunder after he slapped a massage gun onto the court.',
-      'icon': 'https://pbs.twimg.com/profile_images/1591278197844414464/O6Fp0hFB_400x400.jpg',
-      'link': 'foxnews.com/3B6arKW',
-      'author': 'Fox News',
-      'timestamp': Date.now() - 1000 * 60 * 60 * 73,
-      'keywords': [{
-        'icon': 'fab.fa-youtube',
-        'word': 'Charlie Bartolo'
-      }, {
-        'icon': 'fab.fa-google',
-        'word': 'Kearne Solanke'
-      }, {
-        'icon': 'fab.fa-wikipedia-w',
-        'word': 'London Crime'
-      }]
+      'source': {
+        'name': 'DW News',
+        'url': 'http://DWNews.com',
+        'icon': 'https://pbs.twimg.com/profile_images/900261211509489666/-1Fu5hU8_400x400.jpg'
+      },
+      'articles': mockArticles
     }, {
-      'title': 'Australia Set to Raise Rates as Tightening Cycle Approaches End',
-      'body': 'Australia is set to raise interest rates as it closes in on the end of its tightening cycle, while nearby New Zealand...',
-      'icon': 'https://pbs.twimg.com/profile_images/991818020233404416/alrBF_dr_400x400.jpg',
-      'link': 'bloomberg.in/3B6arKW',
-      'author': 'Bloomberg',
-      'timestamp': Date.now() - 1000 * 60 * 45,
-      'keywords': [{
-        'icon': 'fab.fa-youtube',
-        'word': 'Charlie Bartolo'
-      }, {
-        'icon': 'fab.fa-google',
-        'word': 'Kearne Solanke'
-      }, {
-        'icon': 'fab.fa-wikipedia-w',
-        'word': 'London Crime'
-      }]
+      'source': {
+        'name': 'AP News',
+        'url': 'http://APNews.com',
+        'icon': 'https://pbs.twimg.com/profile_images/576079042664738817/yT48F_Qq_400x400.jpeg'
+      },
+      'articles': mockArticles
     }, {
-      'title': 'Americans think they’ll need $1.9 million to retire',
-      'body': 'Your main retirement goal should focus on savings and not on age, according to financial expert Chris Hogan.',
-      'icon': 'https://pbs.twimg.com/profile_images/1583214318719475713/rP1UOXbz_400x400.jpg',
-      'link': 'bloomberg.in/3B6arKW',
-      'author': 'CNBC',
-      'timestamp': Date.now() - 1000 * 60 * 60 * 82,
-      'keywords': [{
-        'icon': 'fab.fa-youtube',
-        'word': 'Charlie Bartolo'
-      }, {
-        'icon': 'fab.fa-google',
-        'word': 'Kearne Solanke'
-      }, {
-        'icon': 'fab.fa-wikipedia-w',
-        'word': 'London Crime'
-      }]
+      'source': {
+        'name': 'Guardian',
+        'url': 'http://Guardian.com',
+        'icon': 'https://pbs.twimg.com/profile_images/1175141826870861825/K2qKoGla_400x400.png',
+      },
+      'articles': mockArticles
     }, {
-      'title': 'Smithsonian exhibit explores how entertainment shaped',
-      'body': '"Entertainment Nation/Nación del espectáculo," a new exhibition at the "Star Wars" and...',
-      'icon': 'https://pbs.twimg.com/profile_images/1374394535883673604/4VIECtDH_400x400.jpg',
-      'link': 'cbsnews.in/3B6arKW',
-      'author': 'CBSNews',
-      'timestamp': Date.now() - 1000 * 60 * 60 * 72,
-      'keywords': [{
-        'icon': 'fab.fa-youtube',
-        'word': 'Charlie Bartolo'
-      }, {
-        'icon': 'fab.fa-google',
-        'word': 'Kearne Solanke'
-      }, {
-        'icon': 'fab.fa-wikipedia-w',
-        'word': 'London Crime'
-      }]
+      'source': {
+        'name': 'Vox',
+        'url': 'http://Vox.com',
+        'icon': 'https://pbs.twimg.com/profile_images/807306191395241984/s8xmWAvU_400x400.jpg',
+      },
+      'articles': mockArticles
     }],
     'relatedSocialPosts': [{
       'body': 'Reddit post body that displays some stuff and talks about the original article in a new and profound way',
@@ -254,3 +303,5 @@ export default {
     }]
   }
 }
+
+export default config;

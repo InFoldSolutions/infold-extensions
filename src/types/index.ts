@@ -1,3 +1,30 @@
+export interface IDataItem {
+  source: ISource
+  articles: Array<IArticle>
+}
+
+export interface ISourceGroup {
+  dateGroup: IDateGroup,
+  elements: Array<IDataItem>
+  label?: string
+  toDate?: number
+}
+
+export interface ISource {
+  name: string
+  url: string
+  icon: string
+  articles?: Array<IArticle>
+}
+
+export interface IArticle {
+  body: string
+  title?: string
+  timestamp?: number
+  link?: string
+  keywords?: Array<IKeyword>
+}
+
 export interface IKeyword {
   icon: string
   word: string

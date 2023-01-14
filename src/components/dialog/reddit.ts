@@ -6,6 +6,7 @@ import Slideshow from '../slideshow/slideshow';
 import config from '../../utils/config';
 
 import Dialog from './dialog';
+import Sources from '../slideshow/groups';
 
 export default class RedditDialog extends Dialog {
 
@@ -28,12 +29,7 @@ export default class RedditDialog extends Dialog {
     this.dialogStyle = { style: { left: `${this.offsetLeft}px`, top: `${this.offsetTop}px` } };
 
     this.dialogBody = el('.SCDialogBody', this.dialogStyle, [
-      el('.SCDialogContent',
-        new Slideshow(
-          config.mock.relatedNews,
-          'Related News',
-          'news'
-        ))
+      el('.SCDialogContent', new Sources(config.mock.relatedSources))
     ]);
 
     this.dialogCloseWrapper = el('.SCDialogBGWrapper');
