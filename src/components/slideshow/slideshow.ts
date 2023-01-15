@@ -17,6 +17,7 @@ export default class Slideshow {
   sourceGroups: Groups // HTML component
   slides: List // ReDom component
 
+  activeSlide: number
   title: string
 
   constructor(dataitems: Array<IDataItem>, title: string) {
@@ -25,10 +26,14 @@ export default class Slideshow {
     this.title = title;
     this.groups = Groups.mapToSourceGroups(dataitems);
     this.sourceGroups = new Groups(this.groups); // HTML Component
-    this.slides = list('ul.SCSlides', Slide);
+
+    // @ts-ignore
+    this.slides = list(".SCSlides", Slide);
     this.slideshow = el('.SCSlideshow', this.slides);
 
     this.el = el(`.SCSlideshowWrapper`, this.slideshow, this.sourceGroups);
+
+    this.activeSlide = 0;
     this.setCurrentSlides(0, 0);
   }
 
@@ -49,6 +54,6 @@ export default class Slideshow {
         icon: source.icon,
         keywords: article.keywords
       }
-    }));
+    }), { activeSlide: this.activeSlide });
   }
 }

@@ -139,10 +139,6 @@
   background: transparent;
 }
 
-.SCPostBodyWrapper {
-  min-height: 300px;
-}
-
 /* Post display --TWITTER-- */
 
 .SCPostBodyWrapper.twitter {
@@ -402,7 +398,7 @@
 .SCGroupsWrapper {
   display: flex;
   flex-direction: row;
-  margin: 20px 0px;
+  margin: 15px 0px;
 }
 
 .SCGroupsWrapper ul, .SCGroupsWrapper li {
@@ -464,6 +460,7 @@
   display: flex;
   width: 100%;
   margin: 25px 0px 20px;
+  flex-direction: column;
 }
 
 .SCSlideshowIcon {
@@ -484,9 +481,7 @@
 }
 
 .SCSlideshow {
-  padding: 0 0 18px 0;
-  margin: 0px;
-  min-height: 171px;
+  min-height: 130px;
   width: 100%;
   text-align: left;
   overflow: hidden;
@@ -618,11 +613,11 @@
   color: rgb(239, 243, 244);
 }
 
-.SCSlideshow input:checked~.SCSlideshow .SCSlide {
+/*.SCSlideshow input:checked~.SCSlideshow .SCSlide {
   transform: translateX(100%);
-}
+}*/
 
-.SCSlideshow input:checked+label+.SCSlide {
+.SCSlideshow .SCSlide.active {
   transform: translateX(0);
   opacity: 1;
   z-index: 1;

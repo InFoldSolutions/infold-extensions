@@ -1,4 +1,4 @@
-import { el } from 'redom';
+import { el, mount } from 'redom';
 
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
@@ -17,52 +17,57 @@ const timeAgo = new TimeAgo('en-US');
 export default class Slide {
 
   el: HTMLElement
+  summaryBody: HTMLElement
   summaryInfo: Array<HTMLElement>
 
-  constructor(slide: ISlideBody) {
+  constructor() {
     logger.log('Slide: constructor');
 
+    this.el = el('.SCSlide');
+  }
+
+  update(data: ISlideBody, index: number, items: Array<ISlideBody>, context: any) {
+    console.log('slide update', data, index, context);
+
     this.summaryInfo = [
-      el('span.SCHandle.SCMarginRight', slide.handle),
+      el('span.SCHandle.SCMarginRight', data.handle),
       el('span.SCIcon', new CalendarIcon()),
-      el('span.SCdate.SCMarginRight', timeAgo.format(slide.timestamp)),
+      el('span.SCdate.SCMarginRight', timeAgo.format(data.timestamp)),
       el('span.SCIcon', new LinkIcon()),
-      el('a.SClink', slide.link, { href: slide.link, target: '_blank' })
+      el('a.SClink', data.link, { href: data.link, target: '_blank' })
     ]
 
     let keywords: Array<HTMLElement>;
 
-    if (slide.type === 'social' && slide.icon) {
-      switch (slide.icon) {
+    if (data.type === 'social' && data.icon) {
+      switch (data.icon) {
         case 'reddit':
           this.summaryInfo.unshift(el('.SCIcon', new RedditIcon()));
           break;
         default:
-          this.summaryInfo.unshift(el(`i.${slide.icon}`));
+          this.summaryInfo.unshift(el(`i.${data.icon}`));
           break;
       }
     }
 
-    if (slide.keywords) {
-      keywords = slide.keywords.map((keyword: IKeyword) => {
+    if (data.keywords) {
+      keywords = data.keywords.map((keyword: IKeyword) => {
         return el('.SCKeyword', [el(`i.${keyword.icon}`), keyword.word])
       });
     }
 
-    this.el = el('li.SCSlide',
-      el('.SCSummaryBody', [
-        el('.SCSummaryTitle', slide.title),
-        el('.SCSummaryInfo', this.summaryInfo),
-        el('.SCSummaryContent', slide.description),
-        el('.SCKeywordsWrapper', keywords)
-      ])
-    );
-  }
+    this.summaryBody = el('.SCSummaryBody', [
+      el('.SCSummaryTitle', data.title),
+      el('.SCSummaryInfo', this.summaryInfo),
+      el('.SCSummaryContent', data.description),
+      el('.SCKeywordsWrapper', keywords)
+    ]);
 
-  update(item: any, index: number, data: any, context?: any) {
-    console.log('Slide update item', item);
-    console.log('Slide update index', index);
-    console.log('Slide update data', data);
-    console.log('Slide update context', context);
+    if (index === context.activeSlide)
+      this.el.classList.add('active')
+    else
+      this.el.classList.remove('active');
+
+    mount(this.el, this.summaryBody);
   }
 }
