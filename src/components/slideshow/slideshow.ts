@@ -1,6 +1,6 @@
-import { el, List, list, RedomComponentClass } from 'redom';
+import { el, List, list } from 'redom';
 
-import { IArticle, IDataItem, ISourceGroup, ISource } from '../../types';
+import { IArticle, IDataItem, ISourceGroup, ISource, ISlideBody } from '../../types';
 
 import logger from '../../utils/logger';
 
@@ -16,8 +16,12 @@ export default class Slideshow {
 
   sourceGroups: Groups // HTML component
   slides: List // ReDom component
+  currentSlides: Array<ISlideBody>
 
   activeSlide: number
+  activeGroupIndex: number
+  activeSourceIndex: number
+
   title: string
 
   constructor(dataitems: Array<IDataItem>, title: string) {
@@ -25,7 +29,12 @@ export default class Slideshow {
 
     this.title = title;
     this.groups = Groups.mapToSourceGroups(dataitems);
-    this.sourceGroups = new Groups(this.groups); // HTML Component
+    this.sourceGroups = new Groups(
+      this.groups, 
+      this.setCurrentSlides.bind(this),
+      this.nextArticle.bind(this),
+      this.prevArticle.bind(this)
+    ); // HTML Component
 
     // @ts-ignore
     this.slides = list(".SCSlides", Slide);
@@ -37,14 +46,33 @@ export default class Slideshow {
     this.setCurrentSlides(0, 0);
   }
 
-  setCurrentSlides(itemindex: number, groupindex: number) {
-    const currentSourceGroup: ISourceGroup = this.groups[groupindex];
-    const currentSource: IDataItem = currentSourceGroup.elements[itemindex];
+  nextArticle() {
+    logger.log('nextArticle');
+    this.slides.update(this.currentSlides, { activeSlide: this.activeSlide++ });
+  }
+
+  prevArticle() {
+    logger.log('prevArticle');
+    this.slides.update(this.currentSlides, { activeSlide: this.activeSlide-- });
+  }
+
+  setCurrentSlides(sourceIndex: number, groupIndex: number) {
+    logger.log('setCurrentSlides');
+
+    if (this.activeGroupIndex === groupIndex && this.activeSourceIndex === sourceIndex)
+      return;
+
+    this.activeSlide = 0;
+    this.activeGroupIndex = groupIndex;
+    this.activeSourceIndex = sourceIndex;
+
+    const currentSourceGroup: ISourceGroup = this.groups[this.activeGroupIndex];
+    const currentSource: IDataItem = currentSourceGroup.elements[this.activeSourceIndex];
 
     const articles: Array<IArticle> = currentSource.articles;
     const source: ISource = currentSource.source;
 
-    this.slides.update(articles.map((article: IArticle) => {
+    this.currentSlides = articles.map((article: IArticle): ISlideBody => {
       return {
         title: article.title,
         description: article.body,
@@ -54,6 +82,8 @@ export default class Slideshow {
         icon: source.icon,
         keywords: article.keywords
       }
-    }), { activeSlide: this.activeSlide });
+    });
+
+    this.slides.update(this.currentSlides, { activeSlide: this.activeSlide });
   }
 }

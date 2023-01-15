@@ -1,4 +1,4 @@
-import { el, mount } from 'redom';
+import { el, mount, unmount } from 'redom';
 
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
@@ -20,14 +20,33 @@ export default class Slide {
   summaryBody: HTMLElement
   summaryInfo: Array<HTMLElement>
 
+  data: ISlideBody
+
   constructor() {
     logger.log('Slide: constructor');
-
     this.el = el('.SCSlide');
   }
 
   update(data: ISlideBody, index: number, items: Array<ISlideBody>, context: any) {
-    console.log('slide update', data, index, context);
+    //console.log('slide update', data, index, context);
+
+    const _self = this;
+
+    if (this.el.classList.contains('active'))
+      this.el.classList.remove('active');
+
+    setTimeout(() => { // let the remove animation finish
+      if (index === context.activeSlide)
+        _self.el.classList.add('active');
+    }, 140);
+
+    if (data.title === this.data?.title && data.timestamp === this.data?.timestamp)
+      return;
+
+    this.data = data;
+
+    if (this.summaryBody)
+      unmount(this.el, this.summaryBody);
 
     this.summaryInfo = [
       el('span.SCHandle.SCMarginRight', data.handle),
@@ -62,11 +81,6 @@ export default class Slide {
       el('.SCSummaryContent', data.description),
       el('.SCKeywordsWrapper', keywords)
     ]);
-
-    if (index === context.activeSlide)
-      this.el.classList.add('active')
-    else
-      this.el.classList.remove('active');
 
     mount(this.el, this.summaryBody);
   }

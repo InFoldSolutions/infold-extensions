@@ -1,43 +1,123 @@
 import { el } from 'redom';
 
-import { IArticle, IDateGroup, IDataItem, ISourceGroup } from '../../types';
+import { IArticle, IDateGroup, IDataItem, ISource, ISourceGroup } from '../../types';
 
 import logger from '../../utils/logger';
 import config from '../../utils/config';
-import { shuffleArray } from '../../utils/helpers';
+import { findParentByCls, shuffleArray } from '../../utils/helpers';
+
+import RightArrowIcon from '../svgs/rightArrowIcon';
+import LeftArrowIcon from '../svgs/leftArrowIcon';
 
 export default class Groups {
 
   el: HTMLElement
-  groupsHTML: Array<HTMLElement>
+  articleNav: HTMLElement
+  articleCount: HTMLElement
+  currentArticleIndex: HTMLElement
 
-  constructor(groups: Array<ISourceGroup>) {
+  groupsNav: Array<HTMLElement>
+  groups: Array<ISourceGroup>
+
+  activeGroupIndex: number
+  activeSourceIndex: number
+
+  constructor(groups: Array<ISourceGroup>, onGroupSelect: Function, nextArticle: Function, prevArticle: Function) {
     logger.log('Sources: constructor');
 
-    this.groupsHTML = groups.map((sourceGroup: ISourceGroup, gindex: number): HTMLElement => {
+    this.groups = groups;
+    this.groupsNav = this.groups.map((sourceGroup: ISourceGroup, gindex: number): HTMLElement => {
       return el('ul', [
         el('span.SCDateGroup', sourceGroup.label),
         sourceGroup.elements.map((dataitem: IDataItem, dindex: number): HTMLElement => {
-          return el('li', { 'data-itemindex': dindex, 'data-groupindex': gindex },
+          return el('li', { 'data-sourceindex': dindex, 'data-groupindex': gindex },
             el('img', { src: dataitem.source.icon, title: dataitem.source.name, alt: dataitem.source.name }));
         })
       ])
     });
 
-    this.el = el(`.SCGroupsWrapper`, this.groupsHTML);
+    this.articleCount = el('span.SCArticleCount');
+    this.currentArticleIndex = el('span.SCCurrentArticleIndex');
+    this.articleNav = el('.SCArticleNav', [
+      el('span.SCArrow.SCLeft', new LeftArrowIcon()),
+      this.currentArticleIndex,
+      el('span.SCSeperator', '/'),
+      this.articleCount,
+      el('span.SCArrow.SCRight', new RightArrowIcon())
+    ]);
+
+    this.el = el(`.SCGroupsWrapper`, [
+      this.groupsNav,
+      this.articleNav
+    ]);
+
     this.el.onclick = (evt: Event) => {
       evt.stopPropagation();
 
       const target: HTMLElement = evt.target as HTMLElement;
-      const itemIndex = Groups.getItemIndex(target);
-      const groupIndex = Groups.getGroupIndex(target);
+      const arrow = findParentByCls(target, 'SCArrow', 3);
+
+      if (arrow) {
+        const currentArticleIndex = parseInt(this.currentArticleIndex.textContent);
+        if (arrow.classList.contains('SCLeft')) {
+          console.log('Move left');
+          this.currentArticleIndex.textContent = (currentArticleIndex - 1).toString();
+          prevArticle();
+          return;
+        } if (arrow.classList.contains('SCRight')) {
+          console.log('Move right');
+          this.currentArticleIndex.textContent = (currentArticleIndex + 1).toString();
+          nextArticle();
+          return;
+        }
+      }
+
+      const sourceIndex = parseInt(Groups.getItemIndex(target));
+      const groupIndex = parseInt(Groups.getGroupIndex(target));
+
+      if (Number.isNaN(sourceIndex) || Number.isNaN(groupIndex))
+        return;
+
+      this.updateActiveGroup(sourceIndex, groupIndex);
+
+      // call callback
+      onGroupSelect(sourceIndex, groupIndex);
     };
+
+    this.updateActiveGroup(0, 0);
   }
-  
+
+  updateActiveGroup(sourceIndex: number, groupIndex: number) {
+
+    if (this.activeSourceIndex === sourceIndex && this.activeGroupIndex === groupIndex)
+      return;
+
+    this.activeGroupIndex = groupIndex;
+    this.activeSourceIndex = sourceIndex;
+
+    const currentSourceGroup: ISourceGroup = this.groups[this.activeGroupIndex];
+    const currentSource: IDataItem = currentSourceGroup.elements[this.activeSourceIndex];
+
+    const articles: Array<IArticle> = currentSource.articles;
+
+    this.currentArticleIndex.textContent = '1';
+    this.articleCount.textContent = articles.length.toString();
+
+    const currentActive = this.el.querySelector('li.active');
+
+    if (currentActive)
+      currentActive.classList.remove('active');
+
+    const newActive = this.el.querySelector(`[data-sourceindex="${sourceIndex}"][data-groupindex="${groupIndex}"]`);
+
+    if (newActive)
+      newActive.classList.add('active');
+  }
+
   static getItemIndex(target: HTMLElement) {
-    return target.getAttribute('data-itemindex') || target.parentElement.getAttribute('data-itemindex')
+    return target.getAttribute('data-sourceindex') || target.parentElement.getAttribute('data-sourceindex')
   }
-  
+
   static getGroupIndex(target: HTMLElement) {
     return target.getAttribute('data-groupindex') || target.parentElement.getAttribute('data-groupindex');
   }

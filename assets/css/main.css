@@ -168,10 +168,6 @@
   border-top: 1px solid #343536;
 }
 
-.SCPostBodyWrapper.reddit .SCSlideshow {
-  min-height: 175px;
-}
-
 .SCPostBodyWrapper.reddit .SCSummaryTitle {
   color: rgb(215, 218, 220);
   font-size: 16px;
@@ -401,7 +397,8 @@
   margin: 15px 0px;
 }
 
-.SCGroupsWrapper ul, .SCGroupsWrapper li {
+.SCGroupsWrapper ul,
+.SCGroupsWrapper li {
   margin: 0;
   padding: 0;
 }
@@ -423,8 +420,8 @@
 
 .SCGroupsWrapper li {
   display: inline-block;
-  width: 22px;
-  height: 22px;
+  width: 25px;
+  height: 25px;
   margin: -2px -8px -2px -2px;
   z-index: 2;
   cursor: pointer;
@@ -432,7 +429,6 @@
   border-radius: 50%;
   border: solid 2px rgba(239, 243, 244, 0);
   align-self: flex-end;
-  transition: opacity linear 0.1s;
   user-select: none;
 }
 
@@ -445,10 +441,59 @@
   border-radius: 50%;
 }
 
-.SCGroupsWrapper li:hover, 
+.SCGroupsWrapper li:hover {
+  border-color: rgba(29, 155, 240, 0.8);
+}
+
 .SCGroupsWrapper li.active {
   border-color: rgb(29, 155, 240);
+}
+
+/**
+* Article Nav
+**/
+
+.SCArticleNav {
+  height: 25px;
+  display: flex;
+  align-items: center;
+  color: rgb(113, 118, 123);
+  font-size: 0.8em;
+  font-weight: 700;
+  margin: 0 10px 0 auto;
+}
+
+.SCArrow {
+  height: 20px;
+  width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 100ms;
+}
+
+.SCArrow:hover {
   opacity: 1;
+}
+
+.SCArrow svg {
+  fill: currentColor;
+  width: 20px;
+  height: 20px;
+}
+
+.SCArrow.SCLeft {
+  margin-right: 2px;
+}
+
+.SCArrow.SCRight {
+  margin-left: 2px;
+}
+
+.SCArticleNav .SCSeperator {
+  margin: 0px 2px;
 }
 
 /** 
@@ -497,71 +542,8 @@
   position: absolute;
 }
 
-.SCSlideshow .sr-only {
-  position: absolute;
-  pointer-events: none;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  color: transparent;
-}
-
-.SCSlideshow input {
-  position: absolute;
-  opacity: 0;
-  margin: 0;
-  cursor: pointer;
-  align-self: flex-end;
-}
-
-.SCSlideshow .SCDateGroup {
-  align-self: flex-end;
-  user-select: none;
-  cursor: default;
-  position: relative;
-  border-left: 1px solid rgb(113, 118, 123);
-  margin-left: 13px;
-  display: inline-block;
-  font-size: 0.8em;
-  width: 6px;
-  height: 23px;
-}
-
 .SCSlideshow .SCDateGroup:nth-of-type(1) {
   margin-left: 2px;
-}
-
-.SCSlideshow .SCDateGroup span {
-  color: rgb(113, 118, 123);
-  position: absolute;
-  min-width: 30px;
-  top: 28px;
-  left: -2px;
-}
-
-.SCSlideshow label {
-  display: inline-block;
-  width: 22px;
-  height: 22px;
-  margin: -2px -8px -2px -2px;
-  z-index: 2;
-  cursor: pointer;
-  overflow: hidden;
-  border-radius: 50%;
-  border: solid 2px rgba(239, 243, 244, 0);
-  align-self: flex-end;
-  transition: opacity linear 0.1s;
-  user-select: none;
-}
-
-.SCSlideshow label img {
-  width: 100%;
-  border-radius: 50%;
-}
-
-.SCSlideshow input:checked+label {
-  border-color: rgb(29, 155, 240);
-  opacity: 1;
 }
 
 /*.SCSlideshow input+label::after {
@@ -578,17 +560,6 @@
   bottom: 0;
   right: 20px;
   z-index: 20;
-}
-
-.SCSlideshow input:checked+label::after {
-  background-image: none;
-  width: 100%;
-  z-index: 10;
-  display: none;
-}
-
-.SCSlideshow input:checked+label+.SCSlide~input+label::after {
-  display: none;
 }
 
 .SCSlideshow input:checked+label+.SCSlide+input+label::after {
@@ -608,14 +579,10 @@
   left: 0;
   z-index: -1;
   transform: translateX(-100%);
-  transition-duration: 0.3s;
+  transition: ease-in-out 140ms;
   opacity: 1;
   color: rgb(239, 243, 244);
 }
-
-/*.SCSlideshow input:checked~.SCSlideshow .SCSlide {
-  transform: translateX(100%);
-}*/
 
 .SCSlideshow .SCSlide.active {
   transform: translateX(0);
@@ -727,7 +694,7 @@
 }
 
 .SCDialogWrapper.reddit .SCSlideshow {
-  min-height: 160px;
+  min-height: 120px;
 }
 
 .SCDialogWrapper.reddit .SCSlideshow .SCSlide {
