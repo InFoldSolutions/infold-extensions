@@ -8,10 +8,12 @@ import { findParentByCls, shuffleArray } from '../../utils/helpers';
 
 import RightArrowIcon from '../svgs/rightArrowIcon';
 import LeftArrowIcon from '../svgs/leftArrowIcon';
+import StatsIcon from '../svgs/statsIcon';
 
 export default class Groups {
 
   el: HTMLElement
+  articleStats: HTMLElement
   articleNav: HTMLElement
   articleCount: HTMLElement
   currentArticleIndex: HTMLElement
@@ -38,13 +40,22 @@ export default class Groups {
 
     this.articleCount = el('span.SCArticleCount');
     this.currentArticleIndex = el('span.SCCurrentArticleIndex');
-    this.articleNav = el('.SCArticleNav', [
-      el('span.SCArrow.SCLeft', new LeftArrowIcon()),
-      this.currentArticleIndex,
-      el('span.SCSeperator', '/'),
-      this.articleCount,
-      el('span.SCArrow.SCRight', new RightArrowIcon())
-    ]);
+    this.articleStats = el('.SCArticleStats', [
+      el('span', 'Total'),
+      '86',
+      new StatsIcon()
+    ])
+    this.articleNav = el('.SCArticleInfo', [
+        el('.SCArticleNav', [
+          el('span.SCArrow.SCLeft', new LeftArrowIcon()),
+          this.currentArticleIndex,
+          el('span.SCSeperator', '/'),
+          this.articleCount,
+          el('span.SCArrow.SCRight', new RightArrowIcon())
+        ]),
+        this.articleStats
+      ]
+    );
 
     this.el = el(`.SCGroupsWrapper`, [
       this.groupsNav,

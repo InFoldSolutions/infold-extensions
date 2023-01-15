@@ -15,6 +15,8 @@ export default class Link {
   status: string
   agent: string
 
+  active: boolean
+
   node: HTMLAnchorElement
   wrapper: HTMLElement
   article: HTMLElement
@@ -83,12 +85,11 @@ export default class Link {
   togglePostView() {
     logger.log('Link: togglePostView');
 
-    if (this.agent === 'twitter') 
+    if (this.agent === 'twitter')
       this.article.style.flexWrap = 'wrap';
 
     if (this.post) {
-      this.post.close();
-      this.post = null;
+      this.closePost();
       return;
     }
 
@@ -98,6 +99,8 @@ export default class Link {
       this.wrapper,
       this.el
     );
+
+    this.toggleActiveState();
   }
 
   openDialog() {
@@ -118,8 +121,38 @@ export default class Link {
       this.agent,
       this.article,
       this.wrapper,
-      this.el
+      this.el,
+      this.closeDialog.bind(this)
     );
+
+    this.toggleActiveState();
+  }
+
+  closePost() {
+    logger.log('Link: closePost');
+    this.post.close();
+    this.post = null;
+    
+    this.toggleActiveState();
+  }
+
+  closeDialog() {
+    logger.log('Link: closeDialog');
+    this.dialog = null;
+    
+    this.toggleActiveState();
+  }
+
+  toggleActiveState() {
+    console.log('toggleActiveState', this.active);
+
+    if (this.active) {
+      this.active = false;
+      this.el.classList.remove('active');
+    } else {
+      this.active = true;
+      this.el.classList.add('active');
+    }
   }
 
   disableLoading() {

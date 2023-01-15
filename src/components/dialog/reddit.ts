@@ -18,7 +18,7 @@ export default class RedditDialog extends Dialog {
 
   dialogStyle: Object
 
-  constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement) {
+  constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement, closeCallback: Function) {
     logger.log('RedditDialog: constructor');
 
     super(agent, article, btnWrapper, linkElement);
@@ -38,8 +38,10 @@ export default class RedditDialog extends Dialog {
 
       const target: HTMLElement = evt.target as HTMLElement;
 
-      if (target.classList.contains('SCDialogBGWrapper'))
+      if (target.classList.contains('SCDialogBGWrapper')) {
+        closeCallback();
         this.close();
+      }
     };
 
     this.el = el(`.SCDialogWrapper.${agent}`,
@@ -78,11 +80,5 @@ export default class RedditDialog extends Dialog {
   get offsetTop(): number {
     const marginBottom: number = parseInt(getComputedStyle(this.article).marginBottom, 10) + 2;
     return (marginBottom) ? -marginBottom : 0;
-  }
-
-  close() {
-    logger.log('Dialog: close');
-
-    unmount(this.parent, this.el);
   }
 }

@@ -1,3 +1,5 @@
+import { unmount } from 'redom';
+
 import logger from '../../utils/logger';
 
 export default class Dialog {
@@ -20,5 +22,11 @@ export default class Dialog {
     this.agent = agent;
     this.article = article;
     this.linkElement = linkElement;
+  }
+
+  close() {
+    logger.log('Dialog: close');
+
+    unmount(this.parent, this.el);
   }
 }
