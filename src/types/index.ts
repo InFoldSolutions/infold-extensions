@@ -40,7 +40,7 @@ export interface ISlide {
   keywords?: Array<IKeyword>
 }
 
-export interface ISummaryBody {
+export interface ISlideBody {
   title: string
   description: string
   timestamp: number

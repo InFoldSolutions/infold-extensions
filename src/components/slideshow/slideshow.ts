@@ -1,21 +1,21 @@
-import { el } from 'redom';
+import { el, List, list, RedomComponentClass } from 'redom';
 
-import { IArticle, IDataItem, ISourceGroup, ISlide, ISource } from '../../types';
+import { IArticle, IDataItem, ISourceGroup, ISource } from '../../types';
 
-import { convertToSlug } from '../../utils/helpers';
 import logger from '../../utils/logger';
 
-import Summary from './summary';
 import Groups from './groups';
+import Slide from './slide';
 
 export default class Slideshow {
 
   el: HTMLElement
   slideshow: HTMLElement
-  slides: Array<HTMLElement>
 
   groups: Array<ISourceGroup>
+
   sourceGroups: Groups // HTML component
+  slides: List // ReDom component
 
   title: string
 
@@ -25,9 +25,11 @@ export default class Slideshow {
     this.title = title;
     this.groups = Groups.mapToSourceGroups(dataitems);
     this.sourceGroups = new Groups(this.groups); // HTML Component
+    this.slides = list('ul.SCSlides', Slide);
     this.slideshow = el('.SCSlideshow', this.slides);
 
     this.el = el(`.SCSlideshowWrapper`, this.slideshow, this.sourceGroups);
+    this.setCurrentSlides(0, 0);
   }
 
   setCurrentSlides(itemindex: number, groupindex: number) {
@@ -37,8 +39,8 @@ export default class Slideshow {
     const articles: Array<IArticle> = currentSource.articles;
     const source: ISource = currentSource.source;
 
-    this.slides = el('.SCSlideshow', articles.reduce((aggregator: Array<HTMLElement>, article: IArticle, index: Number) => {
-      const articleBody: HTMLElement = el('.SCSlide', new Summary({
+    this.slides.update(articles.map((article: IArticle) => {
+      return {
         title: article.title,
         description: article.body,
         timestamp: article.timestamp,
@@ -46,15 +48,7 @@ export default class Slideshow {
         handle: source.name,
         icon: source.icon,
         keywords: article.keywords
-      }));
-
-      const titleSlug: string = convertToSlug(this.title);
-      const slideIndex: string = titleSlug + index;
-
-      aggregator.push(el('input', { type: 'radio', id: slideIndex, name: titleSlug, checked: (index === 0) }));
-      aggregator.push(articleBody);
-
-      return aggregator;
-    }, []));
+      }
+    }));
   }
 }
