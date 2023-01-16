@@ -14,6 +14,7 @@ export default class Link {
 
   status: string
   agent: string
+  href: string
 
   active: boolean
 
@@ -31,6 +32,7 @@ export default class Link {
     this.agent = agent;
     this.article = potentialLInk.article;
     this.node = potentialLInk.element;
+    this.href = this.node.href;
     this.wrapper = potentialLInk.wrapperNode;
     this.status = 'pending';
   }
