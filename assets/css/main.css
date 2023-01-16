@@ -36,7 +36,7 @@
 }
 
 .SCbuttonWrapper:hover .SCiconBackground {
-  background-color: rgba(29, 155, 240, 0.08);
+  background-color: rgba(29, 155, 240, 0.1);
 }
 
 .SCIconWrapper {
@@ -141,6 +141,41 @@
   background: transparent;
 }
 
+/* Post */
+
+.SCPostBodyWrapper .SCSummaryTitle {
+  width: calc(100% - 25px);
+}
+
+.SCPostBody {
+  position: relative;
+}
+
+.SCPostCloseWrapper {
+  position: absolute;
+  top: -7px;
+  right: -4px;
+  width: 22px;
+  height: 22px;
+  padding: 3px;
+  background-color: transparent;
+  cursor: pointer;
+  z-index: 5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.SCPostCloseWrapper:hover {
+  background-color: rgba(29, 155, 240, 0.1);
+}
+
+.SCPostCloseWrapper svg {
+  width: 18px;
+  height: 18px;
+}
+
 /* Post display --TWITTER-- */
 
 .SCPostBodyWrapper.twitter {
@@ -154,9 +189,19 @@
   width: 100%;
 }
 
+.SCPostBodyWrapper.twitter .SCPostCloseWrapper {
+  fill: currentColor;
+  color: rgb(29, 155, 240);
+  top: 10px;
+}
+
 .SCPostBodyWrapper.twitter .SCSlideshowWrapper {
-  margin: 16px 0px;
+  margin: 16px 0px 20px;
   padding: 0px 4px;
+}
+
+.SCPostBodyWrapper.twitter .SCSlideshow {
+  width: calc(100% - 8px);
 }
 
 /* Post display --REDDIT-- */
@@ -164,6 +209,10 @@
 .SCPostBodyWrapper.reddit {
   margin: 0px 46px 0 14px;
   border-top: 1px solid #343536;
+}
+
+.SCPostBodyWrapper.reddit .SCPostCloseWrapper:hover {
+  background-color: rgba(215, 218, 220, 0.1);
 }
 
 .SCPostBodyWrapper.reddit .SCSummaryTitle {
@@ -188,7 +237,7 @@
 }
 
 .SCPostBodyWrapper.reddit .SCSlideshowWrapper {
-  margin: 15px 0px;
+  margin: 15px 0px 20px;
 }
 
 .SCPostBodyWrapper.reddit .SCKeyword {
@@ -287,7 +336,7 @@
 .SCSummaryTitle {
   font-weight: 700;
   margin-bottom: 3px;
-  max-height: 19px;
+  max-height: 20px;
   overflow: hidden;
 }
 
@@ -392,7 +441,7 @@
 .SCGroupsWrapper {
   display: flex;
   flex-direction: row;
-  margin: 15px 0px;
+  margin: 17px 0px 0px;
 }
 
 .SCGroupsWrapper ul,
@@ -538,7 +587,7 @@
 .SCSlideshowWrapper {
   display: flex;
   width: 100%;
-  margin: 25px 0px 20px;
+  margin: 25px 0px;
   flex-direction: column;
 }
 

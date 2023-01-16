@@ -63,7 +63,7 @@ export default class TwitterDialog extends Dialog {
     const btnWrapperParentElement: HTMLElement = this.btnWrapper.parentElement.parentElement.parentElement;
 
     if (btnWrapperParentElement) {
-      offsetLeft += btnWrapperParentElement.offsetLeft + 15; // 15 accounts for the margin value, needs refactor
+      offsetLeft += btnWrapperParentElement.offsetLeft + 16; // 16 accounts for the margin value, needs refactor
     }
 
     return offsetLeft

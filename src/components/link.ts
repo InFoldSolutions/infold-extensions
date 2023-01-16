@@ -89,7 +89,7 @@ export default class Link {
       this.article.style.flexWrap = 'wrap';
 
     if (this.post) {
-      this.closePost();
+      this.post.close();
       return;
     }
 
@@ -97,7 +97,8 @@ export default class Link {
       this.agent,
       this.article,
       this.wrapper,
-      this.el
+      this.el,
+      this.closePost.bind(this)
     );
 
     this.toggleActiveState();
@@ -130,7 +131,6 @@ export default class Link {
 
   closePost() {
     logger.log('Link: closePost');
-    this.post.close();
     this.post = null;
     
     this.toggleActiveState();
@@ -144,7 +144,7 @@ export default class Link {
   }
 
   toggleActiveState() {
-    console.log('toggleActiveState', this.active);
+    logger.log('toggleActiveState');
 
     if (this.active) {
       this.active = false;
