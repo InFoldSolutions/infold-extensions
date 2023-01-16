@@ -120,12 +120,8 @@ export default class TwitterAgent extends Agent {
     if (records) { // check newly added nodes for potential links
       records.forEach((record: MutationRecord) => {
         record.addedNodes.forEach((addedNode: Element) => {
-          console.log('addedNode', addedNode);
-          console.log('addedNode', typeof addedNode);
-          
-          if (addedNode.querySelector && typeof addedNode.querySelector === 'function') { // all addedNodes are object as type, but can also come in as string, hacky this is..
+          if (addedNode.querySelector && typeof addedNode.querySelector === 'function')  // all addedNodes are object as type, but can also come in as string, hacky this is..
             potentialLinks = potentialLinks.concat(this.getPotentialLinksFromElement(addedNode));
-          }
         });
       })
     } else if (this.listBody) { // default to listBody

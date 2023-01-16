@@ -201,14 +201,10 @@ export default class RedditAgent extends Agent {
     if (records) {
       records.forEach((record: MutationRecord) => {
         record.addedNodes.forEach((addedNode: Element) => {
-          console.log('addedNode', addedNode);
-          console.log('addedNode', typeof addedNode);
-          
-          if (addedNode.querySelector && typeof addedNode.querySelector === 'function') { // all addedNodes are object as type, but can also come in as string, hacky this is..
+          if (addedNode.querySelector && typeof addedNode.querySelector === 'function')  // all addedNodes are object as type, but can also come in as string, hacky this is..
             potentialLinks = potentialLinks.concat(
               this.getPotentialLinksFromElement(addedNode as HTMLElement)
             );
-          }
         });
       });
     } else if (this.contentBody) {

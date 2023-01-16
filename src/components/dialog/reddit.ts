@@ -29,7 +29,7 @@ export default class RedditDialog extends Dialog {
     this.dialogStyle = { style: { left: `${this.offsetLeft}px`, top: `${this.offsetTop}px` } };
 
     this.dialogBody = el('.SCDialogBody', this.dialogStyle, [
-      el('.SCDialogContent', new Slideshow(config.mock.relatedSources, 'Title'))
+      el('.SCDialogContent', new Slideshow(config.mock.relatedSources))
     ]);
 
     this.dialogCloseWrapper = el('.SCDialogBGWrapper');

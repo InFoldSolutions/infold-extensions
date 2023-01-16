@@ -32,7 +32,7 @@ export default class Post {
     this.postBody = el(`.SCPostBodyWrapper.${this.agent}`,
         el('.SCPostBody', [
           this.closeBtn,
-          new Slideshow(config.mock.relatedSources, 'Related News')
+          new Slideshow(config.mock.relatedSources)
         ])
       );
     

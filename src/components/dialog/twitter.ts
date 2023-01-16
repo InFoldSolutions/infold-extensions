@@ -28,7 +28,7 @@ export default class TwitterDialog extends Dialog {
     this.parent = document.getElementById('layers');
 
     this.dialogBody = el('.SCDialogBody', { style: { top: `${this.offsetTop}px`, left: `${this.offsetLeft}px` } }, [
-      el('.SCDialogContent', new Slideshow(config.mock.relatedSources, 'Title'))
+      el('.SCDialogContent', new Slideshow(config.mock.relatedSources))
     ]);
 
     this.dialogCloseWrapper = el('.SCDialogBGWrapper');

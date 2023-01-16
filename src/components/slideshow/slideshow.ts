@@ -24,10 +24,9 @@ export default class Slideshow {
 
   title: string
 
-  constructor(dataitems: Array<IDataItem>, title: string) {
+  constructor(dataitems: Array<IDataItem>) {
     logger.log('Slideshow: constructor');
 
-    this.title = title;
     this.groups = Groups.mapToSourceGroups(dataitems);
     this.sourceGroups = new Groups(
       this.groups, 

@@ -28,8 +28,8 @@ export default class Slide {
   }
 
   update(data: ISlideBody, index: number, items: Array<ISlideBody>, context: any) {
-    //console.log('slide update', data, index, context);
-
+    logger.log('Slide: update');
+    
     const _self = this;
 
     if (this.el.classList.contains('active'))
