@@ -32,8 +32,7 @@ export default class Slideshow {
     this.sourceGroups = new Groups(
       this.groups, 
       this.setCurrentSlides.bind(this),
-      this.nextArticle.bind(this),
-      this.prevArticle.bind(this)
+      this.setCurrentArticle.bind(this)
     ); // HTML Component
 
     // @ts-ignore
@@ -46,14 +45,10 @@ export default class Slideshow {
     this.setCurrentSlides(0, 0);
   }
 
-  nextArticle() {
-    logger.log('nextArticle');
-    this.slides.update(this.currentSlides, { activeSlide: this.activeSlide++ });
-  }
-
-  prevArticle() {
-    logger.log('prevArticle');
-    this.slides.update(this.currentSlides, { activeSlide: this.activeSlide-- });
+  setCurrentArticle(articleIndex: number) {
+    logger.log('setCurrentArticle');
+    this.activeSlide = articleIndex;
+    this.slides.update(this.currentSlides, { activeSlide: this.activeSlide });
   }
 
   setCurrentSlides(sourceIndex: number, groupIndex: number) {

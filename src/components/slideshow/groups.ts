@@ -16,16 +16,23 @@ export default class Groups {
   articleStats: HTMLElement
   articleNav: HTMLElement
   articleCount: HTMLElement
-  currentArticleIndex: HTMLElement
+  articleIndex: HTMLElement
 
   groupsNav: Array<HTMLElement>
   groups: Array<ISourceGroup>
 
   activeGroupIndex: number
   activeSourceIndex: number
+  activeArticleIndex: number
 
-  constructor(groups: Array<ISourceGroup>, onGroupSelect: Function, nextArticle: Function, prevArticle: Function) {
+  onGroupSelect: Function
+  onArticleNav: Function
+
+  constructor(groups: Array<ISourceGroup>, onGroupSelect: Function, onArticleNav: Function) {
     logger.log('Sources: constructor');
+
+    this.onGroupSelect = onGroupSelect;
+    this.onArticleNav = onArticleNav;
 
     this.groups = groups;
     this.groupsNav = this.groups.map((sourceGroup: ISourceGroup, gindex: number): HTMLElement => {
@@ -39,22 +46,23 @@ export default class Groups {
     });
 
     this.articleCount = el('span.SCArticleCount');
-    this.currentArticleIndex = el('span.SCCurrentArticleIndex');
+    this.articleIndex = el('span.SCCurrentArticleIndex');
     this.articleStats = el('.SCArticleStats', [
       el('span', 'Total'),
       '86',
       new StatsIcon()
-    ])
+    ]);
+
     this.articleNav = el('.SCArticleInfo', [
-        el('.SCArticleNav', [
-          el('span.SCArrow.SCLeft', new LeftArrowIcon()),
-          this.currentArticleIndex,
-          el('span.SCSeperator', '/'),
-          this.articleCount,
-          el('span.SCArrow.SCRight', new RightArrowIcon())
-        ]),
-        this.articleStats
-      ]
+      el('.SCArticleNav', [
+        el('span.SCArrow.SCLeft', new LeftArrowIcon()),
+        this.articleIndex,
+        el('span.SCSeperator', '/'),
+        this.articleCount,
+        el('span.SCArrow.SCRight', new RightArrowIcon())
+      ]),
+      this.articleStats
+    ]
     );
 
     this.el = el(`.SCGroupsWrapper`, [
@@ -69,18 +77,22 @@ export default class Groups {
       const arrow = findParentByCls(target, 'SCArrow', 3);
 
       if (arrow) {
-        const currentArticleIndex = parseInt(this.currentArticleIndex.textContent);
         if (arrow.classList.contains('SCLeft')) {
-          console.log('Move left');
-          this.currentArticleIndex.textContent = (currentArticleIndex - 1).toString();
-          prevArticle();
-          return;
+
+          if (this.activeArticleIndex === 0)
+            return;
+
+          this.activeArticleIndex--;
         } if (arrow.classList.contains('SCRight')) {
-          console.log('Move right');
-          this.currentArticleIndex.textContent = (currentArticleIndex + 1).toString();
-          nextArticle();
-          return;
+
+          if (this.activeArticleIndex + 1 === parseInt(this.articleCount.textContent))
+            return;
+
+          this.activeArticleIndex++;
         }
+
+        this.updateActiveArticle();
+        return;
       }
 
       const sourceIndex = parseInt(Groups.getItemIndex(target));
@@ -92,7 +104,7 @@ export default class Groups {
       this.updateActiveGroup(sourceIndex, groupIndex);
 
       // call callback
-      onGroupSelect(sourceIndex, groupIndex);
+      this.onGroupSelect(sourceIndex, groupIndex);
     };
 
     this.updateActiveGroup(0, 0);
@@ -111,7 +123,6 @@ export default class Groups {
 
     const articles: Array<IArticle> = currentSource.articles;
 
-    this.currentArticleIndex.textContent = '1';
     this.articleCount.textContent = articles.length.toString();
 
     const currentActive = this.el.querySelector('li.active');
@@ -123,6 +134,15 @@ export default class Groups {
 
     if (newActive)
       newActive.classList.add('active');
+
+    // Reset on group set
+    this.activeArticleIndex = 0;
+    this.articleIndex.textContent = (this.activeArticleIndex + 1).toString();
+  }
+
+  updateActiveArticle() {
+    this.articleIndex.textContent = (this.activeArticleIndex + 1).toString();
+    this.onArticleNav(this.activeArticleIndex);
   }
 
   static getItemIndex(target: HTMLElement) {
