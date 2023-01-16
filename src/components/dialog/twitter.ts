@@ -78,7 +78,7 @@ export default class TwitterDialog extends Dialog {
     if (showThreadElement) {
       const showThreadParentElement: HTMLElement = showThreadElement.parentElement.parentElement;
 
-      if (showThreadParentElement && showThreadParentElement.classList.contains('r-1777fci')) {
+      if (showThreadParentElement && (showThreadParentElement.classList.contains('r-1777fci') || showThreadParentElement.classList.contains('r-1iusvr4'))) {
         offsetTop -= (showThreadParentElement.clientHeight + 2); // 2 accounts for margin
       }
     }
