@@ -1,13 +1,13 @@
-import { el, mount, unmount } from 'redom';
+import { el, mount } from 'redom';
 
 import logger from '../../utils/logger';
 
-import Sources from '../slideshow/groups';
 import Slideshow from '../slideshow/slideshow';
 import config from '../../utils/config';
 
 import Dialog from './dialog';
-import { aggregateOffsetTop, findChildByText, findParentByAttribute } from '../../utils/helpers';
+import CloseIcon from '../svgs/closeIcon';
+import { findChildByText, findParentByAttribute } from '../../utils/helpers';
 
 export default class TwitterDialog extends Dialog {
 
@@ -17,6 +17,7 @@ export default class TwitterDialog extends Dialog {
   dialogCloseWrapper: HTMLElement
   mainElement: HTMLElement
   sectionElement: HTMLElement
+  closeBtn: HTMLElement
 
   constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement, closeCallback: Function) {
     logger.log('TwitterDialog: constructor');
@@ -25,9 +26,13 @@ export default class TwitterDialog extends Dialog {
 
     this.mainElement = document.querySelector('main');
     this.sectionElement = this.mainElement.querySelector('section');
-    //this.parent = document.getElementById('layers');
-    this.parent = article.parentElement.parentElement.parentElement.parentElement;
+    this.parent = findParentByAttribute(article, 'data-testid', 'cellInnerDiv')
     this.parent.style.zIndex = '9999';
+
+    this.closeBtn = el('.SCDialogCloseWrapper', new CloseIcon);
+    this.closeBtn.onclick = () => {
+      this.close();
+    }
 
     this.dialogBody = el('.SCDialogBody', [ // { style: { top: `${this.offsetTop}px`, left: `${this.offsetLeft}px` } },
       el('.SCDialogContent', new Slideshow(config.mock.relatedSources))
@@ -45,34 +50,17 @@ export default class TwitterDialog extends Dialog {
       }
     };
 
-    this.el = el(`.SCDialogWrapper.${agent}`,
+    this.el = el(`.SCDialogWrapper.${agent}`, { style: { bottom: `-${this.offsetTop}px` } },
       [
-        this.dialogCloseWrapper,
+        this.closeBtn,
         this.dialogBody
       ])
 
     mount(this.parent, this.el);
   }
 
-  get offsetLeft(): number {
-    let offsetLeft: number = 0;
-
-    // calculate offset left
-    if (this.mainElement) {
-      offsetLeft += this.mainElement.offsetLeft;
-    }
-
-    const btnWrapperParentElement: HTMLElement = this.btnWrapper.parentElement.parentElement.parentElement;
-
-    if (btnWrapperParentElement) {
-      offsetLeft += btnWrapperParentElement.offsetLeft + 16; // 16 accounts for the margin value, needs refactor
-    }
-
-    return offsetLeft
-  }
-
   get offsetTop(): number {
-    let offsetTop: number = aggregateOffsetTop(this.sectionElement);
+    let offsetTop: number = 204;
 
     // compensate for "Show this thread" btn
     const showThreadElement: HTMLElement = findChildByText(this.article, 'span', 'Show this thread');
@@ -96,15 +84,6 @@ export default class TwitterDialog extends Dialog {
       }
     }
 
-    const currentParent: HTMLElement = findParentByAttribute(this.article, 'data-testid', 'cellInnerDiv');
-    const transform: string = currentParent.style.transform;
-
-    const topPixels: number =
-      parseInt(transform.split('(')[1].replace(')', '').replace('px', '')) + // painfull style attribute parsing
-      currentParent.clientHeight +
-      offsetTop -
-      (this.btnWrapper.clientHeight + 15); // 15 accounts for the btnWrapper margin value, needs refactor
-
-    return topPixels;
+    return offsetTop;
   }
 }

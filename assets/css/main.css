@@ -159,6 +159,7 @@
   height: 22px;
   padding: 3px;
   background-color: transparent;
+  transition: 0.2s all linear;
   cursor: pointer;
   z-index: 5;
   border-radius: 50%;
@@ -261,6 +262,10 @@
   bottom: -204px;
 }
 
+.SCDialogWrapper.twitter .SCSummaryTitle {
+  width: calc(100% - 25px);
+}
+
 .SCDialogBGWrapper {
   position: fixed;
   top: 0;
@@ -291,18 +296,22 @@
 }
 
 .SCDialogCloseWrapper {
-  width: 36px;
-  height: 36px;
-  margin-left: calc(-8px);
+  width: 22px;
+  height: 22px;
+  padding: 3px;
   transition-property: background-color, box-shadow;
   transition-duration: 0.2s;
   line-height: 20px;
   border-radius: 9999px;
-  background-color: rgba(0, 0, 0, 0);
+  background-color: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  position: absolute;
+  right: 12px;
+  top: 20px;
+  z-index: 9;
 }
 
 .SCDialogCloseWrapper:hover {
@@ -310,9 +319,9 @@
 }
 
 .SCDialogCloseWrapper svg {
-  color: rgb(239, 243, 244);
-  width: 20px;
-  height: 20px;
+  color: rgb(29, 155, 240);
+  width: 18px;
+  height: 18px;
   fill: currentcolor;
   user-select: none;
 }
@@ -705,6 +714,15 @@
 
   .SCPostBodyWrapper.twitter .SCSlideshow {
     width: calc(100% - 8px);
+  }
+
+  .SCDialogCloseWrapper svg {
+    fill: currentColor;
+    color: rgb(29, 155, 240);
+  }
+
+  .SCDialogCloseWrapper:hover {
+    background-color: rgba(29, 155, 240, 0.1);
   }
 }
 
