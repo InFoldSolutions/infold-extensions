@@ -255,6 +255,12 @@
   z-index: 9999;
 }
 
+.SCDialogWrapper.twitter {
+  position: absolute;
+  left: 12.6%;
+  bottom: -204px;
+}
+
 .SCDialogBGWrapper {
   position: fixed;
   top: 0;

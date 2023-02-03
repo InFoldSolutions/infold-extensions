@@ -25,9 +25,11 @@ export default class TwitterDialog extends Dialog {
 
     this.mainElement = document.querySelector('main');
     this.sectionElement = this.mainElement.querySelector('section');
-    this.parent = document.getElementById('layers');
+    //this.parent = document.getElementById('layers');
+    this.parent = article.parentElement.parentElement.parentElement.parentElement;
+    this.parent.style.zIndex = '9999';
 
-    this.dialogBody = el('.SCDialogBody', { style: { top: `${this.offsetTop}px`, left: `${this.offsetLeft}px` } }, [
+    this.dialogBody = el('.SCDialogBody', [ // { style: { top: `${this.offsetTop}px`, left: `${this.offsetLeft}px` } },
       el('.SCDialogContent', new Slideshow(config.mock.relatedSources))
     ]);
 

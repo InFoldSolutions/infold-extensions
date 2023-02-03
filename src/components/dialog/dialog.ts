@@ -24,6 +24,11 @@ export default class Dialog {
     this.linkElement = linkElement;
   }
 
+  open() {
+    logger
+      .log('Dialog: open')
+  }
+
   close() {
     logger.log('Dialog: close');
 
