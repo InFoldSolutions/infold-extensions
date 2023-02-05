@@ -1,4 +1,4 @@
-import { el, mount } from 'redom';
+import { el, mount, unmount } from 'redom';
 
 import logger from '../../utils/logger';
 
@@ -59,6 +59,13 @@ export default class TwitterDialog extends Dialog {
     mount(this.parent, this.el);
   }
 
+  close() {
+    logger.log('TwitterDialog: close');
+
+    unmount(this.parent, this.el);
+    this.parent.style.zIndex = '0';
+  }
+
   get offsetTop(): number {
     let offsetTop: number = 204;
 
@@ -69,7 +76,7 @@ export default class TwitterDialog extends Dialog {
       const showThreadParentElement: HTMLElement = showThreadElement.parentElement.parentElement;
 
       if (showThreadParentElement && (showThreadParentElement.classList.contains('r-1777fci') || showThreadParentElement.classList.contains('r-1iusvr4'))) {
-        offsetTop -= (showThreadParentElement.clientHeight + 2); // 2 accounts for margin
+        offsetTop -= (showThreadParentElement.clientHeight + 4); // 4 accounts for margin
       }
     }
 

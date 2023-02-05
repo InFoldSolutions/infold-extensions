@@ -315,7 +315,7 @@
 }
 
 .SCDialogCloseWrapper:hover {
-  background-color: rgba(239, 243, 244, 0.1);
+  background-color: rgba(29, 155, 240, 0.1);
 }
 
 .SCDialogCloseWrapper svg {
@@ -714,15 +714,6 @@
 
   .SCPostBodyWrapper.twitter .SCSlideshow {
     width: calc(100% - 8px);
-  }
-
-  .SCDialogCloseWrapper svg {
-    fill: currentColor;
-    color: rgb(29, 155, 240);
-  }
-
-  .SCDialogCloseWrapper:hover {
-    background-color: rgba(29, 155, 240, 0.1);
   }
 }
 

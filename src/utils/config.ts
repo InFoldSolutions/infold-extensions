@@ -222,7 +222,7 @@ const config = {
       'source': {
         'name': 'CBSNews',
         'url': 'http://CBSNews.com',
-        'icon': 'https://pbs.twimg.com/profile_images/1374394535883673604/4VIECtDH_400x400.jpg'
+        'icon': 'https://pbs.twimg.com/profile_images/1617634745348661249/6YmPYpNd_400x400.jpg'
       },
       'articles': mockArticles
     }, {

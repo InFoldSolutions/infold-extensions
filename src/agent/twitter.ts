@@ -120,8 +120,6 @@ export default class TwitterAgent extends Agent {
     if (records) { // check newly added nodes for potential links
       records.forEach((record: MutationRecord) => {
         record.addedNodes.forEach((addedNode: Element) => {
-          /*if (addedNode.getAttribute('data-testid') === 'userAvatars') // Twitter padding is calculated dynamically with React, need to compensate in certain cases
-            this.addStatusPadding();*/
           if (addedNode.querySelector && typeof addedNode.querySelector === 'function')  // all addedNodes are object as type, but can also come in as string, hacky this is..
             potentialLinks = potentialLinks.concat(this.getPotentialLinksFromElement(addedNode));
         });
@@ -138,19 +136,6 @@ export default class TwitterAgent extends Agent {
     });
 
     return links;
-  }
-
-  addStatusPadding() {
-    logger.log('TwitterAgent: addStatusPadding');
-
-    /*const activeLink = this.activeLinks.find(link => link.active);
-
-    if (activeLink && activeLink.isDialog) {
-      const openDialog = activeLink.dialog.dialogBody;
-
-      if (openDialog)
-        openDialog.style.top = `${activeLink.dialog.offsetTop}px`;
-    }*/
   }
 
   appendLink(link: Link) {
