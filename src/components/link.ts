@@ -109,6 +109,11 @@ export default class Link {
   openDialog() {
     logger.log('Link: openDialog');
 
+    if (this.dialog) {
+      this.dialog.close();
+      return;
+    }
+
     let Dialog;
 
     switch (this.agent) {

@@ -11,18 +11,22 @@ import { findChildByText, findParentByAttribute } from '../../utils/helpers';
 
 export default class TwitterDialog extends Dialog {
 
+  closeCallback: Function
+
   el: HTMLElement
   parent: HTMLElement
   dialogBody: HTMLElement
-  dialogCloseWrapper: HTMLElement
+  closeBtn: HTMLElement
+  
   mainElement: HTMLElement
   sectionElement: HTMLElement
-  closeBtn: HTMLElement
 
   constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement, closeCallback: Function) {
     logger.log('TwitterDialog: constructor');
 
     super(agent, article, btnWrapper, linkElement);
+
+    this.closeCallback = closeCallback;
 
     this.mainElement = document.querySelector('main');
     this.sectionElement = this.mainElement.querySelector('section');
@@ -38,18 +42,6 @@ export default class TwitterDialog extends Dialog {
       el('.SCDialogContent', new Slideshow(config.mock.relatedSources))
     ]);
 
-    this.dialogCloseWrapper = el('.SCDialogBGWrapper');
-    this.dialogCloseWrapper.onclick = (evt: Event) => {
-      evt.stopPropagation();
-
-      const target: HTMLElement = evt.target as HTMLElement;
-
-      if (target.classList.contains('SCDialogBGWrapper')) {
-        closeCallback();
-        this.close();
-      }
-    };
-
     this.el = el(`.SCDialogWrapper.${agent}`, { style: { bottom: `-${this.offsetTop}px` } },
       [
         this.closeBtn,
@@ -62,7 +54,9 @@ export default class TwitterDialog extends Dialog {
   close() {
     logger.log('TwitterDialog: close');
 
+    this.closeCallback();
     unmount(this.parent, this.el);
+
     this.parent.style.zIndex = '0';
   }
 

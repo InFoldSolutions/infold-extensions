@@ -6,14 +6,17 @@ import Slideshow from '../slideshow/slideshow';
 import config from '../../utils/config';
 
 import Dialog from './dialog';
-import Sources from '../slideshow/groups';
+import CloseIcon from '../svgs/closeIcon';
 
 export default class RedditDialog extends Dialog {
+
+  closeCallback: Function
 
   el: HTMLElement
   parent: HTMLElement
   dialogBody: HTMLElement
-  dialogCloseWrapper: HTMLElement
+  closeBtn: HTMLElement
+
   linkElement: HTMLElement
 
   dialogStyle: Object
@@ -23,34 +26,39 @@ export default class RedditDialog extends Dialog {
 
     super(agent, article, btnWrapper, linkElement);
 
+    this.closeCallback = closeCallback;
+
     this.dialogStyle = {};
 
     this.parent = article.parentElement.parentElement;
-    this.dialogStyle = { style: { left: `${this.offsetLeft}px`, top: `${this.offsetTop}px` } };
+    this.parent.style.position = 'relative';
 
-    this.dialogBody = el('.SCDialogBody', this.dialogStyle, [
+    this.dialogStyle = { style: { left: `${this.offsetLeft}px`, bottom: `${this.offsetBottom}px` } };
+
+    this.closeBtn = el('.SCDialogCloseWrapper', new CloseIcon);
+    this.closeBtn.onclick = () => {
+      this.close();
+    }
+
+    this.dialogBody = el('.SCDialogBody', [
       el('.SCDialogContent', new Slideshow(config.mock.relatedSources))
     ]);
 
-    this.dialogCloseWrapper = el('.SCDialogBGWrapper');
-    this.dialogCloseWrapper.onclick = (evt: Event) => {
-      evt.stopPropagation();
-
-      const target: HTMLElement = evt.target as HTMLElement;
-
-      if (target.classList.contains('SCDialogBGWrapper')) {
-        closeCallback();
-        this.close();
-      }
-    };
-
-    this.el = el(`.SCDialogWrapper.${agent}`,
+    this.el = el(`.SCDialogWrapper.${agent}`, this.dialogStyle,
       [
-        this.dialogCloseWrapper,
+        this.closeBtn,
         this.dialogBody
       ]);
 
     mount(this.parent, this.el);
+  }
+
+  close() {
+    logger.log('RedditDialog: close');
+
+    this.closeCallback();
+    unmount(this.parent, this.el);
+    this.parent.style.removeProperty('position');
   }
 
   get offsetLeft(): number {
@@ -77,8 +85,7 @@ export default class RedditDialog extends Dialog {
     return offsetLeft;
   }
 
-  get offsetTop(): number {
-    const marginBottom: number = parseInt(getComputedStyle(this.article).marginBottom, 10) + 2;
-    return (marginBottom) ? -marginBottom : 0;
+  get offsetBottom(): number {
+    return -230;
   }
 }

@@ -11,7 +11,6 @@ export default class Dialog {
   linkElement: HTMLElement
 
   dialogBody: HTMLElement
-  dialogCloseWrapper: HTMLElement
 
   agent: string
 

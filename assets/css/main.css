@@ -727,6 +727,8 @@
   font-family: IBMPlexSans, Arial, sans-serif;
   color: #D7DADC;
   position: absolute;
+  min-height: 160px;
+  width: 530px;
 }
 
 .SCDialogWrapper.reddit .SCDialogHeader {
@@ -741,21 +743,20 @@
   box-shadow: 0 2px 4px 0 rgba(215, 218, 220, 0.2);
   margin: auto;
   position: relative;
-  min-height: 160px;
-  width: 530px;
 }
 
-.SCDialogWrapper.reddit .SCDialogHeader .SCDialogCloseWrapper {
-  margin-left: auto;
+.SCDialogWrapper.reddit .SCDialogCloseWrapper {
+  right: 26px;
+  top: 22px;
 }
 
-.SCDialogWrapper.reddit .SCDialogHeader .SCDialogCloseWrapper svg {
+.SCDialogWrapper.reddit .SCDialogCloseWrapper:hover {
+  background-color: rgba(215, 218, 220, 0.1);
+}
+
+.SCDialogWrapper.reddit .SCDialogCloseWrapper svg {
   color: #818384;
   width: 16px;
-}
-
-.SCDialogWrapper.reddit .SCDialogHeader .SCDialogCloseWrapper:hover {
-  background-color: rgba(0, 0, 0, 0);
 }
 
 .SCDialogWrapper.reddit .SCSlideshow {
@@ -771,6 +772,7 @@
   font-weight: 500;
   font-size: 16px;
   color: rgb(215, 218, 220);
+  width: calc(100% - 35px);
 }
 
 .SCDialogWrapper.reddit .SCSlideshowHeader {
