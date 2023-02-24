@@ -50,21 +50,17 @@ export default class Link {
     const btnWrapperClass: string = (this.isDialog) ? 'SCDialog' : 'SCPost';
     const relatedCount: string = '86';
 
-    let btnText: string = (this.agent === 'reddit') ? 'Related' : '';
-
     if (!this.isTextVersion) {
       buttonContent.push(el(`span.SCIconWrapper`, [
         el('span.SCiconBackground'),
         el(`i.far.fa-lightbulb-on`)
       ]));
-    } else {
-      btnText = 'Related';
     }
 
     textContent.push(el('span.SCcount', relatedCount))
 
-    if (btnText && btnText !== '')
-      textContent.push(el('span.SCText', btnText));
+    if (!this.isIconVersion)
+      textContent.push(el('span.SCText', 'Related'));
 
     buttonContent.push(el(`span.SCTextWrapper`, textContent));
 
@@ -170,6 +166,15 @@ export default class Link {
     return !isPostPage() || isPostPage() && Number(this.article.getAttribute('tabindex')) !== -1;
   }
 
+  get isIconVersion(): boolean {
+    switch (this.agent) {
+      case 'reddit':
+        return this.isCompactVersion;
+      case 'twitter':
+        return this.isDialog;
+    }
+  }
+
   get isTextVersion(): boolean {
     let isTextOnly: boolean = false;
 
@@ -179,5 +184,9 @@ export default class Link {
     }
 
     return isTextOnly;
+  }
+
+  get isCompactVersion(): boolean {
+    return this.wrapper.classList.contains('_3jwri54NGT-SRatPIZYiMo');
   }
 }

@@ -61,7 +61,7 @@ export default class TwitterDialog extends Dialog {
   }
 
   get offsetTop(): number {
-    let offsetTop: number = 204;
+    let offsetTop: number = 205;
 
     // compensate for "Show this thread" btn
     const showThreadElement: HTMLElement = findChildByText(this.article, 'span', 'Show this thread');

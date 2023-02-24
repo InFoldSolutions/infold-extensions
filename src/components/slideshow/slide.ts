@@ -11,6 +11,7 @@ import logger from '../../utils/logger';
 import CalendarIcon from '../svgs/calendarIcon';
 import LinkIcon from '../svgs/linkIcon';
 import RedditIcon from '../svgs/redditIcon';
+import TipIcon from '../svgs/tipIcon';
 
 const timeAgo = new TimeAgo('en-US');
 
@@ -50,10 +51,10 @@ export default class Slide {
 
     this.summaryInfo = [
       el('span.SCHandle.SCMarginRight', data.handle),
-      el('span.SCIcon', new CalendarIcon()),
-      el('span.SCdate.SCMarginRight', timeAgo.format(data.timestamp)),
+      el('span.SCIcon', new CalendarIcon(), { title: timeAgo.format(data.timestamp) }),
       el('span.SCIcon', new LinkIcon()),
-      el('a.SClink', data.link, { href: data.link, target: '_blank' })
+      el('a.SClink.SCMarginRight', data.link, { href: data.link, target: '_blank' }),
+      el('span.SCIcon.SCTipIcon', [new TipIcon(), el('span.SCTipIconText', 'Thanks')])
     ]
 
     let keywords: Array<HTMLElement>;

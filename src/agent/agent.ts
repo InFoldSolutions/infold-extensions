@@ -5,7 +5,7 @@ import logger from "../utils/logger";
 export default class Agent {
 
   processing: boolean
-  
+
   currentProcess: Link
   activeLinks: Link[] = []
 
@@ -28,9 +28,14 @@ export default class Agent {
     let newItems: boolean = false;
     let links: Link[] = await this.findLinks(records, delay);
 
-    if (links.length > 0) {
-      this.activeLinks = this.activeLinks.concat(links);
-      newItems = true;
+
+    for (let l = 0; l < links.length; l++) {
+      const link = links[l];
+
+      if (!this.activeLinks.find((activeItem: Link) => activeItem.node === link.node)) {
+        this.activeLinks.push(link);
+        newItems = true;
+      }
     }
 
     if (this.processing === false && newItems)
@@ -57,6 +62,16 @@ export default class Agent {
       }
     } else
       this.processing = false;
+  }
+
+  clearActiveLinks() {
+    logger.log('Agent: clearActiveLinks');
+
+    if (this.currentProcess)
+      this.currentProcess.disableLoading();
+
+    this.activeLinks = [];
+    this.processing = false;
   }
 
   async findLinks(records: MutationRecord[], delay: boolean): Promise<Link[]> {

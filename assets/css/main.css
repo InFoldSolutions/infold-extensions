@@ -220,6 +220,7 @@
   color: rgb(215, 218, 220);
   font-size: 16px;
   font-weight: 500;
+  margin-bottom: 5px;
 }
 
 .SCPostBodyWrapper.reddit .SCSummaryInfo {
@@ -356,7 +357,7 @@
 }
 
 .SCSummaryInfo {
-  font-size: 14px;
+  font-size: 15px;
   margin: 0px 0px 8px;
   color: rgb(113, 118, 123);
   display: flex;
@@ -425,6 +426,37 @@
   display: flex;
 }
 
+.SCTipIcon {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.SCTipIcon svg {
+  height: 0.95em;
+  margin-right: 4px;
+}
+
+.SCTipIconText {
+  color: #ffd635;
+  opacity: 0;
+  transition: 0.2s linear opacity;
+  font-size: 0.95em;
+  margin-top: 1px;
+}
+
+.SCTipIcon .cls-1 {
+  fill: none;
+  stroke: #ffd635;
+  stroke-linecap: square;
+  stroke-miterlimit: 10;
+  stroke-width: 1.91px;
+}
+
+.SCTipIcon:hover .SCTipIconText {
+  opacity: 1;
+}
+
 .SCSeparator {
   padding: 0px 4px;
 }
@@ -466,18 +498,26 @@
 }
 
 .SCGroupsWrapper ul {
-  border-left: 1px solid rgb(113, 118, 123);
-  margin: 0 12px 10px 0px;
+  border-left: 1px dashed rgba(113, 118, 123, 0.8);
+  margin: 0 12px 12px 0px;
   padding-left: 6px;
   position: relative;
+  transition: border-color 0.2s ease-in-out;
 }
 
 .SCGroupsWrapper .SCDateGroup {
   position: absolute;
-  bottom: -18px;
+  bottom: -19px;
   left: -3px;
-  color: rgb(113, 118, 123);
+  color: rgba(113, 118, 123, 0.8);
   font-size: 0.8em;
+  transition: color 0.2s ease-in-out;
+}
+
+.SCGroupsWrapper ul:hover,
+.SCGroupsWrapper ul:hover .SCDateGroup {
+  color: rgba(113, 118, 123, 1);
+  border-color: rgba(113, 118, 123, 1);
 }
 
 .SCGroupsWrapper li {
@@ -624,7 +664,7 @@
 }
 
 .SCSlideshow {
-  min-height: 130px;
+  min-height: 135px;
   width: 100%;
   text-align: left;
   overflow: hidden;
@@ -760,7 +800,7 @@
 }
 
 .SCDialogWrapper.reddit .SCSlideshow {
-  min-height: 120px;
+  min-height: 127px;
 }
 
 .SCDialogWrapper.reddit .SCSlideshow .SCSlide {
@@ -773,7 +813,8 @@
   font-size: 16px;
   color: rgb(215, 218, 220);
   width: calc(100% - 35px);
-  max-height: 19px;
+  max-height: 18px;
+  margin-bottom: 7px;
 }
 
 .SCDialogWrapper.reddit .SCSlideshowHeader {
@@ -790,7 +831,7 @@
 }
 
 .SCDialogWrapper.reddit .SCSummaryInfo {
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .SCDialogWrapper.reddit .SCMarginRight,
@@ -806,7 +847,7 @@
   color: rgb(215, 218, 220);
   font-size: 14px;
   line-height: 16px;
-  height: 32px;
+  height: 33px;
 }
 
 .SCDialogWrapper.reddit .SCKeyword {
@@ -896,5 +937,5 @@
 **/
 
 .SCMarginRight {
-  margin-right: 12px;
+  margin-right: 8px;
 }

@@ -28,8 +28,6 @@ export default class RedditDialog extends Dialog {
 
     this.closeCallback = closeCallback;
 
-    this.dialogStyle = {};
-
     this.parent = article.parentElement.parentElement;
     this.parent.style.position = 'relative';
 
@@ -82,10 +80,17 @@ export default class RedditDialog extends Dialog {
       offsetLeft += linkWrapperElement.offsetLeft;
     }
 
+    if (this.btnWrapper.classList.contains('_3jwri54NGT-SRatPIZYiMo')) {
+      offsetLeft -= 390;
+    }
+
     return offsetLeft;
   }
 
   get offsetBottom(): number {
-    return -230;
+    if (this.btnWrapper.classList.contains('_3jwri54NGT-SRatPIZYiMo')) 
+      return -227;
+
+    return -235;
   }
 }

@@ -155,7 +155,8 @@ const config = {
     }
   },
   'defaults': {
-    'processedClass': 'SCprocessed'
+    'processedClass': 'SCprocessed',
+    'notAllowedExtensions': ['.jpg', '.jpeg', '.png', '.gif', '.gifv', '.mp4', '.webm'],
   },
   'dategroups': [{
     'listName': 'last24hList',

@@ -23,6 +23,8 @@ export default class TwitterAgent extends Agent {
   providerType: string
   rootID: string
 
+  contentInterval: NodeJS.Timeout
+
   constructor() {
     logger.log('TwitterAgent: constructor');
 
@@ -41,6 +43,7 @@ export default class TwitterAgent extends Agent {
     this.bodyObserver = null;
 
     this.rootBody = document.getElementById(this.rootID);
+
     this.bodyObserver = new MutationObserver(this.onBodyChange.bind(this));
     this.bodyObserver.observe(this.rootBody, {
       childList: true,
@@ -48,21 +51,15 @@ export default class TwitterAgent extends Agent {
     });
   }
 
-  onBodyChange(records?: MutationRecord[]) {
+  onBodyChange() {
     logger.log('TwitterAgent: onBodyChange');
 
-    if (records) { // check newly added nodes for potential links
-      records.forEach((record: MutationRecord) => {
-        record.addedNodes.forEach((addedNode: Element) => {
-          const main = addedNode.querySelector(`main > div`);
+    // We need to locate main > div for simple child observering
+    this.mainBody = this.rootBody.querySelector(`main > div`);
 
-          if (main && !this.mainBody) {
-            this.mainBody = main;
-            this.bodyObserver.disconnect();
-            this.startMainObserver();
-          }
-        });
-      });
+    if (this.mainBody) {
+      this.bodyObserver.disconnect();
+      this.startMainObserver();
     }
   }
 
@@ -76,29 +73,37 @@ export default class TwitterAgent extends Agent {
   }
 
   mainBodyChange() {
-    logger.log('mainBodyChange');
+    logger.log('TwitterAgent: mainBodyChange');
+
+    if (this.contentInterval)
+      clearInterval(this.contentInterval);
 
     if (this.contentObserver)
       this.stopContentObserver();
 
-    this.startContentObserver();
+    this.contentInterval = setInterval(() => {
+      this.startContentObserver();
+
+      if (this.contentObserver)
+        clearInterval(this.contentInterval);
+    }, 1000);
   }
 
   startContentObserver() {
     logger.log('TwitterAgent: startContentObserver');
 
-    this.listBody = document.querySelector(`[data-testid="primaryColumn"]`);
+    this.listBody = document.querySelector(`div[data-testid="primaryColumn"]`);
 
     if (!this.listBody)
       return;
+
+    this.onDomChange();
 
     this.contentObserver = new MutationObserver(this.onDomChange.bind(this))
     this.contentObserver.observe(this.listBody, {
       childList: true,
       subtree: true
     });
-
-    super.onDomChange();
   }
 
   stopContentObserver() {
@@ -106,13 +111,15 @@ export default class TwitterAgent extends Agent {
 
     this.contentObserver.disconnect();
     this.contentObserver = null;
+
+    this.clearActiveLinks();
   }
 
   async findLinks(records?: MutationRecord[], delay?: boolean) {
     logger.log('TwitterAgent: findLinks');
 
-    if (delay || !records)
-      await timeDelay(1100);
+    if (delay)
+      await timeDelay(1000);
 
     let links: Link[] = [];
     let potentialLinks: IPotentialLink[] = [];
@@ -120,11 +127,12 @@ export default class TwitterAgent extends Agent {
     if (records) { // check newly added nodes for potential links
       records.forEach((record: MutationRecord) => {
         record.addedNodes.forEach((addedNode: Element) => {
-          if (addedNode.querySelector && typeof addedNode.querySelector === 'function')  // all addedNodes are object as type, but can also come in as string, hacky this is..
+          if (addedNode.querySelector && typeof addedNode.querySelector === 'function' && !addedNode.classList.contains('SCbuttonWrapper'))  // all addedNodes are object as type, but can also come in as string, hacky this is..
             potentialLinks = potentialLinks.concat(this.getPotentialLinksFromElement(addedNode));
         });
       })
     } else if (this.listBody) { // default to listBody
+      logger.log('TwitterAgent: findLinks - default to listBody');
       potentialLinks = this.getPotentialLinksFromElement(this.listBody);
     }
 
@@ -153,17 +161,14 @@ export default class TwitterAgent extends Agent {
     logger.log('TwitterAgent: getPotentialLinksFromElement');
 
     const potentials: IPotentialLink[] = [];
-    const article: HTMLElement = addedNode.querySelector('article[data-testid="tweet"]');
+    const articles: NodeListOf<HTMLElement> = addedNode.querySelectorAll('article[data-testid="tweet"]');
 
-    if (article && !article.classList.contains(config.defaults.processedClass)) {
+    for (let a = 0; a < articles.length; a++) {
+      const article: HTMLElement = articles[a];
       const elements: HTMLElement[] = Array.from(article.querySelectorAll('a[target="_blank"]'));
 
       for (let i = 0; i < elements.length; i++) {
         const element = elements[i] as HTMLAnchorElement;
-
-        if (!element)
-          continue;
-
         const url: URL = new URL(element.href);
         const linksToTwitter: Boolean = url.host.includes('twitter.com');
 
@@ -173,6 +178,9 @@ export default class TwitterAgent extends Agent {
         const wrapperNode: HTMLElement = article.querySelector('div[role="group"]');
 
         if (!wrapperNode)
+          continue;
+
+        if (wrapperNode.querySelector('.SCDialog'))
           continue;
 
         potentials.push({
