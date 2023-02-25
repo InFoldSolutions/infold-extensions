@@ -106,9 +106,20 @@
   color: #4FBCFF;
 }
 
+.SCbuttonWrapper.reddit.TextCompact {
+  padding: 0;
+  margin: 0px 12px 0px 0px;
+  top: 0;
+  display: block;
+}
+
 .SCbuttonWrapper.reddit.active,
 .SCbuttonWrapper.reddit:hover {
   background-color: rgba(215, 218, 220, 0.1);
+}
+
+.SCbuttonWrapper.reddit.TextCompact:hover {
+  background-color: transparent;
 }
 
 .SCbuttonWrapper.reddit .SCTextWrapper {
@@ -118,6 +129,10 @@
   font-family: IBMPlexSans, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   padding: 0;
+}
+
+.SCbuttonWrapper.reddit.TextCompact .SCTextWrapper {
+  font-weight: 400;
 }
 
 .SCbuttonWrapper.reddit .SCIconWrapper {

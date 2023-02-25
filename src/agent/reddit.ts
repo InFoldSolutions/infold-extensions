@@ -20,8 +20,6 @@ export default class RedditAgent extends Agent {
   contentWrapperObserver: MutationObserver
   contentObserver: MutationObserver
 
-  providerType: string
-
   contentBodyClass: string
   contentWrapperClass: string
   outboundLinkClass: string
@@ -150,14 +148,6 @@ export default class RedditAgent extends Agent {
 
     let contentBody: HTMLElement = this.pageWrapper.querySelector(`[data-testid="posts-list"]`);
 
-    if (!contentBody) {
-      let firstItem: HTMLElement = this.pageWrapper.querySelector(`[data-scroller-first]`);
-
-      if (firstItem) {
-        contentBody = firstItem.parentElement
-      }
-    }
-
     if (!contentBody)
       contentBody = this.pageWrapper.querySelector(`.${this.contentBodyClass}`);
 
@@ -255,7 +245,7 @@ export default class RedditAgent extends Agent {
 
     potentialLinks.forEach((potentialLink: IPotentialLink) => {
       links.push(new Link(
-        this.providerType,
+        this,
         potentialLink
       ));
     });

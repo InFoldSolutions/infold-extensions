@@ -20,7 +20,6 @@ export default class TwitterAgent extends Agent {
   listBody: Element
   mainBody: Element
   rootBody: HTMLElement
-  providerType: string
   rootID: string
 
   contentInterval: NodeJS.Timeout
@@ -118,8 +117,8 @@ export default class TwitterAgent extends Agent {
   async findLinks(records?: MutationRecord[], delay?: boolean) {
     logger.log('TwitterAgent: findLinks');
 
-    if (delay)
-      await timeDelay(1000);
+    if (delay || !records)
+      await timeDelay(500);
 
     let links: Link[] = [];
     let potentialLinks: IPotentialLink[] = [];
@@ -138,7 +137,7 @@ export default class TwitterAgent extends Agent {
 
     potentialLinks.forEach((potentialLink: IPotentialLink) => {
       links.push(new Link(
-        this.providerType,
+        this,
         potentialLink
       ));
     });

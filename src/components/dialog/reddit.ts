@@ -31,7 +31,7 @@ export default class RedditDialog extends Dialog {
     this.parent = article.parentElement.parentElement;
     this.parent.style.position = 'relative';
 
-    this.dialogStyle = { style: { left: `${this.offsetLeft}px`, bottom: `${this.offsetBottom}px` } };
+    this.dialogStyle = { style: { left: `${this.offsetLeft}px`, top: `${this.offsetTop}px` } };
 
     this.closeBtn = el('.SCDialogCloseWrapper', new CloseIcon);
     this.closeBtn.onclick = () => {
@@ -87,10 +87,11 @@ export default class RedditDialog extends Dialog {
     return offsetLeft;
   }
 
-  get offsetBottom(): number {
-    if (this.btnWrapper.classList.contains('_3jwri54NGT-SRatPIZYiMo')) 
-      return -227;
+  get offsetTop(): number {
+    if (this.btnWrapper.classList.contains('_3jwri54NGT-SRatPIZYiMo')) {
+      return ((this.btnWrapper.offsetHeight / 2) + (this.article.offsetHeight / 2));
+    }
 
-    return -235;
+    return this.article.offsetHeight - 2; // 4 accounts for margin;
   }
 }

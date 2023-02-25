@@ -1,4 +1,5 @@
 import { el } from 'redom';
+import Agent from '../agent/agent';
 
 import { IPotentialLink } from '../types';
 
@@ -12,8 +13,9 @@ import Post from './post';
 
 export default class Link {
 
+  agent: Agent
+
   status: string
-  agent: string
   href: string
 
   active: boolean
@@ -26,7 +28,7 @@ export default class Link {
   dialog: RedditDialog | TwitterDialog
   post: Post
 
-  constructor(agent: string, potentialLInk: IPotentialLink) {
+  constructor(agent: Agent, potentialLInk: IPotentialLink) {
     logger.log('Link: constructor');
 
     this.agent = agent;
@@ -47,15 +49,19 @@ export default class Link {
 
     const buttonContent: Array<HTMLElement> = [];
     const textContent: Array<HTMLElement> = [];
-    const btnWrapperClass: string = (this.isDialog) ? 'SCDialog' : 'SCPost';
     const relatedCount: string = '86';
 
-    if (!this.isTextVersion) {
+    let btnWrapperClass: string = (this.isDialog) ? 'SCDialog' : 'SCPost';
+
+    if (!this.isTextVersion && !this.isTextCompactVersion) {
       buttonContent.push(el(`span.SCIconWrapper`, [
         el('span.SCiconBackground'),
         el(`i.far.fa-lightbulb-on`)
       ]));
     }
+
+    if (this.isTextCompactVersion)
+      btnWrapperClass += '.TextCompact';
 
     textContent.push(el('span.SCcount', relatedCount))
 
@@ -64,7 +70,7 @@ export default class Link {
 
     buttonContent.push(el(`span.SCTextWrapper`, textContent));
 
-    this.el = el(`.SCbuttonWrapper.${this.agent}.${btnWrapperClass}`, buttonContent);
+    this.el = el(`.SCbuttonWrapper.${this.agent.providerType}.${btnWrapperClass}`, buttonContent);
     this.el.onclick = this.onClick.bind(this);
   }
 
@@ -83,7 +89,7 @@ export default class Link {
   togglePostView() {
     logger.log('Link: togglePostView');
 
-    if (this.agent === 'twitter')
+    if (this.agent.providerType === 'twitter')
       this.article.style.flexWrap = 'wrap';
 
     if (this.post) {
@@ -92,7 +98,7 @@ export default class Link {
     }
 
     this.post = new Post(
-      this.agent,
+      this.agent.providerType,
       this.article,
       this.wrapper,
       this.el,
@@ -105,6 +111,8 @@ export default class Link {
   openDialog() {
     logger.log('Link: openDialog');
 
+    this.agent.clearOpenDialogs();
+
     if (this.dialog) {
       this.dialog.close();
       return;
@@ -112,7 +120,7 @@ export default class Link {
 
     let Dialog;
 
-    switch (this.agent) {
+    switch (this.agent.providerType) {
       case 'reddit':
         Dialog = RedditDialog;
         break;
@@ -122,7 +130,7 @@ export default class Link {
     }
 
     this.dialog = new Dialog(
-      this.agent,
+      this.agent.providerType,
       this.article,
       this.wrapper,
       this.el,
@@ -135,14 +143,14 @@ export default class Link {
   closePost() {
     logger.log('Link: closePost');
     this.post = null;
-    
+
     this.toggleActiveState();
   }
 
   closeDialog() {
     logger.log('Link: closeDialog');
     this.dialog = null;
-    
+
     this.toggleActiveState();
   }
 
@@ -167,7 +175,7 @@ export default class Link {
   }
 
   get isIconVersion(): boolean {
-    switch (this.agent) {
+    switch (this.agent.providerType) {
       case 'reddit':
         return this.isCompactVersion;
       case 'twitter':
@@ -178,7 +186,7 @@ export default class Link {
   get isTextVersion(): boolean {
     let isTextOnly: boolean = false;
 
-    switch (this.agent) {
+    switch (this.agent.providerType) {
       case 'twitter':
         return !this.isDialog;
     }
@@ -188,5 +196,9 @@ export default class Link {
 
   get isCompactVersion(): boolean {
     return this.wrapper.classList.contains('_3jwri54NGT-SRatPIZYiMo');
+  }
+
+  get isTextCompactVersion(): boolean {
+    return this.wrapper.classList.contains('_2IpBiHtzKzIxk2fKI4UOv1');
   }
 }

@@ -9,6 +9,8 @@ export default class Agent {
   currentProcess: Link
   activeLinks: Link[] = []
 
+  providerType: string
+
   constructor() {
     logger.log('Agent: constructor');
     this.processing = false;
@@ -27,7 +29,6 @@ export default class Agent {
 
     let newItems: boolean = false;
     let links: Link[] = await this.findLinks(records, delay);
-
 
     for (let l = 0; l < links.length; l++) {
       const link = links[l];
@@ -72,6 +73,15 @@ export default class Agent {
 
     this.activeLinks = [];
     this.processing = false;
+  }
+
+  clearOpenDialogs() {
+    logger.log('Agent: clearOpenDialogs');
+
+    this.activeLinks.filter((link: Link) => link.dialog)
+      .forEach((link: Link) => {
+        link.dialog.close();
+      });
   }
 
   async findLinks(records: MutationRecord[], delay: boolean): Promise<Link[]> {
