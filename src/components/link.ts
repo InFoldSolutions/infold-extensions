@@ -20,7 +20,6 @@ export default class Link {
 
   active: boolean
 
-  node: HTMLAnchorElement
   wrapper: HTMLElement
   article: HTMLElement
   el: HTMLElement
@@ -33,8 +32,7 @@ export default class Link {
 
     this.agent = agent;
     this.article = potentialLInk.article;
-    this.node = potentialLInk.element;
-    this.href = this.node.href;
+    this.href = potentialLInk.href;
     this.wrapper = potentialLInk.wrapperNode;
     this.status = 'pending';
   }

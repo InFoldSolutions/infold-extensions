@@ -164,11 +164,29 @@ export default class TwitterAgent extends Agent {
 
     for (let a = 0; a < articles.length; a++) {
       const article: HTMLElement = articles[a];
-      const elements: HTMLElement[] = Array.from(article.querySelectorAll('a[target="_blank"]'));
+      const elements: string[] = Array.from(article.querySelectorAll('a[target="_blank"]'))
+        .map((item: HTMLAnchorElement) => item.href);
+
+      const nestedElements = Array.from(article.querySelectorAll('[data-testid="tweetText"]'));
+
+      if (nestedElements.length > 1) {
+        for (let n = 0; n < nestedElements.length; n++) {
+          const nestedElement: HTMLElement = nestedElements[n] as HTMLElement;
+          const nestedLink: HTMLElement = nestedElement.querySelector('[dir="ltr"]');
+
+          if (nestedLink) {
+            const firstChild: HTMLElement = nestedLink.firstChild as HTMLElement;
+
+            if (firstChild.textContent === 'http://' || firstChild.textContent === 'https://') {
+              elements.push(nestedLink.textContent)
+            }
+          }
+        }
+      }
 
       for (let i = 0; i < elements.length; i++) {
-        const element = elements[i] as HTMLAnchorElement;
-        const url: URL = new URL(element.href);
+        const href: string = elements[i];
+        const url: URL = new URL(href);
         const linksToTwitter: Boolean = url.host.includes('twitter.com');
 
         if (linksToTwitter)
@@ -183,7 +201,7 @@ export default class TwitterAgent extends Agent {
           continue;
 
         potentials.push({
-          element,
+          href,
           wrapperNode,
           article
         });

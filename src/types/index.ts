@@ -59,7 +59,7 @@ export interface IDateGroup {
 }
 
 export interface IPotentialLink {
-  element: HTMLAnchorElement,
+  href: string,
   wrapperNode: HTMLElement,
   article: HTMLElement
 }

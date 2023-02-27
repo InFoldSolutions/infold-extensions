@@ -33,7 +33,7 @@ export default class Agent {
     for (let l = 0; l < links.length; l++) {
       const link = links[l];
 
-      if (!this.activeLinks.find((activeItem: Link) => activeItem.node === link.node)) {
+      if (!this.activeLinks.find((activeItem: Link) => activeItem.article === link.article)) {
         this.activeLinks.push(link);
         newItems = true;
       }

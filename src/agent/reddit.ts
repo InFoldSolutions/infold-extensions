@@ -295,7 +295,7 @@ export default class RedditAgent extends Agent {
         post.classList.add(config.defaults.processedClass);
 
         potentials.push({
-          element,
+          href: element.href,
           wrapperNode,
           article: post
         });
