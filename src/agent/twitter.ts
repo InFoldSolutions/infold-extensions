@@ -169,36 +169,49 @@ export default class TwitterAgent extends Agent {
 
       const nestedElements = Array.from(article.querySelectorAll('[data-testid="tweetText"]'));
 
-      if (nestedElements.length > 1) {
+      let textLength: number = 0;
+
+      if (nestedElements.length > 0) {
         for (let n = 0; n < nestedElements.length; n++) {
           const nestedElement: HTMLElement = nestedElements[n] as HTMLElement;
-          const nestedLink: HTMLElement = nestedElement.querySelector('[dir="ltr"]');
+          const nestedLinks: HTMLElement[] = Array.from(nestedElement.querySelectorAll('[dir="ltr"]'));
 
-          if (nestedLink) {
-            const firstChild: HTMLElement = nestedLink.firstChild as HTMLElement;
+          textLength += nestedElement.textContent.length;
 
-            if (firstChild.textContent === 'http://' || firstChild.textContent === 'https://') {
-              elements.push(nestedLink.textContent)
+          if (nestedLinks.length > 0) {
+
+            for(let i = 0; i < nestedLinks.length; i++) {
+              const nestedLink: HTMLElement = nestedLinks[i] as HTMLElement;
+              const firstChild: HTMLElement = nestedLink.firstChild as HTMLElement;
+
+              if (firstChild.textContent === 'http://' || firstChild.textContent === 'https://') {
+                elements.push(nestedLink.textContent);
+                break;
+              }
             }
           }
         }
       }
 
+      const wrapperNode: HTMLElement = article.querySelector('div[role="group"]');
+
+      if (!wrapperNode)
+        continue;
+
+      if (wrapperNode.querySelector('.SCDialog'))
+        continue;
+
+      if (!elements.length) {
+        potentials.push({
+          href: 'https://mocktextlength.com',
+          wrapperNode,
+          article
+        });
+      }
+
       for (let i = 0; i < elements.length; i++) {
         const href: string = elements[i];
-        const url: URL = new URL(href);
-        const linksToTwitter: Boolean = url.host.includes('twitter.com');
-
-        if (linksToTwitter)
-          continue;
-
-        const wrapperNode: HTMLElement = article.querySelector('div[role="group"]');
-
-        if (!wrapperNode)
-          continue;
-
-        if (wrapperNode.querySelector('.SCDialog'))
-          continue;
+        //const url: URL = new URL(href);
 
         potentials.push({
           href,

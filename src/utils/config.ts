@@ -138,6 +138,7 @@ const mockArticles = [{
 }];
 
 const config = {
+  'minTextLenght': 100,
   'agents': {
     'reddit': {
       'providerType': 'reddit',

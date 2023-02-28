@@ -2,12 +2,12 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
 <metadata>
-Created by FontForge 20201107 at Mon Dec 19 19:36:11 2022
+Created by FontForge 20201107 at Tue Feb 28 13:22:45 2023
  By root
 Copyright (c) Font Awesome
 </metadata>
 <!-- Font Awesome Pro 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) --><defs>
-<font id="FontAwesome5Brands-Regular" horiz-adv-x="576" >
+<font id="FontAwesome5Brands-Regular" horiz-adv-x="512" >
   <font-face 
     font-family="Font Awesome 5 Brands Regular"
     font-weight="400"
@@ -22,7 +22,10 @@ Copyright (c) Font Awesome
     unicode-range="U+0020-F266"
   />
     <missing-glyph />
-    <glyph glyph-name="youtube" unicode="&#xf167;" 
+    <glyph glyph-name="facebook" unicode="&#xf09a;" 
+d="M504 192c0 -123.78 -90.6904 -226.38 -209.25 -245v173.31h57.7803l11 71.6904h-68.7803v46.5498c0 19.6104 9.61035 38.7305 40.4102 38.7305h31.2803v61s-28.3809 4.83984 -55.5205 4.83984c-56.6699 0 -93.6699 -34.3301 -93.6699 -96.4805v-54.6396h-63v-71.6904h63
+v-173.31c-118.56 18.6201 -209.25 121.22 -209.25 245c0 137 111 248 248 248s248 -111 248 -248z" />
+    <glyph glyph-name="youtube" unicode="&#xf167;" horiz-adv-x="576" 
 d="M549.655 323.917c11.4121 -42.8672 11.4121 -132.305 11.4121 -132.305s0 -89.4385 -11.4121 -132.306c-6.28125 -23.6494 -24.7871 -41.5 -48.2842 -47.8203c-42.5908 -11.4863 -213.371 -11.4863 -213.371 -11.4863s-170.78 0 -213.371 11.4863
 c-23.4971 6.32031 -42.0029 24.1709 -48.2842 47.8203c-11.4121 42.8672 -11.4121 132.306 -11.4121 132.306s0 89.4375 11.4121 132.305c6.28125 23.6504 24.7871 42.2754 48.2842 48.5967c42.5908 11.4863 213.371 11.4863 213.371 11.4863s170.781 0 213.371 -11.4863
 c23.4971 -6.32031 42.0029 -24.9463 48.2842 -48.5967zM232.145 110.409l142.739 81.2012l-142.739 81.2051v-162.406z" />

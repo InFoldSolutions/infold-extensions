@@ -33,7 +33,8 @@ export default class Agent {
     for (let l = 0; l < links.length; l++) {
       const link = links[l];
 
-      if (!this.activeLinks.find((activeItem: Link) => activeItem.article === link.article)) {
+      if (!this.activeLinks.find((activeItem: Link) => activeItem.article === link.article && activeItem.href === link.href)) {
+        this.appendLink(link);
         this.activeLinks.push(link);
         newItems = true;
       }
@@ -50,10 +51,9 @@ export default class Agent {
     this.currentProcess = this.activeLinks.find((link: Link) => link.status === 'pending');
 
     if (this.currentProcess !== undefined) {
-      this.appendLink(this.currentProcess);
-
       try {
         await this.currentProcess.getInfo();
+        console.log('GetInfo Finished!')
         this.processLinks();
       } catch (error) {
         logger.error(`There was a problem while fetching the link data ${this.currentProcess}, error ${error}`);

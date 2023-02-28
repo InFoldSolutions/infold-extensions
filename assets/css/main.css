@@ -7,21 +7,22 @@
   -webkit-box-direction: normal;
   -webkit-box-orient: horizontal;
   flex-direction: row;
-
   min-height: 20px;
   font-size: 15px;
   line-height: 20px;
-  color: rgb(29, 155, 240);
-  /* #4FBCFF; */
-  /*#ff4500;*/
+  color: rgb(113, 118, 123);
   position: relative;
   transition-property: background-color, box-shadow, color;
   transition-duration: 0.2s;
 }
 
-/*.SCbuttonWrapper:hover {
-  color: rgba(255, 208, 0, 0.8);
-}*/
+.SCbuttonWrapper.SCHasResults {
+  color: rgb(29, 155, 240);
+}
+
+.SCbuttonWrapper .SCcount {
+  display: flex
+}
 
 .SCiconBackground {
   margin: -7px;
@@ -53,6 +54,9 @@
 }
 
 .SCTextWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   top: 1px;
   position: relative;
   min-width: 1em;
@@ -103,7 +107,6 @@
   margin: 0 0 0 -4px;
   cursor: pointer;
   top: -0.5px;
-  color: #4FBCFF;
 }
 
 .SCbuttonWrapper.reddit.TextCompact {
@@ -111,6 +114,10 @@
   margin: 0px 12px 0px 0px;
   top: 0;
   display: block;
+}
+
+.SCbuttonWrapper.reddit.SCHasResults {
+  color: #4FBCFF;
 }
 
 .SCbuttonWrapper.reddit.active,
@@ -953,4 +960,30 @@
 
 .SCMarginRight {
   margin-right: 8px;
+}
+
+.SCLoader {
+  width: 15px;
+  height: 15px;
+  border: 3px solid rgba(113, 118, 123, 0.2);
+  border-bottom-color: rgba(113, 118, 123, 0.8);
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: SCrotation 1s linear infinite;
+}
+
+.SCHasResults .SCLoader {
+  border-color: rgba(29, 155, 240, 0.2);
+  border-bottom-color: rgba(29, 155, 240, 0.8);
+}
+
+@keyframes SCrotation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }

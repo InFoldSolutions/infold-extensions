@@ -3,7 +3,7 @@ import Agent from '../agent/agent';
 
 import { IPotentialLink } from '../types';
 
-import { isPostPage } from '../utils/helpers';
+import { isPostPage, timeDelay } from '../utils/helpers';
 import logger from '../utils/logger';
 
 import RedditDialog from './dialog/reddit';
@@ -19,10 +19,13 @@ export default class Link {
   href: string
 
   active: boolean
+  hasActiveResults: boolean
 
   wrapper: HTMLElement
   article: HTMLElement
   el: HTMLElement
+  countEl: HTMLElement
+  textEl: HTMLElement
 
   dialog: RedditDialog | TwitterDialog
   post: Post
@@ -35,11 +38,21 @@ export default class Link {
     this.href = potentialLInk.href;
     this.wrapper = potentialLInk.wrapperNode;
     this.status = 'pending';
+    this.hasActiveResults = (this.href !== '' && this.href !== 'https://mocktextlength.com');
   }
 
   async getInfo() {
     logger.log('Link: getInfo');
+    await timeDelay(1000);
+
     this.status = 'success';
+    const relatedCount: string = this.hasActiveResults ? '86' : '0';
+
+    if (this.countEl)
+      this.countEl.innerHTML = relatedCount;
+
+    if (this.textEl)
+      this.textEl.innerHTML = 'Related';
   }
 
   preparetBaseHTML() {
@@ -47,7 +60,6 @@ export default class Link {
 
     const buttonContent: Array<HTMLElement> = [];
     const textContent: Array<HTMLElement> = [];
-    const relatedCount: string = '86';
 
     let btnWrapperClass: string = (this.isDialog) ? 'SCDialog' : 'SCPost';
 
@@ -61,14 +73,24 @@ export default class Link {
     if (this.isTextCompactVersion)
       btnWrapperClass += '.TextCompact';
 
-    textContent.push(el('span.SCcount', relatedCount))
+    if (this.hasActiveResults)
+      btnWrapperClass += '.SCHasResults';
 
-    if (!this.isIconVersion)
-      textContent.push(el('span.SCText', 'Related'));
+    this.countEl = el('span.SCcount', el('span.SCLoader')); 
+    textContent.push(this.countEl);
+
+    if (!this.isIconVersion) {
+      this.textEl = el('span.SCtext');
+      textContent.push(this.textEl);
+    }
 
     buttonContent.push(el(`span.SCTextWrapper`, textContent));
 
     this.el = el(`.SCbuttonWrapper.${this.agent.providerType}.${btnWrapperClass}`, buttonContent);
+
+    if (this.hasActiveResults)
+      this.el.setAttribute('title', this.href);
+
     this.el.onclick = this.onClick.bind(this);
   }
 
