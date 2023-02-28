@@ -46,7 +46,11 @@ export default class Link {
     await timeDelay(1000);
 
     this.status = 'success';
+
     const relatedCount: string = this.hasActiveResults ? '86' : '0';
+
+    if (this.hasActiveResults)
+      this.el.classList.add('SCHasResults');
 
     if (this.countEl)
       this.countEl.innerHTML = relatedCount;
@@ -73,10 +77,7 @@ export default class Link {
     if (this.isTextCompactVersion)
       btnWrapperClass += '.TextCompact';
 
-    if (this.hasActiveResults)
-      btnWrapperClass += '.SCHasResults';
-
-    this.countEl = el('span.SCcount', el('span.SCLoader')); 
+    this.countEl = el('span.SCcount', el('span.SCLoader'));
     textContent.push(this.countEl);
 
     if (!this.isIconVersion) {

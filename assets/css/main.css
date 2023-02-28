@@ -12,8 +12,7 @@
   line-height: 20px;
   color: rgb(113, 118, 123);
   position: relative;
-  transition-property: background-color, box-shadow, color;
-  transition-duration: 0.2s;
+  transition: 0.2s linear;
 }
 
 .SCbuttonWrapper.SCHasResults {
