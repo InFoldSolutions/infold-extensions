@@ -19,16 +19,37 @@ export function findChildByText(node: HTMLElement, element: string, text: string
     return null;
 }
 
+export function findChildrenByText(node: HTMLElement, element: string, text: string): HTMLElement[] {
+  const ElementXPathResult: XPathResult =
+    document.evaluate(`.//${element}[contains(., '${text}')]`,
+      node,
+      null,
+      XPathResult.ANY_TYPE,
+      null
+    );
+
+  const nodes = [];
+
+  while (node = ElementXPathResult.iterateNext() as HTMLElement) {
+    nodes.push(node);
+  }
+
+  if (nodes.length > 0)
+    return nodes;
+  else
+    return null;
+}
+
 export function findParentByCls(node: HTMLElement, cls: string, maxTries: number = 0): HTMLElement {
   let tries = 0;
-  
+
   while (!node.classList || !node.classList.contains(cls)) {
     node = node.parentElement;
-    
+
     if (!node || (maxTries > 0 && tries === maxTries)) {
       return null;
     }
-    
+
     tries++;
   }
 

@@ -171,7 +171,7 @@ export default class TwitterAgent extends Agent {
 
       let textLength: number = 0;
 
-      if (nestedElements.length > 0) {
+      if (elements.length === 0 && nestedElements.length > 0) {
         for (let n = 0; n < nestedElements.length; n++) {
           const nestedElement: HTMLElement = nestedElements[n] as HTMLElement;
           const nestedLinks: HTMLElement[] = Array.from(nestedElement.querySelectorAll('[dir="ltr"]'));
@@ -201,7 +201,7 @@ export default class TwitterAgent extends Agent {
       if (wrapperNode.querySelector('.SCDialog'))
         continue;
 
-      if (!elements.length) {
+      if (!elements.length && textLength > 400) {
         potentials.push({
           href: 'https://mocktextlength.com',
           wrapperNode,

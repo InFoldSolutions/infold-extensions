@@ -7,7 +7,7 @@ import config from '../../utils/config';
 
 import Dialog from './dialog';
 import CloseIcon from '../svgs/closeIcon';
-import { findChildByText, findParentByAttribute } from '../../utils/helpers';
+import { findChildByText, findChildrenByText, findParentByAttribute } from '../../utils/helpers';
 
 export default class TwitterDialog extends Dialog {
 
@@ -64,13 +64,18 @@ export default class TwitterDialog extends Dialog {
     let offsetTop: number = 205;
 
     // compensate for "Show this thread" btn
-    const showThreadElement: HTMLElement = findChildByText(this.article, 'span', 'Show this thread');
+    const showThreadElements: HTMLElement[] = findChildrenByText(this.article, 'span', 'Show this thread');
+    console.log('showThreadElements');
 
-    if (showThreadElement) {
-      const showThreadParentElement: HTMLElement = showThreadElement.parentElement.parentElement;
+    if (showThreadElements && showThreadElements.length > 0) {
+      for (let i = 0; i < showThreadElements.length; i++) {
+        const showThreadElement: HTMLElement = showThreadElements[i];
+        console.log('showThreadElement', showThreadElement)
+        const showThreadParentElement: HTMLElement = showThreadElement.parentElement.parentElement;
 
-      if (showThreadParentElement && (showThreadParentElement.classList.contains('r-1777fci') || showThreadParentElement.classList.contains('r-1iusvr4'))) {
-        offsetTop -= (showThreadParentElement.clientHeight + 4); // 4 accounts for margin
+        if (showThreadParentElement && (showThreadParentElement.classList.contains('r-1777fci') || showThreadParentElement.classList.contains('r-1iusvr4'))) {
+          offsetTop -= (showThreadParentElement.clientHeight + 4); // 4 accounts for margin
+        }
       }
     }
 
