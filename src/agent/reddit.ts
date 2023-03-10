@@ -284,6 +284,8 @@ export default class RedditAgent extends Agent {
         const url: URL = new URL(element.href);
         const extension: string = path.extname(url.pathname);
 
+        console.log('url.host', url.host);
+        
         if (config.blacklistedDomains.includes(url.host))
           continue;
 
