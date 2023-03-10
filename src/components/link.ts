@@ -1,9 +1,11 @@
 import { el } from 'redom';
+import retry from 'async-retry';
+
 import Agent from '../agent/agent';
-
 import { IPotentialLink } from '../types';
+import config from '../utils/config';
 
-import { isPostPage, timeDelay } from '../utils/helpers';
+import { isPostPage } from '../utils/helpers';
 import logger from '../utils/logger';
 
 import RedditDialog from './dialog/reddit';
@@ -19,7 +21,6 @@ export default class Link {
   href: string
 
   active: boolean
-  hasActiveResults: boolean
 
   wrapper: HTMLElement
   article: HTMLElement
@@ -38,25 +39,70 @@ export default class Link {
     this.href = potentialLInk.href;
     this.wrapper = potentialLInk.wrapperNode;
     this.status = 'pending';
-    this.hasActiveResults = (this.href !== '' && this.href !== 'https://mocktextlength.com');
   }
 
   async getInfo() {
     logger.log('Link: getInfo');
-    await timeDelay(1000);
+    this.status = 'processing';
 
-    this.status = 'success';
+    console.time('apiCall');
+    const response = await retry(
+      async (bail) => {
+        // if anything throws, we retry
+        const res = await fetch(config.api, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            url: this.href
+          })
+        });
 
-    const relatedCount: string = this.hasActiveResults ? '86' : '0';
+        const data = await res.json();
+        console.log('data response', this.href, data.meta);
 
-    if (this.hasActiveResults)
+        if (!data || !data.meta || data.meta.success === false)
+          return;
+
+        if (config.failedStatus.includes(data.meta.status))
+          return;
+
+        if (config.retryStatus.includes(data.meta.status))
+          throw new Error('Re-try');
+
+        if (data.meta.status === 'analyzed' && data.meta.total_results > 0)
+          return data;
+
+        return;
+      },
+      {
+        retries: 50,
+        maxTimeout: 1000,
+        factor: 1,
+        randomize: false
+      }
+    );
+    console.timeEnd('apiCall');
+
+    console.log('final response', response);
+
+    if (response) {
+      const relatedCount: number = response.meta.total_results;
+
+      this.status = 'success';
       this.el.classList.add('SCHasResults');
 
-    if (this.countEl)
-      this.countEl.innerHTML = relatedCount;
+      if (this.countEl)
+        this.countEl.innerHTML = relatedCount.toString();
 
-    if (this.textEl)
-      this.textEl.innerHTML = 'Related';
+      if (this.textEl)
+        this.textEl.innerHTML = 'Related';
+    } else {
+      this.status = 'error';
+      this.countEl.innerHTML = '0';
+    }
   }
 
   preparetBaseHTML() {
@@ -88,10 +134,7 @@ export default class Link {
     buttonContent.push(el(`span.SCTextWrapper`, textContent));
 
     this.el = el(`.SCbuttonWrapper.${this.agent.providerType}.${btnWrapperClass}`, buttonContent);
-
-    if (this.hasActiveResults)
-      this.el.setAttribute('title', this.href);
-
+    this.el.setAttribute('title', this.href);
     this.el.onclick = this.onClick.bind(this);
   }
 

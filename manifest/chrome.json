@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "InFold",
   "description": "MAKING NEWS INFORMATIVE SINCE 2018",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "icons": {
     "64": "images/icons/icon_64.png",
     "128": "images/icons/icon_128.png"

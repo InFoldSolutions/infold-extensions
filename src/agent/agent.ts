@@ -58,7 +58,9 @@ export default class Agent {
       } catch (error) {
         logger.error(`There was a problem while fetching the link data ${this.currentProcess}, error ${error}`);
 
-        this.currentProcess.disableLoading();
+        if (!this.currentProcess)
+          this.currentProcess.disableLoading();
+          
         this.processLinks();
       }
     } else

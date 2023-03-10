@@ -138,6 +138,10 @@ const mockArticles = [{
 }];
 
 const config = {
+  'api': 'https://api.infold.ai/articles/related',
+  'retryStatus': ['processing', 'analyzing'],
+  'failedStatus': ['invalid', 'error'],
+  'blacklistedDomains': ['twitter.com', 'reddit.com', 'youtube.com', 'imgur.com', 'redd.it', 'youtu.be', 'gfycat.com'],
   'minTextLenght': 100,
   'agents': {
     'reddit': {

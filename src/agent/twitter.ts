@@ -180,7 +180,7 @@ export default class TwitterAgent extends Agent {
 
           if (nestedLinks.length > 0) {
 
-            for(let i = 0; i < nestedLinks.length; i++) {
+            for (let i = 0; i < nestedLinks.length; i++) {
               const nestedLink: HTMLElement = nestedLinks[i] as HTMLElement;
               const firstChild: HTMLElement = nestedLink.firstChild as HTMLElement;
 
@@ -201,17 +201,12 @@ export default class TwitterAgent extends Agent {
       if (wrapperNode.querySelector('.SCDialog'))
         continue;
 
-      if (!elements.length && textLength > 400) {
-        potentials.push({
-          href: 'https://mocktextlength.com',
-          wrapperNode,
-          article
-        });
-      }
-
       for (let i = 0; i < elements.length; i++) {
         const href: string = elements[i];
-        //const url: URL = new URL(href);
+        const url: URL = new URL(href);
+
+        if (config.blacklistedDomains.includes(url.host))
+          continue;
 
         potentials.push({
           href,
