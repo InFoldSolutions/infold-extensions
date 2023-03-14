@@ -38,11 +38,12 @@
 import { ISource } from '../types/index';
 
 export function transformSource(data: any): ISource {
-    const { name, url, icon } = data;
+  const { name, url, logo, social } = data;
 
-    return {
-        name,
-        url,
-        icon
-    };
+  return {
+    name,
+    url,
+    icon: logo,
+    handle: social[0].handle
+  };
 }

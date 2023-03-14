@@ -6,6 +6,8 @@ import logger from '../utils/logger';
 import config from '../utils/config';
 import CloseIcon from './svgs/closeIcon';
 
+import { IDataItem } from '../types';
+
 export default class Post {
 
   el: HTMLElement
@@ -19,7 +21,7 @@ export default class Post {
 
   closeCallback: Function
 
-  constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement, closeCallback: Function) {
+  constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement, closeCallback: Function, data: IDataItem[]) {
     logger.log('Post: constructor');
 
     this.closeCallback = closeCallback;
@@ -32,7 +34,7 @@ export default class Post {
     this.postBody = el(`.SCPostBodyWrapper.${this.agent}`,
         el('.SCPostBody', [
           this.closeBtn,
-          new Slideshow(config.mock.relatedSources)
+          new Slideshow(data)
         ])
       );
     

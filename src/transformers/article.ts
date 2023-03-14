@@ -34,13 +34,22 @@
 import { IArticle } from '../types';
 
 export default function transformArticle(data: any): IArticle {
-    const { title, url, score, timestamp, summary } = data;
-    
-    return {
-        title,
-        body: summary,
-        link: url,
-        timestamp,
-        keywords: []
-    };
+  const { title, url, score, timestamp, summary } = data;
+
+  return {
+    title,
+    body: summary,
+    link: url,
+    timestamp: new Date(timestamp).getTime(),
+    keywords: [{
+      'icon': 'fab.fa-youtube',
+      'word': 'Charlie Bartolo'
+    }, {
+      'icon': 'fab.fa-google',
+      'word': 'Kearne Solanke'
+    }, {
+      'icon': 'fab.fa-wikipedia-w',
+      'word': 'London Crime'
+    }]
+  };
 }

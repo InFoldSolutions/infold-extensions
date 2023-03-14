@@ -489,6 +489,10 @@
 .SClink {
   color: rgb(29, 155, 240);
   text-decoration: none;
+  max-width: 165px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .SClink:hover {
@@ -834,7 +838,7 @@
   font-size: 16px;
   color: rgb(215, 218, 220);
   width: calc(100% - 35px);
-  max-height: 18px;
+  max-height: 17px;
   margin-bottom: 7px;
 }
 

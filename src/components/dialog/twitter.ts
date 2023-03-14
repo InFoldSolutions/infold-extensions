@@ -1,13 +1,13 @@
 import { el, mount, unmount } from 'redom';
 
 import logger from '../../utils/logger';
+import { findChildByText, findChildrenByText, findParentByAttribute } from '../../utils/helpers';
 
 import Slideshow from '../slideshow/slideshow';
-import config from '../../utils/config';
-
 import Dialog from './dialog';
 import CloseIcon from '../svgs/closeIcon';
-import { findChildByText, findChildrenByText, findParentByAttribute } from '../../utils/helpers';
+
+import { IDataItem } from '../../types';
 
 export default class TwitterDialog extends Dialog {
 
@@ -21,7 +21,7 @@ export default class TwitterDialog extends Dialog {
   mainElement: HTMLElement
   sectionElement: HTMLElement
 
-  constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement, closeCallback: Function) {
+  constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement, closeCallback: Function, data: IDataItem[]) {
     logger.log('TwitterDialog: constructor');
 
     super(agent, article, btnWrapper, linkElement);
@@ -39,7 +39,7 @@ export default class TwitterDialog extends Dialog {
     }
 
     this.dialogBody = el('.SCDialogBody', [ // { style: { top: `${this.offsetTop}px`, left: `${this.offsetLeft}px` } },
-      el('.SCDialogContent', new Slideshow(config.mock.relatedSources))
+      el('.SCDialogContent', new Slideshow(data))
     ]);
 
     this.el = el(`.SCDialogWrapper.${agent}`, { style: { bottom: `-${this.offsetTop}px` } },

@@ -49,11 +49,14 @@ export default class Slide {
     if (this.summaryBody)
       unmount(this.el, this.summaryBody);
 
+    const linkText = data.link.replace(/https\:\/\/|http\:\/\/|www\./gi, '');
+    const twitterHandleLink = `https://twitter.com/${data.handle.replace('@', '')}`;
+
     this.summaryInfo = [
-      el('span.SCHandle.SCMarginRight', data.handle),
+      el('a.SCHandle.SCMarginRight', data.handle, { href: twitterHandleLink, target: '_blank' }),
       el('span.SCIcon', new CalendarIcon(), { title: timeAgo.format(data.timestamp) }),
       el('span.SCIcon', new LinkIcon()),
-      el('a.SClink.SCMarginRight', data.link, { href: data.link, target: '_blank' }),
+      el('a.SClink.SCMarginRight', linkText, { href: data.link, target: '_blank' }),
       el('span.SCIcon.SCTipIcon', [new TipIcon(), el('span.SCTipIconText', 'Thanks')])
     ]
 

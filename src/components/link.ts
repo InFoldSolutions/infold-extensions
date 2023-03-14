@@ -2,7 +2,7 @@ import { el } from 'redom';
 import retry from 'async-retry';
 
 import Agent from '../agent/agent';
-import { IPotentialLink } from '../types';
+import { IDataItem, IPotentialLink } from '../types';
 import config from '../utils/config';
 
 import { isPostPage } from '../utils/helpers';
@@ -12,6 +12,8 @@ import RedditDialog from './dialog/reddit';
 import TwitterDialog from './dialog/twitter';
 
 import Post from './post';
+import { transformSource } from '../transformers/source';
+import transformArticle from '../transformers/article';
 
 export default class Link {
 
@@ -31,6 +33,8 @@ export default class Link {
   dialog: RedditDialog | TwitterDialog
   post: Post
 
+  data: IDataItem[]
+
   constructor(agent: Agent, potentialLInk: IPotentialLink) {
     logger.log('Link: constructor');
 
@@ -47,7 +51,7 @@ export default class Link {
 
     console.time('apiCall');
     const response = await retry(
-      async (bail) => {
+      async () => {
         // if anything throws, we retry
         const res = await fetch(config.api, {
           method: 'POST',
@@ -78,9 +82,8 @@ export default class Link {
         return;
       },
       {
-        retries: 50,
-        maxTimeout: 1000,
-        factor: 1,
+        retries: 10,
+        maxTimeout: 2000,
         randomize: false
       }
     );
@@ -90,6 +93,13 @@ export default class Link {
 
     if (response) {
       const relatedCount: number = response.meta.total_results;
+
+      this.data = response.data.map((item: any) => {
+        return {
+          source: transformSource(item.source),
+          articles: item.articles.map((article: any) => transformArticle(article))
+        }
+      });
 
       this.status = 'success';
       this.el.classList.add('SCHasResults');
@@ -166,7 +176,8 @@ export default class Link {
       this.article,
       this.wrapper,
       this.el,
-      this.closePost.bind(this)
+      this.closePost.bind(this),
+      this.data
     );
 
     this.toggleActiveState();
@@ -198,7 +209,8 @@ export default class Link {
       this.article,
       this.wrapper,
       this.el,
-      this.closeDialog.bind(this)
+      this.closeDialog.bind(this),
+      this.data
     );
 
     this.toggleActiveState();

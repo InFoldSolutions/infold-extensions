@@ -14,6 +14,7 @@ export interface ISource {
   name: string
   url: string
   icon: string
+  handle: string
   articles?: Array<IArticle>
 }
 

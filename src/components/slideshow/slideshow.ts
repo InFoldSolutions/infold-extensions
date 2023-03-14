@@ -72,7 +72,7 @@ export default class Slideshow {
         description: article.body,
         timestamp: article.timestamp,
         link: article.link,
-        handle: source.name,
+        handle: source.handle,
         icon: source.icon,
         keywords: article.keywords
       }
