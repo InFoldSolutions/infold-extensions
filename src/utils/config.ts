@@ -138,11 +138,15 @@ const mockArticles = [{
 }];
 
 const config = {
-  'api': 'https://api.infold.ai/articles/related',
   'retryStatus': ['processing', 'analyzing'],
   'failedStatus': ['invalid', 'error'],
   'blacklistedDomains': ['twitter.com', 'reddit.com', 'youtube.com', 'www.youtube.com', 'imgur.com', 'redd.it', 'youtu.be', 'gfycat.com', 'i.redd.it', 'alb.reddit.com', 'preview.redd.it', 'help.twitter.com'],
   'minTextLenght': 100,
+  'api': {
+    'url': 'https://api.infold.ai/articles/related',
+    'similarity': 0.72,
+    'maxRelatedArticles': 20,
+  },
   'agents': {
     'reddit': {
       'providerType': 'reddit',

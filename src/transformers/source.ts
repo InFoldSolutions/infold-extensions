@@ -44,6 +44,6 @@ export function transformSource(data: any): ISource {
     name,
     url,
     icon: logo,
-    handle: social[0].handle
+    handle: (social && social.length > 0) ? social[0].handle : name
   };
 }

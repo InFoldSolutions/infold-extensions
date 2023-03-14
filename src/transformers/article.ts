@@ -40,6 +40,7 @@ export default function transformArticle(data: any): IArticle {
     title,
     body: summary,
     link: url,
+    score,
     timestamp: new Date(timestamp).getTime(),
     keywords: [{
       'icon': 'fab.fa-youtube',

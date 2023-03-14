@@ -185,7 +185,8 @@ export default class TwitterAgent extends Agent {
               const firstChild: HTMLElement = nestedLink.firstChild as HTMLElement;
 
               if (firstChild.textContent === 'http://' || firstChild.textContent === 'https://') {
-                elements.push(nestedLink.textContent.replace('...', ''));
+                const linkText: string = nestedLink.textContent;
+                elements.push(linkText.replace('…', ''));
                 break;
               }
             }

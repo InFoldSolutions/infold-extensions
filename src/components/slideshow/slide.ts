@@ -30,7 +30,7 @@ export default class Slide {
 
   update(data: ISlideBody, index: number, items: Array<ISlideBody>, context: any) {
     logger.log('Slide: update');
-    
+
     const _self = this;
 
     if (this.el.classList.contains('active'))
@@ -49,14 +49,15 @@ export default class Slide {
     if (this.summaryBody)
       unmount(this.el, this.summaryBody);
 
-    const linkText = data.link.replace(/https\:\/\/|http\:\/\/|www\./gi, '');
-    const twitterHandleLink = `https://twitter.com/${data.handle.replace('@', '')}`;
+    const linkText: string = data.link.replace(/https\:\/\/|http\:\/\/|www\./gi, '');
+    const twitterHandleLink: string = `https://twitter.com/${data.handle.replace('@', '')}`;
+    const score: number = data.score ? Math.round(data.score * 100) : 0;
 
     this.summaryInfo = [
-      el('a.SCHandle.SCMarginRight', data.handle, { href: twitterHandleLink, target: '_blank' }),
-      el('span.SCIcon', new CalendarIcon(), { title: timeAgo.format(data.timestamp) }),
-      el('span.SCIcon', new LinkIcon()),
-      el('a.SClink.SCMarginRight', linkText, { href: data.link, target: '_blank' }),
+      el('a.SCHandle.SClink', data.handle, { title: data.handle, href: twitterHandleLink, target: '_blank' }),
+      el('span.SCdate.SCIcon', [new CalendarIcon(), el('span', timeAgo.format(data.timestamp, 'mini'), ' ago')]),
+      el('span.SCIcon', new LinkIcon(), { title: `${score}%` }),
+      el('a.SClink.SCMarginRight', linkText, { title: data.link, href: data.link, target: '_blank' }),
       el('span.SCIcon.SCTipIcon', [new TipIcon(), el('span.SCTipIconText', 'Thanks')])
     ]
 
@@ -80,7 +81,7 @@ export default class Slide {
     }
 
     this.summaryBody = el('.SCSummaryBody', [
-      el('.SCSummaryTitle', data.title),
+      el('.SCSummaryTitle', { title: data.title }, data.title),
       el('.SCSummaryInfo', this.summaryInfo),
       el('.SCSummaryContent', data.description),
       el('.SCKeywordsWrapper', keywords)

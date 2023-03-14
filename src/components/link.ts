@@ -47,69 +47,70 @@ export default class Link {
 
   async getInfo() {
     logger.log('Link: getInfo');
+
     this.status = 'processing';
 
-    console.time('apiCall');
-    const response = await retry(
-      async () => {
-        // if anything throws, we retry
-        const res = await fetch(config.api, {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            url: this.href
-          })
+    try {
+      const response = await retry(
+        async () => {
+          // if anything throws, we retry
+          const res = await fetch(`${config.api.url}?limit=${config.api.maxRelatedArticles}`, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              url: this.href,
+              similarity: config.api.similarity,
+            })
+          });
+
+          const data = await res.json();
+
+          if (!data || !data.meta || data.meta.success === false)
+            return;
+
+          if (config.failedStatus.includes(data.meta.status))
+            return;
+
+          if (config.retryStatus.includes(data.meta.status))
+            throw new Error('Re-try');
+
+          if (data.meta.status === 'analyzed' && data.meta.total_results > 0)
+            return data;
+
+          return;
+        },
+        {
+          retries: 5,
+          maxTimeout: 2000,
+          randomize: false
+        }
+      );
+
+      if (response) {
+        const relatedCount: number = response.meta.total_results;
+
+        this.data = response.data.map((item: any) => {
+          return {
+            source: transformSource(item.source),
+            articles: item.articles.map((article: any) => transformArticle(article))
+          }
         });
 
-        const data = await res.json();
-        console.log('data response', this.href, data.meta);
+        this.status = 'success';
+        this.el.classList.add('SCHasResults');
 
-        if (!data || !data.meta || data.meta.success === false)
-          return;
+        if (this.countEl)
+          this.countEl.innerHTML = relatedCount.toString();
 
-        if (config.failedStatus.includes(data.meta.status))
-          return;
-
-        if (config.retryStatus.includes(data.meta.status))
-          throw new Error('Re-try');
-
-        if (data.meta.status === 'analyzed' && data.meta.total_results > 0)
-          return data;
-
-        return;
-      },
-      {
-        retries: 10,
-        maxTimeout: 2000,
-        randomize: false
-      }
-    );
-    console.timeEnd('apiCall');
-
-    console.log('final response', response);
-
-    if (response) {
-      const relatedCount: number = response.meta.total_results;
-
-      this.data = response.data.map((item: any) => {
-        return {
-          source: transformSource(item.source),
-          articles: item.articles.map((article: any) => transformArticle(article))
-        }
-      });
-
-      this.status = 'success';
-      this.el.classList.add('SCHasResults');
-
-      if (this.countEl)
-        this.countEl.innerHTML = relatedCount.toString();
-
-      if (this.textEl)
-        this.textEl.innerHTML = 'Related';
-    } else {
+        if (this.textEl)
+          this.textEl.innerHTML = 'Related';
+      } else 
+        throw new Error('No response');
+    } catch (error) {
+      logger.error('Error while fetching data');
       this.status = 'error';
       this.countEl.innerHTML = '0';
     }

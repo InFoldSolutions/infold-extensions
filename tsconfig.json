@@ -3,14 +3,14 @@
     "outDir": "./dist/",
     "noImplicitAny": true,
     "module": "es6",
-    "target": "es5",
+    "target": "es6",
     "downlevelIteration": true,
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "lib": [
       "ES2021",
-      "dom"
+      "dom",
     ]
   }
 }

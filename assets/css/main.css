@@ -245,7 +245,7 @@
 }
 
 .SCPostBodyWrapper.reddit .SCSummaryInfo {
-  margin-bottom: 11px;
+  margin-bottom: 8px;
 }
 
 .SCPostBodyWrapper.reddit .SCSummaryContent {
@@ -373,13 +373,16 @@
 .SCSummaryTitle {
   font-weight: 700;
   margin-bottom: 3px;
-  max-height: 20px;
+  line-height: 20px;
   overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .SCSummaryInfo {
   font-size: 15px;
-  margin: 0px 0px 8px;
+  line-height: 17px;
+  margin: 0px 0px 6px;
   color: rgb(113, 118, 123);
   display: flex;
   align-items: center;
@@ -484,12 +487,17 @@
 
 .SCdate {
   margin-right: 5px;
+  align-items: center;
+}
+
+.SCdate svg {
+  margin-right: 4px;
 }
 
 .SClink {
   color: rgb(29, 155, 240);
   text-decoration: none;
-  max-width: 165px;
+  max-width: 145px;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -497,6 +505,17 @@
 
 .SClink:hover {
   text-decoration: underline;
+}
+
+.SCHandle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right: 5px;
+}
+
+.SCDialogWrapper .SCHandle {
+  max-width: 75px;
 }
 
 .SCSummaryContent {
@@ -667,7 +686,7 @@
 .SCSlideshowWrapper {
   display: flex;
   width: 100%;
-  margin: 25px 0px;
+  margin: 23px 0px 25px;
   flex-direction: column;
 }
 
@@ -825,7 +844,7 @@
 }
 
 .SCDialogWrapper.reddit .SCSlideshow {
-  min-height: 127px;
+  min-height: 130px;
 }
 
 .SCDialogWrapper.reddit .SCSlideshow .SCSlide {
@@ -838,8 +857,7 @@
   font-size: 16px;
   color: rgb(215, 218, 220);
   width: calc(100% - 35px);
-  max-height: 17px;
-  margin-bottom: 7px;
+  margin-bottom: 5px;
 }
 
 .SCDialogWrapper.reddit .SCSlideshowHeader {

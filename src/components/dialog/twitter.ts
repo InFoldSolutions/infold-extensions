@@ -65,12 +65,10 @@ export default class TwitterDialog extends Dialog {
 
     // compensate for "Show this thread" btn
     const showThreadElements: HTMLElement[] = findChildrenByText(this.article, 'span', 'Show this thread');
-    console.log('showThreadElements');
 
     if (showThreadElements && showThreadElements.length > 0) {
       for (let i = 0; i < showThreadElements.length; i++) {
         const showThreadElement: HTMLElement = showThreadElements[i];
-        console.log('showThreadElement', showThreadElement)
         const showThreadParentElement: HTMLElement = showThreadElement.parentElement.parentElement;
 
         if (showThreadParentElement && (showThreadParentElement.classList.contains('r-1777fci') || showThreadParentElement.classList.contains('r-1iusvr4'))) {

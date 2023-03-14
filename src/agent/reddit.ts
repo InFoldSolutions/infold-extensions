@@ -197,7 +197,7 @@ export default class RedditAgent extends Agent {
     this.contentObserver = null;
     this.contentBody = null;
 
-    this.clearActiveLinks();
+    //this.clearActiveLinks();
   }
 
   startContentObserver(contentBody: HTMLElement) {
@@ -283,8 +283,6 @@ export default class RedditAgent extends Agent {
         const element = elements[i] as HTMLAnchorElement;
         const url: URL = new URL(element.href);
         const extension: string = path.extname(url.pathname);
-
-        console.log('url.host', url.host);
         
         if (config.blacklistedDomains.includes(url.host))
           continue;

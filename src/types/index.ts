@@ -23,6 +23,7 @@ export interface IArticle {
   title?: string
   timestamp?: number
   link?: string
+  score?: number
   keywords?: Array<IKeyword>
 }
 
@@ -48,6 +49,7 @@ export interface ISlideBody {
   link: string
   handle: string
   icon?: string
+  score: number
   type?: string
   keywords?: Array<IKeyword>
 }

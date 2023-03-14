@@ -6,7 +6,7 @@ export default class Agent {
 
   processing: boolean
 
-  currentProcess: Link
+  currentProcesses: Link[]
   activeLinks: Link[] = []
 
   providerType: string
@@ -48,30 +48,24 @@ export default class Agent {
     logger.log('Agent: processLinks');
 
     this.processing = true;
-    this.currentProcess = this.activeLinks.find((link: Link) => link.status === 'pending');
+    this.currentProcesses = this.activeLinks.filter((link: Link) => link.status === 'pending');
 
-    if (this.currentProcess !== undefined) {
-      try {
-        await this.currentProcess.getInfo();
-        console.log('GetInfo Finished!')
-        this.processLinks();
-      } catch (error) {
-        logger.error(`There was a problem while fetching the link data ${this.currentProcess}, error ${error}`);
+    if (this.currentProcesses.length !== 0) {
+      await Promise.map(this.currentProcesses, async (link: Link) => {
+        try {
+          await link.getInfo();
+        } catch (error) {
+          logger.error(`There was a problem while fetching the link data ${link.href}, error ${error}`);
+        }
+      }, { concurrency: 5 });
 
-        if (!this.currentProcess)
-          this.currentProcess.disableLoading();
-          
-        this.processLinks();
-      }
+      this.processLinks();
     } else
       this.processing = false;
   }
 
   clearActiveLinks() {
     logger.log('Agent: clearActiveLinks');
-
-    if (this.currentProcess)
-      this.currentProcess.disableLoading();
 
     this.activeLinks = [];
     this.processing = false;

@@ -35,7 +35,7 @@ export default class Slideshow {
     ); // HTML Component
 
     // @ts-ignore
-    this.slides = list(".SCSlides", Slide);
+    this.slides = list('.SCSlides', Slide);
     this.slideshow = el('.SCSlideshow', this.slides);
 
     this.el = el(`.SCSlideshowWrapper`, this.slideshow, this.sourceGroups);
@@ -72,6 +72,7 @@ export default class Slideshow {
         description: article.body,
         timestamp: article.timestamp,
         link: article.link,
+        score: article.score,
         handle: source.handle,
         icon: source.icon,
         keywords: article.keywords

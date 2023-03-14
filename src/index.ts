@@ -1,10 +1,12 @@
-import Agent from './agent/agent';
+import 'bluebird-global'; // use bluebird as global Promise implementation
+
 import RedditAgent from './agent/reddit';
 import TwitterAgent from './agent/twitter';
+
 import logger from './utils/logger';
 
 class Application {
-  agent: Agent
+  agent: RedditAgent | TwitterAgent;
 
   constructor() {
     logger.log('Application: constructor');
