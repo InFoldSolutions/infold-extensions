@@ -1,5 +1,6 @@
 import Link from "../components/link";
 
+import config from "../utils/config";
 import logger from "../utils/logger";
 
 export default class Agent {
@@ -57,7 +58,7 @@ export default class Agent {
         } catch (error) {
           logger.error(`There was a problem while fetching the link data ${link.href}, error ${error}`);
         }
-      }, { concurrency: 5 });
+      }, { concurrency: config.api.lookupConcurrency });
 
       this.processLinks();
     } else
