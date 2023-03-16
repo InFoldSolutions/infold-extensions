@@ -204,6 +204,10 @@ export default class TwitterAgent extends Agent {
 
       for (let i = 0; i < elements.length; i++) {
         const href: string = elements[i];
+
+        if (!/http|https/.test(href)) 
+          continue;
+
         const url: URL = new URL(href);
 
         if (config.blacklistedDomains.includes(url.host))

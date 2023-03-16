@@ -83,8 +83,8 @@ export default class Link {
           return;
         },
         {
-          retries: 5,
-          maxTimeout: 2000,
+          retries: 4,
+          maxTimeout: 4000,
           randomize: false
         }
       );
@@ -98,6 +98,9 @@ export default class Link {
             articles: item.articles.map((article: any) => transformArticle(article))
           }
         });
+
+        // temp - filter out null icons (for now)
+        this.data = this.data.filter((item: IDataItem) => item.source.icon);
 
         this.status = 'success';
         this.el.classList.add('SCHasResults');
