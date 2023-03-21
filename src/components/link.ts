@@ -22,6 +22,8 @@ export default class Link {
   status: string
   href: string
 
+  relatedCount: number
+
   active: boolean
 
   wrapper: HTMLElement
@@ -57,72 +59,45 @@ export default class Link {
     this.status = 'processing';
 
     try {
-      const response = await retry(
-        async () => {
-          // if anything throws, we retry
-          const res = await fetch(`${config.api.url}?limit=${config.api.maxRelatedArticles}`, {
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              url: this.href,
-              similarity: config.api.similarity,
-            })
-          });
 
-          const data = await res.json();
-
-          if (!data || !data.meta || data.meta.success === false)
-            return;
-
-          if (config.failedStatus.includes(data.meta.status))
-            return;
-
-          if (config.retryStatus.includes(data.meta.status))
-            throw new Error('Re-try');
-
-          if (data.meta.status === 'analyzed' && data.meta.total_results > 0)
-            return data;
-
-          return;
+      // if anything throws, we retry
+      const res = await fetch(`${config.api.url}/meta`, { // ?limit=${config.api.maxRelatedArticles}
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
         },
-        {
-          retries: 2,
-          minTimeout: 3000,
-          randomize: false
-        }
-      );
+        body: JSON.stringify({
+          url: this.href,
+          similarity: config.api.similarity,
+        })
+      });
 
-      if (response) {
-        const relatedCount: number = response.meta.total_results;
+      const data = await res.json();
+      console.log('data', data);
 
-        this.data = response.data
-          .filter((item: any) => item.source.parser) // filter out sources that don't have a parser
-          .map((item: any) => {
-            return {
-              source: transformSource(item.source),
-              articles: item.articles.map((article: any) => transformArticle(article))
-            }
-          });
+      if (!data || !data.meta || data.meta.success === false)
+        throw new Error('No data');
 
-        if (this.data.length === 0)
-          throw new Error('No data');
+      if (config.failedStatus.includes(data.meta.status))
+        throw new Error('Failed status');
 
-        // temp - filter out null icons (for now)
-        this.data = this.data.filter((item: IDataItem) => item.source.icon);
+      if (config.retryStatus.includes(data.meta.status))
+        throw new Error('Re-try');
 
-        this.status = 'success';
-        this.el.classList.add('SCHasResults');
+      if (data.meta.status !== 'analyzed' || data.meta.total_results === 0)
+        throw new Error('No results');
 
-        if (this.countEl)
-          this.countEl.innerHTML = relatedCount.toString();
+      this.relatedCount = data.meta.total_results;
 
-        if (this.textEl)
-          this.textEl.innerHTML = 'Related';
-      } else
-        throw new Error('No response');
+      this.status = 'success';
+      this.el.classList.add('SCHasResults');
+
+      if (this.countEl)
+        this.countEl.innerHTML = this.relatedCount.toString();
+
+      if (this.textEl)
+        this.textEl.innerHTML = 'Related';
     } catch (error) {
       logger.error('Error while fetching data');
 
@@ -130,6 +105,32 @@ export default class Link {
       this.countEl.innerHTML = '0';
       this.destroy();
     }
+  }
+
+  async getData() {
+    // if anything throws, we retry
+    const res = await fetch(`${config.api.url}?limit=${config.api.maxRelatedArticles}`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        url: this.href,
+        similarity: config.api.similarity,
+      })
+    });
+
+    const response = await res.json();
+    console.log('response', response);
+    this.data = response.data
+      .filter((item: any) => item.source.parser) // filter out sources that don't have a parser
+      .map((item: any) => {
+        return {
+          source: transformSource(item.source),
+          articles: item.articles.map((article: any) => transformArticle(article))
+        }
+      });
   }
 
   preparetBaseHTML() {

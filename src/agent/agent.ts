@@ -8,6 +8,8 @@ export default class Agent {
   processing: boolean
 
   currentProcesses: Link[]
+  pendingProcesses: Link[]
+
   activeLinks: Link[] = []
 
   providerType: string
@@ -48,51 +50,66 @@ export default class Agent {
   async processLinks() {
     logger.log('Agent: processLinks');
 
-    this.processing = true;
-    this.currentProcesses = this.activeLinks.filter((link: Link) => link.status === 'pending');
+    this.pendingProcesses = this.activeLinks.filter((link: Link) => link.status === 'pending');
+    console.log('this.pendingProcesses', this.pendingProcesses);
 
-    if (this.currentProcesses.length !== 0) {
-      this.currentProcesses.forEach((link: Link) => link.status = 'processing'); // need to do this manually, because concurrency
-      await Promise.map(this.currentProcesses, async (link: Link) => {
-        try {
-          await link.getInfo();
-        } catch (error) {
-          logger.error(`There was a problem while fetching the link data ${link.href}, error ${error}`);
-        }
-      }, { concurrency: config.api.lookupConcurrency });
-    } else
-      this.processing = false;
-  }
-
-  clearActiveLinks() {
-    logger.log('Agent: clearActiveLinks');
-
-    this.activeLinks = [];
-    this.processing = false;
-  }
-
-  clearOpenDialogs() {
-    logger.log('Agent: clearOpenDialogs');
-
-    this.activeLinks.filter((link: Link) => link.dialog)
-      .forEach((link: Link) => {
-        link.dialog.close();
+    if (this.processing) {
+      console.log('push to existing processes');
+      this.pendingProcesses.forEach((link: Link) => {
+        this.currentProcesses.push(link);
       });
+    } else if(this.pendingProcesses.length !== 0) {
+      console.log('start new processes');
+
+      this.processing = true;
+      this.currentProcesses = this.pendingProcesses;
+
+      console.log('this.currentProcesses', this.currentProcesses);
+
+      if (this.currentProcesses.length !== 0) {
+        await Promise.map(this.currentProcesses, async (link: Link) => {
+          try {
+            await link.getInfo();
+          } catch (error) {
+            logger.error(`There was a problem while fetching the link data ${link.href}, error ${error}`);
+          }
+        }, { concurrency: config.api.lookupConcurrency });
+
+        this.processing = false;
+        this.processLinks();
+      }
+    }
   }
 
-  async findLinks(records: MutationRecord[], delay: boolean): Promise<Link[]> {
-    logger.log('Agent: findLinks');
+clearActiveLinks() {
+  logger.log('Agent: clearActiveLinks');
 
-    // Must be overwritten by child
-    // Needs an abstract interface
+  this.activeLinks = [];
+  this.processing = false;
+}
 
-    return [];
-  }
+clearOpenDialogs() {
+  logger.log('Agent: clearOpenDialogs');
 
-  appendLink(link: Link) {
-    logger.log('Agent: appendLink');
+  this.activeLinks.filter((link: Link) => link.dialog)
+    .forEach((link: Link) => {
+      link.dialog.close();
+    });
+}
 
-    // Must be overwritten by child
-    // Needs an abstract interface
-  }
+  async findLinks(records: MutationRecord[], delay: boolean): Promise < Link[] > {
+  logger.log('Agent: findLinks');
+
+  // Must be overwritten by child
+  // Needs an abstract interface
+
+  return [];
+}
+
+appendLink(link: Link) {
+  logger.log('Agent: appendLink');
+
+  // Must be overwritten by child
+  // Needs an abstract interface
+}
 }
