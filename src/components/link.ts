@@ -110,6 +110,9 @@ export default class Link {
         if (this.data.length === 0)
           throw new Error('No data');
 
+        // temp - filter out null icons (for now)
+        this.data = this.data.filter((item: IDataItem) => item.source.icon);
+
         this.status = 'success';
         this.el.classList.add('SCHasResults');
 
