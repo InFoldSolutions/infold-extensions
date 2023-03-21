@@ -144,9 +144,9 @@ const config = {
   'minTextLenght': 100,
   'api': {
     'url': 'https://api.infold.ai/articles/related',
-    'similarity': 0.72,
-    'maxRelatedArticles': 20,
-    'lookupConcurrency': 10
+    'similarity': 0.70,
+    'maxRelatedArticles': 18,
+    'lookupConcurrency': 5
   },
   'agents': {
     'reddit': {

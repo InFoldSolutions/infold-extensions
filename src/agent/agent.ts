@@ -41,7 +41,7 @@ export default class Agent {
       }
     }
 
-    if (this.processing === false && newItems)
+    if (newItems)
       this.processLinks();
   }
 
@@ -52,6 +52,7 @@ export default class Agent {
     this.currentProcesses = this.activeLinks.filter((link: Link) => link.status === 'pending');
 
     if (this.currentProcesses.length !== 0) {
+      this.currentProcesses.forEach((link: Link) => link.status = 'processing'); // need to do this manually, because concurrency
       await Promise.map(this.currentProcesses, async (link: Link) => {
         try {
           await link.getInfo();
@@ -59,8 +60,6 @@ export default class Agent {
           logger.error(`There was a problem while fetching the link data ${link.href}, error ${error}`);
         }
       }, { concurrency: config.api.lookupConcurrency });
-
-      this.processLinks();
     } else
       this.processing = false;
   }

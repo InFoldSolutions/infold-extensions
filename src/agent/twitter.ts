@@ -152,8 +152,10 @@ export default class TwitterAgent extends Agent {
 
     if (link.isDialog)
       mount(link.wrapper, link, link.wrapper.lastElementChild);
-    else
+    else {
+      link.parent = link.wrapper.firstChild as HTMLElement;
       mount(link.wrapper.firstChild, link);
+    }
   }
 
   getPotentialLinksFromElement(addedNode: Element): IPotentialLink[] {
@@ -164,30 +166,47 @@ export default class TwitterAgent extends Agent {
 
     for (let a = 0; a < articles.length; a++) {
       const article: HTMLElement = articles[a];
-      const elements: string[] = Array.from(article.querySelectorAll('a[target="_blank"]'))
-        .map((item: HTMLAnchorElement) => item.href);
+      const elements: string[] = [];
+      const cardLink: HTMLAnchorElement = article.querySelector('[data-testid="card.wrapper"] a[target="_blank"]');
 
-      const nestedElements = Array.from(article.querySelectorAll('[data-testid="tweetText"]'));
+      if (cardLink)
+        elements.push(cardLink.href)
+      else {
+        const notesLink: HTMLAnchorElement = article.querySelector('[data-testid="birdwatch-pivot"] a[target="_blank"]');
 
-      let textLength: number = 0;
+        if (notesLink)
+          elements.push(notesLink.href)
+      }
 
-      if (elements.length === 0 && nestedElements.length > 0) {
-        for (let n = 0; n < nestedElements.length; n++) {
-          const nestedElement: HTMLElement = nestedElements[n] as HTMLElement;
-          const nestedLinks: HTMLElement[] = Array.from(nestedElement.querySelectorAll('[dir="ltr"]'));
+      if (elements.length === 0) {
+        const nestedElements = Array.from(article.querySelectorAll('[data-testid="tweetText"]'));
+        let textLength: number = 0;
 
-          textLength += nestedElement.textContent.length;
+        if (nestedElements.length > 0) {
+          for (let n = 0; n < nestedElements.length; n++) {
+            const nestedElement: HTMLElement = nestedElements[n] as HTMLElement;
+            const textLink: HTMLAnchorElement = nestedElement.querySelector('a[target="_blank"]');
 
-          if (nestedLinks.length > 0) {
+            if (textLink)
+              elements.push(textLink.href);
 
-            for (let i = 0; i < nestedLinks.length; i++) {
-              const nestedLink: HTMLElement = nestedLinks[i] as HTMLElement;
-              const firstChild: HTMLElement = nestedLink.firstChild as HTMLElement;
+            if (elements.length === 0) {
+              const nestedLinks: HTMLElement[] = Array.from(nestedElement.querySelectorAll('[dir="ltr"]'));
 
-              if (firstChild.textContent === 'http://' || firstChild.textContent === 'https://') {
-                const linkText: string = nestedLink.textContent;
-                elements.push(linkText.replace('…', ''));
-                break;
+              textLength += nestedElement.textContent.length;
+
+              if (nestedLinks.length > 0) {
+
+                for (let i = 0; i < nestedLinks.length; i++) {
+                  const nestedLink: HTMLElement = nestedLinks[i] as HTMLElement;
+                  const firstChild: HTMLElement = nestedLink.firstChild as HTMLElement;
+
+                  if (firstChild.textContent === 'http://' || firstChild.textContent === 'https://') {
+                    const linkText: string = nestedLink.textContent;
+                    elements.push(linkText.replace('…', ''));
+                    break;
+                  }
+                }
               }
             }
           }

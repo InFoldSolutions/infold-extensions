@@ -1,4 +1,4 @@
-import { el } from 'redom';
+import { el, unmount } from 'redom';
 import retry from 'async-retry';
 
 import Agent from '../agent/agent';
@@ -25,6 +25,7 @@ export default class Link {
   active: boolean
 
   wrapper: HTMLElement
+  parent: HTMLElement
   article: HTMLElement
   el: HTMLElement
   countEl: HTMLElement
@@ -35,6 +36,8 @@ export default class Link {
 
   data: IDataItem[]
 
+  onClickHandler: EventListener
+
   constructor(agent: Agent, potentialLInk: IPotentialLink) {
     logger.log('Link: constructor');
 
@@ -42,7 +45,10 @@ export default class Link {
     this.article = potentialLInk.article;
     this.href = potentialLInk.href;
     this.wrapper = potentialLInk.wrapperNode;
+    this.parent = this.wrapper; // Could be overwritten down the line
     this.status = 'pending';
+
+    this.onClickHandler = this.onClick.bind(this);
   }
 
   async getInfo() {
@@ -83,8 +89,8 @@ export default class Link {
           return;
         },
         {
-          retries: 5,
-          maxTimeout: 2000,
+          retries: 2,
+          minTimeout: 3000,
           randomize: false
         }
       );
@@ -92,12 +98,17 @@ export default class Link {
       if (response) {
         const relatedCount: number = response.meta.total_results;
 
-        this.data = response.data.map((item: any) => {
-          return {
-            source: transformSource(item.source),
-            articles: item.articles.map((article: any) => transformArticle(article))
-          }
-        });
+        this.data = response.data
+          .filter((item: any) => item.source.parser) // filter out sources that don't have a parser
+          .map((item: any) => {
+            return {
+              source: transformSource(item.source),
+              articles: item.articles.map((article: any) => transformArticle(article))
+            }
+          });
+
+        if (this.data.length === 0)
+          throw new Error('No data');
 
         this.status = 'success';
         this.el.classList.add('SCHasResults');
@@ -107,12 +118,14 @@ export default class Link {
 
         if (this.textEl)
           this.textEl.innerHTML = 'Related';
-      } else 
+      } else
         throw new Error('No response');
     } catch (error) {
       logger.error('Error while fetching data');
+
       this.status = 'error';
       this.countEl.innerHTML = '0';
+      this.destroy();
     }
   }
 
@@ -146,7 +159,7 @@ export default class Link {
 
     this.el = el(`.SCbuttonWrapper.${this.agent.providerType}.${btnWrapperClass}`, buttonContent);
     this.el.setAttribute('title', this.href);
-    this.el.onclick = this.onClick.bind(this);
+    this.el.onclick = this.onClickHandler;
   }
 
   onClick(evt: MouseEvent) {
@@ -245,6 +258,13 @@ export default class Link {
 
   disableLoading() {
     logger.log('Link: disableLoading');
+  }
+
+  destroy() {
+    logger.log('Link: destroy');
+
+    this.el.removeEventListener('click', this.onClickHandler);
+    unmount(this.parent, this.el);
   }
 
   get isDialog(): boolean {
