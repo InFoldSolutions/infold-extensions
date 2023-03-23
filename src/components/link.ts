@@ -115,6 +115,9 @@ export default class Link {
 
     const response = await res.json();
 
+    if (!response || !response.data || response.data.length === 0)
+      throw new Error('No data');
+
     this.data = response.data
       .filter((item: any) => item.source.parser) // filter out sources that don't have a parser
       .map((item: any) => {
@@ -191,8 +194,13 @@ export default class Link {
 
     this.toggleActiveState();
 
-    await this.getData();
-    this.post.update(this.data);
+    try {
+      await this.getData();
+      this.post.update(this.data);
+    } catch (error) {
+      logger.error(`Error while fetching data ${error}`);
+      this.post.close();
+    }
   }
 
   async openDialog() {
@@ -226,8 +234,13 @@ export default class Link {
 
     this.toggleActiveState();
 
-    await this.getData();
-    this.dialog.update(this.data);
+    try {
+      await this.getData();
+      this.dialog.update(this.data);
+    } catch (error) {
+      logger.error(`Error while fetching data ${error}`);
+      this.dialog.close();
+    }
   }
 
   closePost() {

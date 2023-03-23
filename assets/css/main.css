@@ -448,6 +448,11 @@
   display: flex;
 }
 
+.SCScore {
+  margin-left: 4px;
+  font-size: 0.99em;
+}
+
 .SCTipIcon {
   cursor: pointer;
   display: flex;
@@ -495,7 +500,7 @@
 .SClink {
   color: rgb(29, 155, 240);
   text-decoration: none;
-  max-width: 145px;
+  max-width: 140px;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
