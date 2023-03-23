@@ -1,6 +1,10 @@
-import { unmount } from 'redom';
+import { el, unmount, mount } from 'redom';
 
 import logger from '../../utils/logger';
+
+import Slideshow from '../slideshow/slideshow';
+
+import { IDataItem } from '../../types';
 
 export default class Dialog {
 
@@ -26,6 +30,14 @@ export default class Dialog {
   open() {
     logger
       .log('Dialog: open')
+  }
+
+  update(data?: IDataItem[]) {
+    logger
+      .log('Dialog: update');
+
+    this.dialogBody.innerHTML = '';
+    mount(this.dialogBody, el('.SCDialogContent', new Slideshow(data)));
   }
 
   close() {

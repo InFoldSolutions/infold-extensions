@@ -21,7 +21,7 @@ export default class Post {
 
   closeCallback: Function
 
-  constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement, closeCallback: Function, data: IDataItem[]) {
+  constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement, closeCallback: Function) {
     logger.log('Post: constructor');
 
     this.closeCallback = closeCallback;
@@ -31,22 +31,29 @@ export default class Post {
     this.linkElement = linkElement;
 
     this.closeBtn = el('.SCPostCloseWrapper', new CloseIcon);
-    this.postBody = el(`.SCPostBodyWrapper.${this.agent}`,
-        el('.SCPostBody', [
-          this.closeBtn,
-          new Slideshow(data)
-        ])
-      );
-    
+    this.postBody = el('.SCPostBody', el('span.SCLoader'));
+
+    this.el = el(`.SCPostBodyWrapper.${this.agent}`, [
+      this.closeBtn,
+      this.postBody
+    ]);
+
     this.closeBtn.onclick = () => {
       this.close();
     }
 
-    mount(this.article, this.postBody);
+    mount(this.article, this.el);
+  }
+
+  update(data?: IDataItem[]) {
+    logger.log('Post: update');
+
+    this.postBody.innerHTML = '';
+    mount(this.postBody, new Slideshow(data));
   }
 
   close() {
-    unmount(this.article, this.postBody);
+    unmount(this.article, this.el);
     this.closeCallback();
   }
 }

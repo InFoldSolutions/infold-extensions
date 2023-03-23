@@ -1,5 +1,5 @@
 import { el, unmount } from 'redom';
-import retry from 'async-retry';
+//import retry from 'async-retry';
 
 import Agent from '../agent/agent';
 import { IDataItem, IPotentialLink } from '../types';
@@ -59,14 +59,9 @@ export default class Link {
     this.status = 'processing';
 
     try {
-
-      // if anything throws, we retry
-      const res = await fetch(`${config.api.url}/meta`, { // ?limit=${config.api.maxRelatedArticles}
+      const res = await fetch(`${config.api.url}/meta`, {
         method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
+        headers: config.api.headers,
         body: JSON.stringify({
           url: this.href,
           similarity: config.api.similarity,
@@ -74,7 +69,6 @@ export default class Link {
       });
 
       const data = await res.json();
-      console.log('data', data);
 
       if (!data || !data.meta || data.meta.success === false)
         throw new Error('No data');
@@ -108,13 +102,11 @@ export default class Link {
   }
 
   async getData() {
-    // if anything throws, we retry
+    logger.log('Link: getData');
+
     const res = await fetch(`${config.api.url}?limit=${config.api.maxRelatedArticles}`, {
       method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
+      headers: config.api.headers,
       body: JSON.stringify({
         url: this.href,
         similarity: config.api.similarity,
@@ -122,7 +114,7 @@ export default class Link {
     });
 
     const response = await res.json();
-    console.log('response', response);
+
     this.data = response.data
       .filter((item: any) => item.source.parser) // filter out sources that don't have a parser
       .map((item: any) => {
@@ -178,7 +170,7 @@ export default class Link {
       this.togglePostView();
   }
 
-  togglePostView() {
+  async togglePostView() {
     logger.log('Link: togglePostView');
 
     if (this.agent.providerType === 'twitter')
@@ -194,14 +186,16 @@ export default class Link {
       this.article,
       this.wrapper,
       this.el,
-      this.closePost.bind(this),
-      this.data
+      this.closePost.bind(this)
     );
 
     this.toggleActiveState();
+
+    await this.getData();
+    this.post.update(this.data);
   }
 
-  openDialog() {
+  async openDialog() {
     logger.log('Link: openDialog');
 
     this.agent.clearOpenDialogs();
@@ -227,11 +221,13 @@ export default class Link {
       this.article,
       this.wrapper,
       this.el,
-      this.closeDialog.bind(this),
-      this.data
+      this.closeDialog.bind(this)
     );
 
     this.toggleActiveState();
+
+    await this.getData();
+    this.dialog.update(this.data);
   }
 
   closePost() {

@@ -1,13 +1,10 @@
-import { el, mount, unmount } from 'redom';
+import { el, mount, unmount, RedomComponent } from 'redom';
 
 import logger from '../../utils/logger';
 import { findChildByText, findChildrenByText, findParentByAttribute } from '../../utils/helpers';
 
-import Slideshow from '../slideshow/slideshow';
 import Dialog from './dialog';
 import CloseIcon from '../svgs/closeIcon';
-
-import { IDataItem } from '../../types';
 
 export default class TwitterDialog extends Dialog {
 
@@ -21,7 +18,7 @@ export default class TwitterDialog extends Dialog {
   mainElement: HTMLElement
   sectionElement: HTMLElement
 
-  constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement, closeCallback: Function, data: IDataItem[]) {
+  constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement, closeCallback: Function) {
     logger.log('TwitterDialog: constructor');
 
     super(agent, article, btnWrapper, linkElement);
@@ -38,10 +35,7 @@ export default class TwitterDialog extends Dialog {
       this.close();
     }
 
-    this.dialogBody = el('.SCDialogBody', [ // { style: { top: `${this.offsetTop}px`, left: `${this.offsetLeft}px` } },
-      el('.SCDialogContent', new Slideshow(data))
-    ]);
-
+    this.dialogBody = el('.SCDialogBody', el('span.SCLoader'));
     this.el = el(`.SCDialogWrapper.${agent}`, { style: { bottom: `-${this.offsetTop}px` } },
       [
         this.closeBtn,

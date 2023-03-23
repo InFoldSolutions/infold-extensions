@@ -51,20 +51,14 @@ export default class Agent {
     logger.log('Agent: processLinks');
 
     this.pendingProcesses = this.activeLinks.filter((link: Link) => link.status === 'pending');
-    console.log('this.pendingProcesses', this.pendingProcesses);
 
-    if (this.processing) {
-      console.log('push to existing processes');
+    if (this.processing) { 
       this.pendingProcesses.forEach((link: Link) => {
         this.currentProcesses.push(link);
       });
     } else if(this.pendingProcesses.length !== 0) {
-      console.log('start new processes');
-
       this.processing = true;
       this.currentProcesses = this.pendingProcesses;
-
-      console.log('this.currentProcesses', this.currentProcesses);
 
       if (this.currentProcesses.length !== 0) {
         await Promise.map(this.currentProcesses, async (link: Link) => {

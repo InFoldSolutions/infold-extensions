@@ -2,11 +2,8 @@ import { el, mount, unmount } from 'redom';
 
 import logger from '../../utils/logger';
 
-import Slideshow from '../slideshow/slideshow';
 import Dialog from './dialog';
 import CloseIcon from '../svgs/closeIcon';
-
-import { IDataItem } from '../../types';
 
 export default class RedditDialog extends Dialog {
 
@@ -21,7 +18,7 @@ export default class RedditDialog extends Dialog {
 
   dialogStyle: Object
 
-  constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement, closeCallback: Function, data: IDataItem[]) {
+  constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement, closeCallback: Function) {
     logger.log('RedditDialog: constructor');
 
     super(agent, article, btnWrapper, linkElement);
@@ -38,10 +35,7 @@ export default class RedditDialog extends Dialog {
       this.close();
     }
 
-    this.dialogBody = el('.SCDialogBody', [
-      el('.SCDialogContent', new Slideshow(data))
-    ]);
-
+    this.dialogBody = el('.SCDialogBody', el('span.SCLoader'));
     this.el = el(`.SCDialogWrapper.${agent}`, this.dialogStyle,
       [
         this.closeBtn,

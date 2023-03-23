@@ -146,7 +146,11 @@ const config = {
     'url': 'https://api.infold.ai/articles/related',
     'similarity': 0.70,
     'maxRelatedArticles': 18,
-    'lookupConcurrency': 5
+    'lookupConcurrency': 5,
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
   },
   'agents': {
     'reddit': {

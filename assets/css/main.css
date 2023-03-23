@@ -17,10 +17,11 @@
 
 .SCbuttonWrapper.SCHasResults {
   color: rgb(29, 155, 240);
+  cursor: pointer;
 }
 
 .SCbuttonWrapper .SCcount {
-  display: flex
+  display: flex;
 }
 
 .SCiconBackground {
@@ -68,10 +69,6 @@
 
 /** Twitter Button overwrites **/
 
-.SCbuttonWrapper.twitter.SCPost {
-  cursor: pointer;
-}
-
 .SCbuttonWrapper.twitter.SCPost.active,
 .SCbuttonWrapper.twitter.SCPost:hover {
   /*border-bottom: 1px solid rgb(231, 233, 234);*/
@@ -103,7 +100,6 @@
   line-height: 16px;
   box-sizing: border-box;
   margin: 0 0 0 -4px;
-  cursor: pointer;
   top: -0.5px;
 }
 
@@ -163,17 +159,18 @@
 
 /* Post */
 
+.SCPostBodyWrapper {
+  min-height: 135px;
+  position: relative;
+}
+
 .SCPostBodyWrapper .SCSummaryTitle {
   width: calc(100% - 25px);
 }
 
-.SCPostBody {
-  position: relative;
-}
-
 .SCPostCloseWrapper {
   position: absolute;
-  top: -7px;
+  top: 9px;
   right: -4px;
   width: 22px;
   height: 22px;
@@ -281,6 +278,7 @@
   position: absolute;
   left: 12.6%;
   bottom: -204px;
+  min-height: 242.2px;
 }
 
 .SCDialogWrapper.twitter .SCSummaryTitle {
@@ -996,6 +994,28 @@
 .SCHasResults .SCLoader {
   border-color: rgba(29, 155, 240, 0.2);
   border-bottom-color: rgba(29, 155, 240, 0.8);
+}
+
+.SCPostBodyWrapper .SCPostBody .SCLoader,
+.SCDialogWrapper .SCDialogBody .SCLoader {
+  position: relative;
+  left: 50%;
+  width: 35px;
+  margin-top: 11.5%;
+  margin-left: -17.5px;
+  height: 35px;
+  border-width: 4px;
+
+  border-color: rgba(29, 155, 240, 0.2);
+  border-bottom-color: rgba(29, 155, 240, 0.8);
+}
+
+.SCPostBodyWrapper .SCPostBody .SCLoader {
+  margin-top: 8%;
+}
+
+.SCPostBodyWrapper.reddit .SCPostBody .SCLoader {
+  margin-top: 11%;
 }
 
 @keyframes SCrotation {
