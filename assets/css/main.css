@@ -160,7 +160,7 @@
 /* Post */
 
 .SCPostBodyWrapper {
-  min-height: 135px;
+  min-height: 220px;
   position: relative;
 }
 
@@ -225,6 +225,7 @@
 /* Post display --REDDIT-- */
 
 .SCPostBodyWrapper.reddit {
+  min-height: 207px;
   margin: 0px 46px 0 14px;
   border-top: 1px solid #343536;
 }
@@ -1011,12 +1012,12 @@
 }
 
 .SCPostBodyWrapper .SCPostBody .SCLoader {
-  margin-top: 8%;
+  margin-top: 16%;
 }
 
-.SCPostBodyWrapper.reddit .SCPostBody .SCLoader {
-  margin-top: 11%;
-}
+/*.SCPostBodyWrapper.reddit .SCPostBody .SCLoader {
+  margin-top: 13%;
+}*/
 
 @keyframes SCrotation {
   0% {

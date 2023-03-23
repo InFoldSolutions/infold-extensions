@@ -60,6 +60,9 @@ export default class RedditAgent extends Agent {
 
     this.pageWrapper = document.getElementById(this.pageWrapperID);
 
+    if (!this.pageWrapper)
+      return;
+
     this.pageObserver = new MutationObserver(this.onPageChange.bind(this));
     this.pageObserver.observe(this.pageWrapper, {
       childList: true
@@ -67,6 +70,9 @@ export default class RedditAgent extends Agent {
 
     this.bodyWrapper = document.getElementById(this.bodyWrapperID);
 
+    if (!this.bodyWrapper)
+      return;
+      
     this.bodyObserver = new MutationObserver(this.onBodyChange.bind(this));
     this.bodyObserver.observe(this.bodyWrapper, {
       childList: true
@@ -283,7 +289,7 @@ export default class RedditAgent extends Agent {
         const element = elements[i] as HTMLAnchorElement;
         const url: URL = new URL(element.href);
         const extension: string = path.extname(url.pathname);
-        
+
         if (config.blacklistedDomains.includes(url.host))
           continue;
 
