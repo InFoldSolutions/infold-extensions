@@ -42,7 +42,7 @@ module.exports = (env, argv) => {
             to: path.join(__dirname, 'dist/manifest.json'),
           },
           {
-            from: 'assets/css',
+            from: 'assets/css', // rename moz, chrome
             to: path.join(__dirname, 'dist/css'),
           },
           {
