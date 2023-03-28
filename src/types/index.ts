@@ -30,6 +30,7 @@ export interface IArticle {
 export interface IKeyword {
   icon: string
   word: string
+  url: string
 }
 
 export interface ISlide {

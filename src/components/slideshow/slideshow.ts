@@ -24,14 +24,15 @@ export default class Slideshow {
 
   title: string
 
-  constructor(dataitems: Array<IDataItem>) {
+  constructor(dataitems: Array<IDataItem>, totalCount: number) {
     logger.log('Slideshow: constructor');
 
     this.groups = Groups.mapToSourceGroups(dataitems);
     this.sourceGroups = new Groups(
       this.groups, 
       this.setCurrentSlides.bind(this),
-      this.setCurrentArticle.bind(this)
+      this.setCurrentArticle.bind(this),
+      totalCount
     ); // HTML Component
 
     // @ts-ignore

@@ -28,7 +28,7 @@ export default class Groups {
   onGroupSelect: Function
   onArticleNav: Function
 
-  constructor(groups: Array<ISourceGroup>, onGroupSelect: Function, onArticleNav: Function) {
+  constructor(groups: Array<ISourceGroup>, onGroupSelect: Function, onArticleNav: Function, totalCount: number) {
     logger.log('Sources: constructor');
 
     this.onGroupSelect = onGroupSelect;
@@ -49,7 +49,7 @@ export default class Groups {
     this.articleIndex = el('span.SCCurrentArticleIndex');
     this.articleStats = el('.SCArticleStats', [
       el('span', 'Total'),
-      '86',
+      totalCount.toString(),
       new StatsIcon()
     ]);
 

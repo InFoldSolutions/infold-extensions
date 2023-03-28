@@ -3,7 +3,6 @@ import { el, mount, unmount } from 'redom';
 import Slideshow from './slideshow/slideshow';
 
 import logger from '../utils/logger';
-import config from '../utils/config';
 import CloseIcon from './svgs/closeIcon';
 
 import { IDataItem } from '../types';
@@ -45,11 +44,11 @@ export default class Post {
     mount(this.article, this.el);
   }
 
-  update(data?: IDataItem[]) {
+  update(data?: IDataItem[], totalCount?: number) {
     logger.log('Post: update');
 
     this.postBody.innerHTML = '';
-    mount(this.postBody, new Slideshow(data));
+    mount(this.postBody, new Slideshow(data, totalCount));
   }
 
   close() {

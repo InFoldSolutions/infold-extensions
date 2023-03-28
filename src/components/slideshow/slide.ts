@@ -1,4 +1,4 @@
-import { el, mount, unmount } from 'redom';
+import { el, mount, RedomComponent, unmount } from 'redom';
 
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
@@ -8,10 +8,13 @@ TimeAgo.addDefaultLocale(en);
 import { IKeyword, ISlideBody } from '../../types';
 
 import logger from '../../utils/logger';
+
+import Tip from '../tip';
+
 import CalendarIcon from '../svgs/calendarIcon';
 import LinkIcon from '../svgs/linkIcon';
 import RedditIcon from '../svgs/redditIcon';
-import TipIcon from '../svgs/tipIcon';
+import InvestopediaIcon from '../svgs/investopediaIcon';
 
 const timeAgo = new TimeAgo('en-US');
 
@@ -21,6 +24,7 @@ export default class Slide {
   summaryBody: HTMLElement
   summaryInfo: Array<HTMLElement>
 
+  tipBtn: RedomComponent
   data: ISlideBody
 
   constructor() {
@@ -57,8 +61,8 @@ export default class Slide {
       el('a.SCHandle.SClink', data.handle, { title: data.handle, href: twitterHandleLink, target: '_blank' }),
       el('span.SCdate.SCIcon', { title: `Publish date` }, [new CalendarIcon(), el('span', timeAgo.format(data.timestamp, 'mini'), ' ago')]),
       el('span.SCIcon', { title: `Relevance` }, [new LinkIcon(), el('span.SCScore', `${score}%`)]),
-      el('a.SClink.SCMarginRight', linkText, { title: data.link, href: data.link, target: '_blank' }),
-      el('span.SCIcon.SCTipIcon', [new TipIcon(), el('span.SCTipIconText', 'Thanks')])
+      el('a.SClink', linkText, { title: data.link, href: data.link, target: '_blank' }),
+      el('span.SCIcon.SCTipIcon', new Tip())
     ]
 
     let keywords: Array<HTMLElement>;
@@ -76,7 +80,17 @@ export default class Slide {
 
     if (data.keywords) {
       keywords = data.keywords.map((keyword: IKeyword) => {
-        return el('.SCKeyword', [el(`i.${keyword.icon}`), keyword.word])
+        let icon;
+
+        if (keyword.icon.includes('fa-'))
+          icon = el(`i.${keyword.icon}`);
+        else
+          icon = new InvestopediaIcon();
+
+        return el('a.SCKeyword', { 
+          href: keyword.url, 
+          target: '_blank' 
+        }, [icon, keyword.word]);
       });
     }
 

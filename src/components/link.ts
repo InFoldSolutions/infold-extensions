@@ -157,7 +157,6 @@ export default class Link {
     buttonContent.push(el(`span.SCTextWrapper`, textContent));
 
     this.el = el(`.SCbuttonWrapper.${this.agent.providerType}.${btnWrapperClass}`, buttonContent);
-    this.el.setAttribute('title', this.href);
     this.el.onclick = this.onClickHandler;
   }
 
@@ -196,7 +195,7 @@ export default class Link {
 
     try {
       await this.getData();
-      this.post.update(this.data);
+      this.post.update(this.data, this.relatedCount);
     } catch (error) {
       logger.error(`Error while fetching data ${error}`);
       this.post.close();
@@ -236,7 +235,7 @@ export default class Link {
 
     try {
       await this.getData();
-      this.dialog.update(this.data);
+      this.dialog.update(this.data, this.relatedCount);
     } catch (error) {
       logger.error(`Error while fetching data ${error}`);
       this.dialog.close();

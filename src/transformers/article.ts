@@ -31,10 +31,35 @@
     }
  */
 
+let keywords = [{
+  'icon': 'fab.fa-wikipedia-w',
+  'word': 'Silicon Valley Bank',
+  'url': 'https://en.wikipedia.org/wiki/Silicon_Valley_Bank'
+}, {
+  'icon': 'investopedia',
+  'word': 'Contemporaneous Reserves',
+  'url': 'https://www.investopedia.com/terms/contemporaneous-reserves.asp'
+}];
+
+let  keywords2 = [{
+  'icon': 'investopedia',
+  'word': 'Federal Reserve Bank',
+  'url': 'https://www.investopedia.com/terms/f/federalreservebank.asp'
+}, {
+  'icon': 'fab.fa-wikipedia-w',
+  'word': 'Silvergate Bank',
+  'url': 'https://en.wikipedia.org/wiki/Silvergate_Bank'
+}, {
+  'icon': 'investopedia',
+  'word': 'Distributed Ledger',
+  'url': 'https://www.investopedia.com/terms/d/distributed-ledgers.asp'
+}];
+
 import { IArticle } from '../types';
 
 export default function transformArticle(data: any): IArticle {
   const { title, url, score, timestamp, summary } = data;
+  const x = (Math.floor(Math.random() * 2) == 0);
 
   return {
     title,
@@ -42,15 +67,6 @@ export default function transformArticle(data: any): IArticle {
     link: url,
     score,
     timestamp: new Date(timestamp).getTime(),
-    keywords: [{
-      'icon': 'fab.fa-youtube',
-      'word': 'Charlie Bartolo'
-    }, {
-      'icon': 'fab.fa-google',
-      'word': 'Kearne Solanke'
-    }, {
-      'icon': 'fab.fa-wikipedia-w',
-      'word': 'London Crime'
-    }]
+    keywords: (x) ? keywords2 : keywords
   };
 }

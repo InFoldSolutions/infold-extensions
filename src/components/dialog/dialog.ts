@@ -32,12 +32,12 @@ export default class Dialog {
       .log('Dialog: open')
   }
 
-  update(data?: IDataItem[]) {
+  update(data?: IDataItem[], totalCount?: number) {
     logger
       .log('Dialog: update');
 
     this.dialogBody.innerHTML = '';
-    mount(this.dialogBody, el('.SCDialogContent', new Slideshow(data)));
+    mount(this.dialogBody, el('.SCDialogContent', new Slideshow(data, totalCount)));
   }
 
   close() {

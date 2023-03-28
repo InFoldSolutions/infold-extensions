@@ -380,10 +380,11 @@
 .SCSummaryInfo {
   font-size: 15px;
   line-height: 17px;
-  margin: 0px 0px 6px;
+  margin: 0px 0px 4px;
   color: rgb(113, 118, 123);
   display: flex;
   align-items: center;
+  min-height: 20px;
 }
 
 .SCSummaryInfo svg {
@@ -413,7 +414,7 @@
 
 .SCKeywordsWrapper {
   display: flex;
-  margin-top: 12px;
+  margin-top: 13px;
   flex-wrap: wrap;
   gap: 5px;
 }
@@ -422,12 +423,15 @@
   display: inline-flex;
   background-color: rgba(221, 223, 224, 0.11);
   color: rgba(221, 223, 224, 0.6);
-  padding: 8px 12px;
+  padding: 6px 12px;
   border-radius: 16px;
+  font-size: 14px;
   cursor: pointer;
   align-items: center;
+  text-decoration: none;
 }
 
+.SCKeyword svg,
 .SCKeyword i {
   margin-right: 5px;
 }
@@ -435,6 +439,10 @@
 .SCKeyword i.fa-google,
 .SCKeyword i.fa-youtube {
   margin-right: 6px;
+}
+
+.SCKeyword svg {
+  width: 22px;
 }
 
 .SCKeyword:hover {
@@ -453,35 +461,53 @@
   font-size: 0.99em;
 }
 
-.SCTipIcon {
-  cursor: pointer;
+.SCTipWrapper {
   display: flex;
   align-items: center;
+  cursor: pointer;
+  background: rgba(247, 202, 80, 1);
+  border-radius: 999em;
+  padding: 1px 6px;
+}
+
+.SCTipWrapper--thanks {
+  cursor: default;
+  background: rgb(0, 186, 124);
 }
 
 .SCTipIcon svg {
   height: 0.95em;
-  margin-right: 4px;
+  padding: 1px 0px;
 }
 
 .SCTipIconText {
-  color: #ffd635;
+  color: black;
   opacity: 0;
   transition: 0.2s linear opacity;
-  font-size: 0.95em;
+  font-size: 0.9em;
+  font-weight: 500;
   margin-top: 1px;
+  display: none;
+  margin-left: 4px;
 }
 
-.SCTipIcon .cls-1 {
+.SCTipWrapper--thanks .SCTipIconText,
+.SCTipWrapper:hover .SCTipIconText {
+  display: block;
+  opacity: 1;
+}
+
+.SCTipWrapper--thanks .SCTipIconText {
+  margin-left: 0;
+  color: white;
+}
+
+.SCTipWrapper .cls-1 {
   fill: none;
-  stroke: #ffd635;
+  stroke: black;
   stroke-linecap: square;
   stroke-miterlimit: 10;
   stroke-width: 1.91px;
-}
-
-.SCTipIcon:hover .SCTipIconText {
-  opacity: 1;
 }
 
 .SCSeparator {
@@ -847,7 +873,7 @@
 }
 
 .SCDialogWrapper.reddit .SCSlideshow {
-  min-height: 130px;
+  min-height: 131px;
 }
 
 .SCDialogWrapper.reddit .SCSlideshow .SCSlide {
