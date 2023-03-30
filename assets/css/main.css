@@ -487,14 +487,15 @@
   font-size: 0.9em;
   font-weight: 500;
   margin-top: 1px;
-  display: none;
+  transition: 0.2 all linear;
   margin-left: 4px;
+  display: none;
 }
 
 .SCTipWrapper--thanks .SCTipIconText,
 .SCTipWrapper:hover .SCTipIconText {
-  display: block;
   opacity: 1;
+  display: block;
 }
 
 .SCTipWrapper--thanks .SCTipIconText {
