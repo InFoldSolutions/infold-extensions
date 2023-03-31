@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "InFold",
-  "description": "MAKING NEWS INFORMATIVE SINCE 2018",
-  "version": "0.7.4",
+  "name": "InFold.ai",
+  "description": "Take a deeper dive into any topic without changing your workflow. We read and compare thounds of source, so you don't have to.",
+  "version": "0.8.5",
   "icons": {
     "64": "images/icons/icon_64.png",
     "128": "images/icons/icon_128.png"
