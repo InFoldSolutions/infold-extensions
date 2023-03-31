@@ -9,9 +9,15 @@ export default class Tip {
 
   onClickBind: EventListener
 
-  constructor() {
+  constructor(publisherName: string, tipValue: number) {
     logger.log('Tip: constructor');
-    this.el = el('span.SCTipWrapper', { title: "Tip the publisher" }, [new TipIcon(), el('span.SCTipIconText', '$5.00')]);
+    
+    this.el = el('span.SCTipWrapper', { 
+      title: `Tip $${tipValue}.00 to ${publisherName}` 
+    }, [
+      new TipIcon(), 
+      el('span.SCTipIconText', `$${tipValue}.00`)
+    ]);
 
     this.onClickBind = this.onClick.bind(this);
     this.el.addEventListener('click', this.onClick.bind(this));

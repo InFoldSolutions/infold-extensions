@@ -49,6 +49,7 @@ export interface ISlideBody {
   timestamp: number
   link: string
   handle: string
+  sourceName: string
   icon?: string
   score: number
   type?: string

@@ -75,6 +75,7 @@ export default class Slideshow {
         link: article.link,
         score: article.score,
         handle: source.handle,
+        sourceName: source.name,
         icon: source.icon,
         keywords: article.keywords
       }

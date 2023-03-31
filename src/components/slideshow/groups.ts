@@ -161,10 +161,7 @@ export default class Groups {
     const groups: Map<string, ISourceGroup> = new Map(); // IDateGroup and/or ISourceGroups (could be time or type based 24h/Social/etc.);
 
     dataitems.forEach((dataitem: IDataItem) => {
-
-      dataitem.articles = shuffleArray(dataitem.articles); // shuffles arrays TEMP!
       const currentDateGroup: IDateGroup = Groups.getDateGroupForArticle(dataitem.articles[0]);
-
       let group = groups.get(currentDateGroup.label);
 
       if (!group) {
