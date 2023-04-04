@@ -907,11 +907,6 @@
   font-size: 14px;
 }
 
-.SCDialogWrapper.reddit .SCMarginRight,
-.SCPostBodyWrapper.reddit .SCMarginRight {
-  margin-right: 8px;
-}
-
 .SCDialogWrapper.reddit .SCSummaryInfo {
   color: #818384;
 }

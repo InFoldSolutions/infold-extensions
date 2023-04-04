@@ -41,7 +41,7 @@ let keywords = [{
   'url': 'https://www.investopedia.com/terms/contemporaneous-reserves.asp'
 }];
 
-let  keywords2 = [{
+/*let keywords2 = [{
   'icon': 'investopedia',
   'word': 'Federal Reserve Bank',
   'url': 'https://www.investopedia.com/terms/f/federalreservebank.asp'
@@ -53,7 +53,35 @@ let  keywords2 = [{
   'icon': 'investopedia',
   'word': 'Distributed Ledger',
   'url': 'https://www.investopedia.com/terms/d/distributed-ledgers.asp'
-}];
+}];*/
+
+/*let keywords3 = [{
+  'icon': 'fab.fa-wikipedia-w',
+  'word': 'Avian influenza',
+  'url': 'https://en.wikipedia.org/wiki/Avian_influenza'
+}, {
+  'icon': 'fab.fa-wikipedia-w',
+  'word': 'Mammal',
+  'url': 'https://en.wikipedia.org/wiki/Mammal'
+}, {
+  'icon': 'fab.fa-wikipedia-w',
+  'word': 'H5N1',
+  'url': 'https://en.wikipedia.org/wiki/Influenza_A_virus_subtype_H5N1'
+}];*/
+
+/*let keywords4 = [{
+  'icon': 'fab.fa-wikipedia-w',
+  'word': 'Enceladus',
+  'url': 'https://en.wikipedia.org/wiki/Enceladus'
+}, {
+  'icon': 'fab.fa-wikipedia-w',
+  'word': 'Europa (moon)',
+  'url': 'https://en.wikipedia.org/wiki/Europa_(moon)'
+}, {
+  'icon': 'fab.fa-wikipedia-w',
+  'word': 'Circumstellar habitable zone',
+  'url': 'https://en.wikipedia.org/wiki/Circumstellar_habitable_zone'
+}];*/
 
 import { IArticle } from '../types';
 
@@ -67,6 +95,6 @@ export default function transformArticle(data: any): IArticle {
     link: url,
     score,
     timestamp: new Date(timestamp).getTime(),
-    keywords: (x) ? keywords2 : keywords
+    keywords: keywords //keywords4 //(x) ? keywords2 : keywords
   };
 }
