@@ -31,7 +31,7 @@
     }
  */
 
-let keywords = [{
+/*let keywords = [{
   'icon': 'fab.fa-wikipedia-w',
   'word': 'Silicon Valley Bank',
   'url': 'https://en.wikipedia.org/wiki/Silicon_Valley_Bank'
@@ -39,7 +39,7 @@ let keywords = [{
   'icon': 'investopedia',
   'word': 'Contemporaneous Reserves',
   'url': 'https://www.investopedia.com/terms/contemporaneous-reserves.asp'
-}];
+}];*/
 
 /*let keywords2 = [{
   'icon': 'investopedia',
@@ -87,7 +87,6 @@ import { IArticle } from '../types';
 
 export default function transformArticle(data: any): IArticle {
   const { title, url, score, timestamp, summary } = data;
-  const x = (Math.floor(Math.random() * 2) == 0);
 
   return {
     title,
@@ -95,6 +94,53 @@ export default function transformArticle(data: any): IArticle {
     link: url,
     score,
     timestamp: new Date(timestamp).getTime(),
-    keywords: keywords //keywords4 //(x) ? keywords2 : keywords
+    keywords: data.keywords.filter(filterKeywords).map((data: any) => {
+      const analyzed = data.analyzed[0];
+
+      let icon = 'fab.fa-wikipedia-w';
+      let url = analyzed ? analyzed.url : null;
+
+      if (!url) {
+        url = `https://www.google.com/search?q=${data.keyword}`;
+        icon = 'fab.fa-google';
+      }
+
+      return {
+        icon: icon,
+        word: data.keyword,
+        url: url
+      }
+    })
   };
+}
+
+// Path: src/transformers/keyword.ts
+
+/**
+ * 
+{
+    "keyword": "Samsung Galaxy",
+    "type": "organization",
+    "analyzed": [
+        {
+            "url": "https://en.wikipedia.org/wiki/Samsung_Galaxy",
+            "title": "Samsung Galaxy",
+            "source": "wikipedia.org"
+        }
+    ],
+    "added_at": "2023-03-07T11:40:12.888844+00:00"
+}
+ */
+
+function filterKeywords(data: any) {
+
+  if (data.type === 'person') { // check for type person to have at least two full words
+    const words = data.keyword.split(' ');
+
+    if (words.length < 2) {
+      return false;
+    }
+  }
+
+  return true;
 }
