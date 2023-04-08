@@ -7,8 +7,8 @@ export default class Agent {
 
   processing: boolean
 
-  currentProcesses: Link[]
-  pendingProcesses: Link[]
+  currentProcesses: Link[] = []
+  pendingProcesses: Link[] = []
 
   activeLinks: Link[] = []
 
@@ -36,74 +36,100 @@ export default class Agent {
     for (let l = 0; l < links.length; l++) {
       const link = links[l];
 
-      if (!this.activeLinks.find((activeItem: Link) => activeItem.article === link.article && activeItem.href === link.href)) {
-        this.appendLink(link);
+      if (this.isNotDetectedLink(link)) {
         this.activeLinks.push(link);
         newItems = true;
       }
     }
 
     if (newItems)
-      this.processLinks();
+      this.queueLinks();
+  }
+
+  isNotDetectedLink(link: Link) {
+    logger.log('Agent: isNotActiveLink');
+    return !this.activeLinks.find((activeItem: Link) => activeItem.article === link.article && activeItem.href === link.href)
+  }
+
+  queueLinks() {
+    logger.log('Agent: queueLinks');
+
+    const newPending = this.activeLinks.filter((link: Link) => link.status === 'pending');
+
+    for (let i = 0; i < newPending.length; i++) {
+      const link = newPending[i];
+
+      link.setStatus('processing');
+      this.pendingProcesses.push(link);
+    }
+
+    this.processLinks();
   }
 
   async processLinks() {
     logger.log('Agent: processLinks');
 
-    this.pendingProcesses = this.activeLinks.filter((link: Link) => link.status === 'pending');
-
-    if (this.processing) { 
-      this.pendingProcesses.forEach((link: Link) => {
-        this.currentProcesses.push(link);
-      });
-    } else if(this.pendingProcesses.length !== 0) {
+    if (this.pendingProcesses.length > 0 && this.currentProcesses.length < config.api.lookupConcurrency) {
       this.processing = true;
-      this.currentProcesses = this.pendingProcesses;
 
-      if (this.currentProcesses.length !== 0) {
-        await Promise.map(this.currentProcesses, async (link: Link) => {
-          try {
-            await link.getInfo();
-          } catch (error) {
-            logger.error(`There was a problem while fetching the link data ${link.href}, error ${error}`);
-          }
-        }, { concurrency: config.api.lookupConcurrency });
+      const newProcessesCount = config.api.lookupConcurrency - this.currentProcesses.length;
+      const addNewCount = newProcessesCount > this.pendingProcesses.length ? this.pendingProcesses.length : newProcessesCount;
 
-        this.processing = false;
-        this.processLinks();
+      // feed new from pending
+      for (let i = 0; i <= addNewCount; i++) {
+        const link = this.pendingProcesses[i];
+
+        this.appendLink(link);
+
+        link.getInfo(this.processCallback.bind(this), i);
+        
+        this.currentProcesses.push(link);
+
+        // remove from pending
+        this.pendingProcesses.splice(i, 1);
       }
-    }
+
+      this.queueLinks();
+    } else 
+      this.processing = false;
   }
 
-clearActiveLinks() {
-  logger.log('Agent: clearActiveLinks');
+  processCallback(link: Link, index: number) {
+    logger.log('Agent: processCallback');
 
-  this.activeLinks = [];
-  this.processing = false;
-}
+    this.currentProcesses.splice(index, 1);
+    this.queueLinks();
+  }
 
-clearOpenDialogs() {
-  logger.log('Agent: clearOpenDialogs');
+  clearActiveLinks() {
+    logger.log('Agent: clearActiveLinks');
 
-  this.activeLinks.filter((link: Link) => link.dialog)
-    .forEach((link: Link) => {
-      link.dialog.close();
-    });
-}
+    this.activeLinks = [];
+    this.processing = false;
+  }
 
-  async findLinks(records: MutationRecord[], delay: boolean): Promise < Link[] > {
-  logger.log('Agent: findLinks');
+  clearOpenDialogs() {
+    logger.log('Agent: clearOpenDialogs');
 
-  // Must be overwritten by child
-  // Needs an abstract interface
+    this.activeLinks.filter((link: Link) => link.dialog)
+      .forEach((link: Link) => {
+        link.dialog.close();
+      });
+  }
 
-  return [];
-}
+  async findLinks(records: MutationRecord[], delay: boolean): Promise<Link[]> {
+    logger.log('Agent: findLinks');
 
-appendLink(link: Link) {
-  logger.log('Agent: appendLink');
+    // Must be overwritten by child
+    // Needs an abstract interface
 
-  // Must be overwritten by child
-  // Needs an abstract interface
-}
+    return [];
+  }
+
+  appendLink(link: Link) {
+    logger.log('Agent: appendLink');
+
+    // Must be overwritten by child
+    // Needs an abstract interface
+  }
 }

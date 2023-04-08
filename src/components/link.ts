@@ -48,15 +48,13 @@ export default class Link {
     this.href = potentialLInk.href;
     this.wrapper = potentialLInk.wrapperNode;
     this.parent = this.wrapper; // Could be overwritten down the line
-    this.status = 'pending';
 
+    this.setStatus('pending');
     this.onClickHandler = this.onClick.bind(this);
   }
 
-  async getInfo() {
+  async getInfo(callback?: Function, index?: number) {
     logger.log('Link: getInfo');
-
-    this.status = 'processing';
 
     try {
       const res = await fetch(`${config.api.url}/meta`, {
@@ -84,7 +82,7 @@ export default class Link {
 
       this.relatedCount = data.meta.total_results;
 
-      this.status = 'success';
+      this.setStatus('success');
       this.el.classList.add('SCHasResults');
 
       if (this.countEl)
@@ -95,10 +93,19 @@ export default class Link {
     } catch (error) {
       logger.error('Error while fetching data');
 
-      this.status = 'error';
+      this.setStatus('error');
       this.countEl.innerHTML = '0';
       this.destroy();
     }
+
+    if (callback)
+      callback(this, index);
+  }
+
+  setStatus(status: string) { // TODO: Make this a ENUM
+    logger.log('Link: setStatus');
+
+    this.status = status;
   }
 
   async getData() {

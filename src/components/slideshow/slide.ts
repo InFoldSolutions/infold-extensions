@@ -5,7 +5,7 @@ import en from 'javascript-time-ago/locale/en';
 
 TimeAgo.addDefaultLocale(en);
 
-import { IKeyword, ISlideBody } from '../../types';
+import { ISlideBody } from '../../types';
 
 import logger from '../../utils/logger';
 
@@ -14,7 +14,7 @@ import Tip from '../tip';
 import CalendarIcon from '../svgs/calendarIcon';
 import LinkIcon from '../svgs/linkIcon';
 import RedditIcon from '../svgs/redditIcon';
-import InvestopediaIcon from '../svgs/investopediaIcon';
+import Keywords from './keywords';
 
 const timeAgo = new TimeAgo('en-US');
 
@@ -65,8 +65,6 @@ export default class Slide {
       el('span.SCIcon.SCTipIcon', new Tip(data.sourceName, 5))
     ]
 
-    let keywords: Array<HTMLElement>;
-
     if (data.type === 'social' && data.icon) {
       switch (data.icon) {
         case 'reddit':
@@ -78,27 +76,11 @@ export default class Slide {
       }
     }
 
-    if (data.keywords) {
-      keywords = data.keywords.map((keyword: IKeyword) => {
-        let icon;
-
-        if (keyword.icon.includes('fa-'))
-          icon = el(`i.${keyword.icon}`);
-        else
-          icon = new InvestopediaIcon();
-
-        return el('a.SCKeyword', { 
-          href: keyword.url, 
-          target: '_blank' 
-        }, [icon, keyword.word]);
-      });
-    }
-
     this.summaryBody = el('.SCSummaryBody', [
       el('.SCSummaryTitle', { title: data.title }, data.title),
       el('.SCSummaryInfo', this.summaryInfo),
       el('.SCSummaryContent', data.description),
-      el('.SCKeywordsWrapper', keywords)
+      el('.SCKeywordsWrapper', new Keywords(data.keywords))
     ]);
 
     mount(this.el, this.summaryBody);

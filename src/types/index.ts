@@ -1,16 +1,16 @@
-export interface IDataItem {
+export type IDataItem = {
   source: ISource
   articles: Array<IArticle>
 }
 
-export interface ISourceGroup {
+export type ISourceGroup = {
   dateGroup: IDateGroup,
   elements: Array<IDataItem>
   label?: string
   toDate?: number
 }
 
-export interface ISource {
+export type ISource = {
   name: string
   url: string
   icon: string
@@ -18,7 +18,7 @@ export interface ISource {
   articles?: Array<IArticle>
 }
 
-export interface IArticle {
+export type IArticle = {
   body: string
   title?: string
   timestamp?: number
@@ -27,13 +27,13 @@ export interface IArticle {
   keywords?: Array<IKeyword>
 }
 
-export interface IKeyword {
+export type IKeyword = {
   icon: string
   word: string
   url: string
 }
 
-export interface ISlide {
+export type ISlide = {
   body: string
   title?: string
   author?: string
@@ -43,7 +43,7 @@ export interface ISlide {
   keywords?: Array<IKeyword>
 }
 
-export interface ISlideBody {
+export type ISlideBody = {
   title: string
   description: string
   timestamp: number
@@ -56,14 +56,14 @@ export interface ISlideBody {
   keywords?: Array<IKeyword>
 }
 
-export interface IDateGroup {
+export type IDateGroup = {
   listName: string
   toDate: number
   className: string
   label: string
 }
 
-export interface IPotentialLink {
+export type IPotentialLink = {
   href: string,
   wrapperNode: HTMLElement,
   article: HTMLElement
