@@ -85,4 +85,9 @@ export default class Slide {
 
     mount(this.el, this.summaryBody);
   }
+
+  destroy() {
+    logger.log('Slide: destroy');
+    //unmount(this.el, this.summaryBody);
+  }
 }

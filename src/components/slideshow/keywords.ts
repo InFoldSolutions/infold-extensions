@@ -28,6 +28,12 @@ export default class Keywords {
     this.x = 0;
     this.mx = 0;
 
+    if (!keywords || keywords.length === 0) {
+      this.el = el('.SCKeywordsContent', '-- No keywords identified --');
+      return;
+    }
+      
+
     this.el = el('.SCKeywordsContent', this.renderKeywords(keywords));
 
     this.prevButton = el('.SCArrow.SCLeft', new LeftArrowIcon());
@@ -49,16 +55,10 @@ export default class Keywords {
     this.el.addEventListener('mouseleave', this.mouseupHandler.bind(this));
     this.el.addEventListener('scroll', this.scrollHandler.bind(this));
 
-    console.log('this.el', this.el)
-    console.log('this.el.scrollWidth', this.el.scrollWidth)
-    console.log('this.el.clientWidth', this.el.clientWidth)
-    
     this.maxScrollWidth = this.el.scrollWidth - this.el.clientWidth / 2 - this.el.clientWidth / 2;
 
     if (this.maxScrollWidth !== 0)
       this.el.parentElement.classList.add('has-arrows');
-
-    console.log('this.maxScrollWidth', this.maxScrollWidth)
   }
 
   renderKeywords(keywords: Array<IKeyword>) {

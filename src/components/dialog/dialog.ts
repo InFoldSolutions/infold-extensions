@@ -13,8 +13,8 @@ export default class Dialog {
   article: HTMLElement
   btnWrapper: HTMLElement
   linkElement: HTMLElement
-
   dialogBody: HTMLElement
+  slideshow: Slideshow
 
   agent: string
 
@@ -37,12 +37,17 @@ export default class Dialog {
       .log('Dialog: update');
 
     this.dialogBody.innerHTML = '';
-    mount(this.dialogBody, el('.SCDialogContent', new Slideshow(data, totalCount)));
+    this.slideshow = new Slideshow(data, totalCount);
+
+    mount(this.dialogBody, el('.SCDialogContent', this.slideshow));
   }
 
   close() {
     logger.log('Dialog: close');
 
     unmount(this.parent, this.el);
+
+    if (this.slideshow)
+      this.slideshow.destroy();
   }
 }

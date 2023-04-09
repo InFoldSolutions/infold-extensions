@@ -83,4 +83,9 @@ export default class Slideshow {
 
     this.slides.update(this.currentSlides, { activeSlide: this.activeSlide });
   }
+
+  destroy() {
+    logger.log('Slideshow: destroy');
+    //this.slides.destroy();
+  }
 }
