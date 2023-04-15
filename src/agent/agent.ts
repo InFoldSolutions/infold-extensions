@@ -76,13 +76,17 @@ export default class Agent {
       const addNewCount = newProcessesCount > this.pendingProcesses.length ? this.pendingProcesses.length : newProcessesCount;
 
       // feed new from pending
-      for (let i = 0; i <= addNewCount; i++) {
+      for (let i = 0; i < addNewCount; i++) {
         const link = this.pendingProcesses[i];
+
+        if (!link)
+          continue;
 
         this.appendLink(link);
 
         link.getInfo(this.processCallback.bind(this), i);
         
+        // add to current processes
         this.currentProcesses.push(link);
 
         // remove from pending

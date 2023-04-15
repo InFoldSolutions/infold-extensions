@@ -55,14 +55,14 @@ import config from "../utils/config";
 import transformKeyword from "./keyword";
 
 export default function transformArticle(data: any): IArticle {
-  const { title, url, score, timestamp, summary } = data;
+  const { title, url, related, added_at, summary } = data;
 
   return {
     title,
     body: summary,
     link: url,
-    score,
-    timestamp: new Date(timestamp).getTime(),
+    score: related,
+    timestamp: new Date(added_at).getTime(),
     keywords: data.keywords.filter(filterKeywords).map(transformKeyword)
   };
 }

@@ -12,7 +12,7 @@ export type ISourceGroup = {
 
 export type ISource = {
   name: string
-  url: string
+  url?: string
   icon: string
   handle: string
   articles?: Array<IArticle>

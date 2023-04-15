@@ -126,7 +126,7 @@ export default class Link {
       throw new Error('No data');
 
     this.data = response.data
-      .filter((item: any) => item.source.parser) // filter out sources that don't have a parser
+      .filter((item: any) => item.source.logo) // filter out sources that don't have a parser
       .map((item: any) => {
         return {
           source: transformSource(item.source),

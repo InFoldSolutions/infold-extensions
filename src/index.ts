@@ -1,5 +1,3 @@
-import 'bluebird-global'; // use bluebird as global Promise implementation
-
 import RedditAgent from './agent/reddit';
 import TwitterAgent from './agent/twitter';
 
