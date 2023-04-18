@@ -255,7 +255,7 @@
 }
 
 .SCPostBodyWrapper.reddit .SCKeywordsWrapper {
-  margin-top: 13px;
+  margin-top: 10px;
 }
 
 .SCPostBodyWrapper.reddit .SCSlideshowWrapper {
@@ -281,7 +281,7 @@
   position: absolute;
   left: 12.6%;
   bottom: -204px;
-  min-height: 242.2px;
+  min-height: 247.2px;
 }
 
 .SCDialogWrapper.twitter .SCSummaryTitle {
@@ -368,7 +368,9 @@
   max-height: 48px;
 }
 
-.SCSummaryBody {}
+.SCSummaryBody {
+  
+}
 
 .SCSummaryTitle {
   font-weight: 700;
@@ -415,7 +417,7 @@
 }
 
 .SCKeywordsWrapper {
-  margin-top: 13px;
+  margin-top: 10px;
   position: relative;
   padding: 0 30px;
 }
@@ -431,7 +433,7 @@
 }
 
 .SCKeywordsContent .SCArrow {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
   opacity: 0.8;
   padding: 0 2px;
   height: auto;
@@ -447,7 +449,7 @@
   top: 0;
   bottom: 0;
   margin: 0;
-} 
+}
 
 .SCKeywordsContent .SCArrow.SCRight {
   position: absolute;
@@ -591,8 +593,12 @@
 .SCSummaryContent {
   margin: 0px;
   color: rgb(231, 233, 234);
-  height: 37px;
+  height: 55px;
   overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
 }
 
 /**
@@ -782,7 +788,7 @@
 }
 
 .SCSlideshow {
-  min-height: 135px;
+  min-height: 150px;
   width: 100%;
   text-align: left;
   overflow: hidden;
