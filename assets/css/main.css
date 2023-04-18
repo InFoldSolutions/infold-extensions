@@ -255,7 +255,7 @@
 }
 
 .SCPostBodyWrapper.reddit .SCKeywordsWrapper {
-  margin-top: 10px;
+  margin-top: 13px;
 }
 
 .SCPostBodyWrapper.reddit .SCSlideshowWrapper {
@@ -928,7 +928,7 @@
 }
 
 .SCDialogWrapper.reddit .SCSlideshow {
-  min-height: 125px;
+  min-height: 139px;
 }
 
 .SCDialogWrapper.reddit .SCSlideshow .SCSlide {
@@ -969,7 +969,7 @@
   color: rgb(215, 218, 220);
   font-size: 14px;
   line-height: 16px;
-  height: 33px;
+  height: 50px;
 }
 
 .SCDialogWrapper.reddit .SCKeyword {
