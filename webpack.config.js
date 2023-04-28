@@ -76,7 +76,7 @@ module.exports = (env, argv) => {
       }),
       new ZipPlugin({
         path: path.join(__dirname, 'output'),
-        filename: `${package.name}-${package.version}.zip`
+        filename: `${package.name}-${package.version}-${env.browser}.zip`
       })
     ]
   }
