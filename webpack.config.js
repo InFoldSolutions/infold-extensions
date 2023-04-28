@@ -1,4 +1,5 @@
 const path = require('path');
+const package = require('./package.json');
 
 // Webpack plugins
 const ZipPlugin = require('zip-webpack-plugin');
@@ -9,8 +10,8 @@ module.exports = (env, argv) => {
   console.log('env', env);
   console.log('argv.mode', argv.mode);
 
+  const browserCssPath = (env.browser === "chrome") ? "chrome-extension://" : "moz-extension://";
   const config = {
-    entry: './src/index.ts',
     module: {
       rules: [
         {
@@ -26,8 +27,12 @@ module.exports = (env, argv) => {
         'path': require.resolve('path-browserify'),
       }
     },
+    entry: {
+      content: './src/content/index.ts',
+      background: './src/background/index.ts',
+    },
     output: {
-      filename: 'app.js',
+      filename: '[name].js',
       path: path.resolve(__dirname, 'dist'),
     },
     plugins: [
@@ -40,10 +45,24 @@ module.exports = (env, argv) => {
           {
             from: `manifest/${env.browser}.json`,
             to: path.join(__dirname, 'dist/manifest.json'),
+            transform(content) {
+              return content
+                .toString()
+                .replace('$VERSION', package.version)
+            },
           },
           {
-            from: 'assets/css', // rename moz, chrome
-            to: path.join(__dirname, 'dist/css'),
+            from: 'assets/css/all.min.css',
+            to: path.join(__dirname, 'dist/css/all.min.css'),
+            transform(content) {
+              return content
+                .toString()
+                .replaceAll('$BROWSERCSSPATH', browserCssPath)
+            },
+          },
+          {
+            from: 'assets/css/main.css',
+            to: path.join(__dirname, 'dist/css/main.css')
           },
           {
             from: 'assets/images',
@@ -57,10 +76,10 @@ module.exports = (env, argv) => {
       }),
       new ZipPlugin({
         path: path.join(__dirname, 'output'),
-        filename: `${env.browser}.zip`
+        filename: `${package.name}-${package.version}.zip`
       })
     ]
-  };
+  }
 
   if (argv.mode === 'development') {
     config.devtool = 'inline-source-map'; // remove in prod

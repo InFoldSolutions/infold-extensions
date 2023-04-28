@@ -5,8 +5,8 @@ const config = {
   'minTextLenght': 100,
   'api': {
     'url': 'https://api.infold.ai/articles/related',
-    'similarity': 0.70,
-    'maxRelatedArticles': 18,
+    'similarity': 0.74,
+    'maxRelatedArticles': 16,
     'lookupConcurrency': 4,
     'headers': {
       'Accept': 'application/json',

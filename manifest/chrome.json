@@ -2,13 +2,20 @@
   "manifest_version": 3,
   "name": "InFold.ai",
   "description": "Take a deeper dive into any topic without changing your workflow. We read and compare thounds of source, so you don't have to.",
-  "version": "0.8.5",
+  "version": "$VERSION",
   "icons": {
     "64": "images/icons/icon_64.png",
     "128": "images/icons/icon_128.png"
   },
+  "host_permissions": [
+    "*://*.infold.ai/*"
+  ],
   "content_security_policy": {
-    "extension_pages": "img-src 'self' https://www.infold.com/*; object-src 'self'; script-src 'self';"
+    "extension_pages": "script-src 'self'; object-src 'self';"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
   },
   "content_scripts": [
     {
@@ -17,7 +24,7 @@
         "*://*.twitter.com/*"
       ],
       "js": [
-        "app.js"
+        "content.js"
       ],
       "css": [
         "css/all.min.css",

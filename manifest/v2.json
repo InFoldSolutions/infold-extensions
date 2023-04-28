@@ -1,0 +1,33 @@
+{
+	"manifest_version": 2,
+	"name": "InFold.ai",
+	"description": "Take a deeper dive into any topic without changing your workflow. We read and compare thounds of source, so you don't have to.",
+	"version": "0.8.5",
+	"permissions": [
+		"https://*.infold.ai/*"
+	],
+	"icons": {
+		"64": "images/icons/icon_64.png",
+		"128": "images/icons/icon_128.png"
+	},
+	"content_security_policy": "img-src 'self' https://*.infold.ai/*; object-src 'self' https://*.infold.ai/*; script-src 'self' https://*.infold.ai/*;",
+	"content_scripts": [
+		{
+			"matches": [
+				"*://*.reddit.com/*",
+				"*://*.twitter.com/*"
+			],
+			"js": [
+				"app.js"
+			],
+			"css": [
+				"css/all.min.css",
+				"css/main.css"
+			]
+		}
+	],
+	"web_accessible_resources": [
+		"images/*",
+		"webfonts/*"
+	]
+}
