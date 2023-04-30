@@ -1,3 +1,9 @@
+/* Popup wrapper */
+
+.SCPopup {
+  background-color: #202124;
+}
+
 /* Button css */
 
 .SCbuttonWrapper {
@@ -165,7 +171,7 @@
 
 .SCbuttonWrapper.reddit.SCNoResults .SCIconWrapper {
   margin-right: 0;
-} 
+}
 
 .SCbuttonWrapper.reddit .SCcount {
   margin-right: 2px;
@@ -384,9 +390,7 @@
   max-height: 48px;
 }
 
-.SCSummaryBody {
-  
-}
+.SCSummaryBody {}
 
 .SCSummaryTitle {
   font-weight: 700;
@@ -843,9 +847,35 @@
   z-index: 1;
 }
 
+
+/** Popup Dialog overwrites **/
+
+.SCDialogWrapper.popup .SCDialogCloseWrapper {
+  right: 7px;
+  top: 11px;
+}
+
+.SCDialogWrapper.popup .SCDialogBody {
+  box-shadow: none;
+  margin-top: 15px;
+  background-color: #202124;
+}
+
+.SCDialogWrapper.popup .SCSummaryContent {
+  font-size: 15px;
+}
+
 /** Light mode **/
 
 @media (prefers-color-scheme: light) {
+  .SCPopup {
+    background-color: rgb(255, 255, 255);
+  }
+
+  .SCDialogWrapper.popup .SCDialogBody {
+    background-color: rgb(255, 255, 255);
+  }
+
   .SCSlideshow .SCSlide {
     color: rgba(0, 0, 0, 1.00);
   }
@@ -902,22 +932,6 @@
 /** Dark mode **/
 
 @media (prefers-color-scheme: dark) {}
-
-/** Popup Dialog overwrites **/
-
-.SCDialogWrapper.popup .SCDialogCloseWrapper {
-  right: 7px;
-  top: 11px;
-}
-
-.SCDialogWrapper.popup .SCDialogBody {
-  box-shadow: none;
-  margin-top: 15px;
-}
-
-.SCDialogWrapper.popup .SCSummaryContent {
-  font-size: 0.9em;
-}
 
 /** Reddit Dialog overwrites **/
 
