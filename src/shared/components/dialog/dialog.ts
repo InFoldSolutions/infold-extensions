@@ -1,6 +1,6 @@
 import { el, unmount, mount } from 'redom';
 
-import logger from '../../../utils/logger';
+import logger from '../../utils/logger';
 
 import Slideshow from '../slideshow/slideshow';
 
@@ -18,7 +18,7 @@ export default class Dialog {
 
   agent: string
 
-  constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement) {
+  constructor(agent?: string, article?: HTMLElement, btnWrapper?: HTMLElement, linkElement?: HTMLElement) {
     logger.log('Dialog: constructor');
 
     this.btnWrapper = btnWrapper;

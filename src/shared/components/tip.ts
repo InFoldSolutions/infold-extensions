@@ -1,6 +1,6 @@
 import { el, mount } from 'redom';
 
-import logger from '../../utils/logger';
+import logger from '../utils/logger';
 import TipIcon from './svgs/tipIcon';
 
 export default class Tip {

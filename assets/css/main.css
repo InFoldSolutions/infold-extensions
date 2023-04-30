@@ -675,11 +675,9 @@
 }
 
 .SCGroupsWrapper li img {
-  max-width: 30px;
-}
-
-.SCGroupsWrapper li img {
   width: 100%;
+  height: 100%;
+  max-width: 30px;
   border-radius: 50%;
 }
 
@@ -904,6 +902,22 @@
 /** Dark mode **/
 
 @media (prefers-color-scheme: dark) {}
+
+/** Popup Dialog overwrites **/
+
+.SCDialogWrapper.popup .SCDialogCloseWrapper {
+  right: 7px;
+  top: 11px;
+}
+
+.SCDialogWrapper.popup .SCDialogBody {
+  box-shadow: none;
+  margin-top: 15px;
+}
+
+.SCDialogWrapper.popup .SCSummaryContent {
+  font-size: 0.9em;
+}
 
 /** Reddit Dialog overwrites **/
 

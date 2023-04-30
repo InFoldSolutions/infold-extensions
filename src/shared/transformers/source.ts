@@ -37,7 +37,7 @@
 
 import { ISource } from "../types/index";
 
-export function transformSource(data: any): ISource {
+export default function transformSource(data: any): ISource {
   const { name, url, logo, social } = data;
 
   return {

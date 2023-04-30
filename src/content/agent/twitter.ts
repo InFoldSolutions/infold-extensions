@@ -1,14 +1,14 @@
 import { mount } from 'redom';
 
-import { IPotentialLink } from '../types';
+import { IPotentialLink } from '../../shared/types';
 
 import Agent from './agent';
 
-import Link from "../components/link";
+import Link from "../../shared/components/link";
 
-import logger from '../../utils/logger';
-import config from '../../utils/config';
-import { timeDelay } from '../../utils/helpers';
+import logger from '../../shared/utils/logger';
+import config from '../../shared/utils/config';
+import { timeDelay } from '../../shared/utils/helpers';
 
 export default class TwitterAgent extends Agent {
 
@@ -137,7 +137,7 @@ export default class TwitterAgent extends Agent {
 
     potentialLinks.forEach((potentialLink: IPotentialLink) => {
       links.push(new Link(
-        this,
+        this.providerType,
         potentialLink
       ));
     });

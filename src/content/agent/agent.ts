@@ -1,7 +1,9 @@
-import Link from "../components/link";
+import Link from "../../shared/components/link";
 
-import config from "../../utils/config";
-import logger from "../../utils/logger";
+import config from "../../shared/utils/config";
+import logger from "../../shared/utils/logger";
+
+import events from "../../shared/services/events";
 
 export default class Agent {
 
@@ -16,6 +18,8 @@ export default class Agent {
 
   constructor() {
     logger.log('Agent: constructor');
+
+    this.onEvents();
     this.processing = false;
   }
 
@@ -120,6 +124,12 @@ export default class Agent {
       .forEach((link: Link) => {
         link.dialog.close();
       });
+  }
+
+  onEvents() {
+    logger.log('Agent: onEvents');
+
+    events.on('clearOpenDialogs', this.clearOpenDialogs.bind(this))
   }
 
   async findLinks(records: MutationRecord[], delay: boolean): Promise<Link[]> {

@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "InFold.ai",
+  "name": "InFold",
   "description": "Take a deeper dive into any topic without changing your workflow. We read and compare thounds of source, so you don't have to.",
   "version": "$VERSION",
   "icons": {
@@ -8,11 +8,16 @@
     "128": "images/icons/icon_128.png"
   },
   "permissions": [
-    "webNavigation"
+    "tabs"
   ],
   "host_permissions": [
-    "*://*.infold.ai/*"
+    "*://*.reddit.com/*",
+    "*://*.twitter.com/*"
   ],
+  "action": {
+    "default_title": "Related items",
+    "default_popup": "popup.html"
+  },
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self';"
   },

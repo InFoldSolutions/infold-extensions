@@ -1,5 +1,7 @@
 
-import config from '../utils/config';
+import path from 'path';
+
+import config from '../shared/utils/config';
 
 /** 
  * Message listener 
@@ -15,46 +17,76 @@ chrome.runtime.onMessage.addListener(
         case 'getData':
           getData(request.href, sendResponse);
           return true;
+        default:
+          console.warn('Unknown message type', request.type);
       }
     }
   }
 );
 
 /** 
- * Navigation listeners 
+ * Tabs listeners 
  * */
 
-chrome.webNavigation.onDOMContentLoaded.addListener(function (details) {
-  console.log('webNavigation details', details);
+// We'll need this
+// https://stackoverflow.com/questions/69598656/prevent-popup-if-current-tab-url-is-not-permitted-in-manifest-v3
 
-  // @ts-ignore
-  if (details.frameType === 'outermost_frame') 
-    console.log('webNavigation url', details.url);
-
-  /*chrome.action.setBadgeBackgroundColor(
-    { color: '#00FF00' },  // Also green
-    () => {  }
-  )
-
-  /*chrome.action.setBadgeText(
-    {
-      text: "2",
-      tabId: getTabId()
-    }
-  );*/
-});
-
-chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-  console.log('tabs changeInfo', tabId, changeInfo, tab);
+chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+  //console.log('tabs changeInfo', tabId, changeInfo, tab);
 
   if (changeInfo.status == 'complete') {
-   }
+    const url: URL = new URL(tab.url);
+    const extension: string = path.extname(url.pathname);
+
+    if (config.blacklistedDomains.includes(url.host))
+      return;
+    if (config.defaults.notAllowedExtensions.includes(extension))
+      return;
+
+    setBadge(tabId, tab); // need to rename, it's async
+  }
 });
 
 /**
- * Local helpers
- * might go to utils
- */
+ * Local helpers - utils?
+ **/
+
+async function setBadge(tabId: any, tab: any) {
+  const data = await getInfo(tab.url, null);
+
+  try {
+    if (data.meta.success && data.meta.total_results > 0) {
+      chrome.action.setBadgeBackgroundColor(
+        { color: '#1d9bf0' }
+      );
+
+      chrome.action.setBadgeText(
+        {
+          text: String(data.meta.total_results),
+          tabId: tabId,
+        }
+      );
+
+      // @ts-ignore
+      chrome.action.setBadgeTextColor(
+        { color: '#FFFFFF' }
+      )
+
+      chrome.action.enable(tabId);
+    } else {
+      chrome.action.setBadgeText(
+        {
+          text: '',
+          tabId: tabId,
+        }
+      );
+
+      chrome.action.disable(tabId);
+    }
+  } catch (error) {
+    console.warn(error);
+  }
+}
 
 async function getInfo(href: string, sendResponse: Function) {
   try {
@@ -68,10 +100,16 @@ async function getInfo(href: string, sendResponse: Function) {
     });
 
     const data = await info.json();
-    sendResponse(data);
+
+    if (sendResponse)
+      sendResponse(data);
+    else
+      return data;
   } catch (error) {
-    console.error(error);
-    sendResponse({ meta: { success: false } });
+    console.warn(error);
+
+    if (sendResponse)
+      sendResponse({ meta: { success: false } });
   }
 }
 
@@ -87,9 +125,15 @@ async function getData(href: string, sendResponse: Function) {
     });
 
     const data = await info.json();
-    sendResponse(data);
+
+    if (sendResponse)
+      sendResponse(data);
+    else
+      return data;
   } catch (error) {
-    console.error(error);
-    sendResponse({ meta: { success: false } });
+    console.warn(error);
+
+    if (sendResponse)
+      sendResponse({ meta: { success: false } });
   }
 }

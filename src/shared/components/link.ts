@@ -1,26 +1,26 @@
 import { el, unmount } from 'redom';
 //import retry from 'async-retry';
 
-import Agent from '../agent/agent';
 import { IDataItem, IPotentialLink } from '../types';
-import config from '../../utils/config';
+import config from '../utils/config';
 
-import { isPostPage } from '../../utils/helpers';
-import logger from '../../utils/logger';
+import { isPostPage } from '../utils/helpers';
+import logger from '../utils/logger';
 
 import RedditDialog from './dialog/reddit';
 import TwitterDialog from './dialog/twitter';
 
 import Post from './post';
-import { transformSource } from '../transformers/source';
+import transformSource from '../transformers/source';
 import transformArticle from '../transformers/article';
+
+import events from '../services/events';
 
 export default class Link {
 
-  agent: Agent
-
   status: string
   href: string
+  providerType: string
 
   relatedCount: number
 
@@ -40,10 +40,10 @@ export default class Link {
 
   onClickHandler: EventListener
 
-  constructor(agent: Agent, potentialLInk: IPotentialLink) {
+  constructor(providerType: string, potentialLInk: IPotentialLink) {
     logger.log('Link: constructor');
 
-    this.agent = agent;
+    this.providerType = providerType;
     this.article = potentialLInk.article;
     this.href = potentialLInk.href;
     this.wrapper = potentialLInk.wrapperNode;
@@ -147,7 +147,7 @@ export default class Link {
 
     buttonContent.push(el(`span.SCTextWrapper`, textContent));
 
-    this.el = el(`.SCbuttonWrapper.${this.agent.providerType}.${btnWrapperClass}`, buttonContent);
+    this.el = el(`.SCbuttonWrapper.${this.providerType}.${btnWrapperClass}`, buttonContent);
     this.el.onclick = this.onClickHandler;
   }
 
@@ -184,7 +184,7 @@ export default class Link {
   async togglePostView() {
     logger.log('Link: togglePostView');
 
-    if (this.agent.providerType === 'twitter')
+    if (this.providerType === 'twitter')
       this.article.style.flexWrap = 'wrap';
 
     if (this.post) {
@@ -193,7 +193,7 @@ export default class Link {
     }
 
     this.post = new Post(
-      this.agent.providerType,
+      this.providerType,
       this.article,
       this.wrapper,
       this.el,
@@ -214,7 +214,7 @@ export default class Link {
   async openDialog() {
     logger.log('Link: openDialog');
 
-    this.agent.clearOpenDialogs();
+    events.emit('clearOpenDialogs');
 
     if (this.dialog) {
       this.dialog.close();
@@ -223,7 +223,7 @@ export default class Link {
 
     let Dialog;
 
-    switch (this.agent.providerType) {
+    switch (this.providerType) {
       case 'reddit':
         Dialog = RedditDialog;
         break;
@@ -233,7 +233,7 @@ export default class Link {
     }
 
     this.dialog = new Dialog(
-      this.agent.providerType,
+      this.providerType,
       this.article,
       this.wrapper,
       this.el,
@@ -293,7 +293,7 @@ export default class Link {
   }
 
   get isIconVersion(): boolean {
-    switch (this.agent.providerType) {
+    switch (this.providerType) {
       case 'reddit':
         return this.isCompactVersion;
       case 'twitter':
@@ -304,7 +304,7 @@ export default class Link {
   get isTextVersion(): boolean {
     let isTextOnly: boolean = false;
 
-    switch (this.agent.providerType) {
+    switch (this.providerType) {
       case 'twitter':
         return !this.isDialog;
     }

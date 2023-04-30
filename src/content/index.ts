@@ -1,7 +1,7 @@
 import RedditAgent from './agent/reddit';
 import TwitterAgent from './agent/twitter';
 
-import logger from '../utils/logger';
+import logger from '../shared/utils/logger';
 
 class Application {
   agent: RedditAgent | TwitterAgent;

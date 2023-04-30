@@ -1,7 +1,7 @@
 
 import { svg } from 'redom';
 
-import logger from '../../../utils/logger';
+import logger from '../../utils/logger';
 
 export default class InvestopediaIcon {
   el: SVGElement

@@ -2,7 +2,7 @@ import { el, mount, unmount } from 'redom';
 
 import Slideshow from './slideshow/slideshow';
 
-import logger from '../../utils/logger';
+import logger from '../utils/logger';
 import CloseIcon from './svgs/closeIcon';
 
 import { IDataItem } from '../types';

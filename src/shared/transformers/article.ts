@@ -50,7 +50,7 @@
 
 import { IArticle } from "../types";
 
-import config from "../../utils/config";
+import config from "../utils/config";
 
 import transformKeyword from "./keyword";
 

@@ -2,7 +2,7 @@ import { el, mount } from 'redom';
 
 import { IKeyword } from '../../types';
 
-import logger from '../../../utils/logger';
+import logger from '../../utils/logger';
 
 import InvestopediaIcon from '../svgs/investopediaIcon';
 import RightArrowIcon from '../svgs/rightArrowIcon';

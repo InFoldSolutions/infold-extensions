@@ -1,6 +1,6 @@
 import { el, mount, unmount } from 'redom';
 
-import logger from '../../../utils/logger';
+import logger from '../../utils/logger';
 
 import Dialog from './dialog';
 import CloseIcon from '../svgs/closeIcon';

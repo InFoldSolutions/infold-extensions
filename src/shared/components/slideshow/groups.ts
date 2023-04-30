@@ -2,9 +2,9 @@ import { el } from 'redom';
 
 import { IArticle, IDateGroup, IDataItem, ISource, ISourceGroup } from '../../types';
 
-import logger from '../../../utils/logger';
-import config from '../../../utils/config';
-import { findParentByCls, shuffleArray } from '../../../utils/helpers';
+import logger from '../../utils/logger';
+import config from '../../utils/config';
+import { findParentByCls, shuffleArray } from '../../utils/helpers';
 
 import RightArrowIcon from '../svgs/rightArrowIcon';
 import LeftArrowIcon from '../svgs/leftArrowIcon';

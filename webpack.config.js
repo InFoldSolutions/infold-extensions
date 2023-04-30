@@ -28,8 +28,9 @@ module.exports = (env, argv) => {
       }
     },
     entry: {
-      content: './src/content/index.ts',
       background: './src/background/index.ts',
+      content: './src/content/index.ts',
+      popup: './src/popup/index.ts',
     },
     output: {
       filename: '[name].js',
@@ -42,6 +43,10 @@ module.exports = (env, argv) => {
       }),
       new CopyWebpackPlugin({
         patterns: [
+          {
+            from: 'src/popup/index.html',
+            to: path.join(__dirname, 'dist/popup.html'),
+          },
           {
             from: `manifest/${env.browser}.json`,
             to: path.join(__dirname, 'dist/manifest.json'),

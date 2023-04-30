@@ -2,7 +2,7 @@ import { el, List, list } from 'redom';
 
 import { IArticle, IDataItem, ISourceGroup, ISource, ISlideBody } from '../../types';
 
-import logger from '../../../utils/logger';
+import logger from '../../utils/logger';
 
 import Groups from './groups';
 import Slide from './slide';

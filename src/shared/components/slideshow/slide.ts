@@ -7,7 +7,7 @@ TimeAgo.addDefaultLocale(en);
 
 import { ISlideBody } from '../../types';
 
-import logger from '../../../utils/logger';
+import logger from '../../utils/logger';
 
 import Tip from '../tip';
 
