@@ -1,7 +1,7 @@
 /* Popup wrapper */
 
 .SCPopup {
-  background-color: #202124;
+  background-color: #18181b;
 }
 
 .SCPopup body {
@@ -855,14 +855,14 @@
 /** Popup Dialog overwrites **/
 
 .SCDialogWrapper.popup .SCDialogCloseWrapper {
-  background: rgba(113, 118, 123, 0.25);
+  background: rgba(113, 118, 123, 0.2);
   position: relative;
   width: 100%;
   border: 0;
   border-radius: 0;
   left: -10px;
   right: -10px;
-  top: 7px;
+  top: 12px;
   min-height: 35px;
   justify-content: left;
   padding-left: 55px;
@@ -890,7 +890,7 @@
 .SCDialogWrapper.popup .SCDialogBody {
   box-shadow: none;
   margin-top: 0px;
-  background-color: #202124;
+  background-color: #18181b;
 }
 
 .SCDialogWrapper.popup .SCSummaryContent {
@@ -898,7 +898,9 @@
   line-height: 19px;
 }
 
-
+.SCDialogWrapper.popup .SCKeywordsWrapper {
+  margin-top: 15px;
+}
 
 /** Light mode **/
 

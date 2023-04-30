@@ -7,6 +7,11 @@
     "64": "images/icons/icon_64.png",
     "128": "images/icons/icon_128.png"
   },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "contact@infold.ai"
+    }
+  },
   "permissions": [
     "tabs"
   ],
