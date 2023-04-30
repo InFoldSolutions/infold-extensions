@@ -4,6 +4,10 @@
   background-color: #202124;
 }
 
+.SCPopup body {
+  overflow: hidden;
+}
+
 /* Button css */
 
 .SCbuttonWrapper {
@@ -851,19 +855,50 @@
 /** Popup Dialog overwrites **/
 
 .SCDialogWrapper.popup .SCDialogCloseWrapper {
-  right: 7px;
-  top: 11px;
+  background: rgba(113, 118, 123, 0.25);
+  position: relative;
+  width: 100%;
+  border: 0;
+  border-radius: 0;
+  left: -10px;
+  right: -10px;
+  top: 7px;
+  min-height: 35px;
+  justify-content: left;
+  padding-left: 55px;
+}
+
+.SCDialogWrapper.popup .SCDialogCloseWrapper svg {
+  position: absolute;
+  right: 55px;
+}
+
+.SCDialogWrapper.popup .SCDialogCloseWrapper::before {
+  background: url(../images/icons/icon_128.png) no-repeat center center;
+  background-size: 100%;
+  content: "";
+  position: absolute;
+  height: 25px;
+  width: 25px;
+  left: 20px;
+}
+
+.SCDialogWrapper.popup .SCSlideshowWrapper {
+  margin-top: 30px;
 }
 
 .SCDialogWrapper.popup .SCDialogBody {
   box-shadow: none;
-  margin-top: 15px;
+  margin-top: 0px;
   background-color: #202124;
 }
 
 .SCDialogWrapper.popup .SCSummaryContent {
   font-size: 15px;
+  line-height: 19px;
 }
+
+
 
 /** Light mode **/
 
@@ -872,6 +907,10 @@
     background-color: rgb(255, 255, 255);
   }
 
+  .SCDialogWrapper.popup .SCDialogCloseWrapper {
+    background: rgba(228, 229, 230, 0.4);
+  }
+  
   .SCDialogWrapper.popup .SCDialogBody {
     background-color: rgb(255, 255, 255);
   }

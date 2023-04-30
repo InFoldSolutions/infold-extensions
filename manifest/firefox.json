@@ -7,9 +7,17 @@
     "64": "images/icons/icon_64.png",
     "128": "images/icons/icon_128.png"
   },
-  "host_permissions": [
-    "*://*.infold.ai/*"
+  "permissions": [
+    "tabs"
   ],
+  "host_permissions": [
+    "*://*.reddit.com/*",
+    "*://*.twitter.com/*"
+  ],
+  "action": {
+    "default_title": "Related items",
+    "default_popup": "popup.html"
+  },
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self';"
   },
