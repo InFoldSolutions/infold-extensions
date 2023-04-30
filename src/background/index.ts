@@ -1,6 +1,10 @@
 
 import config from '../utils/config';
 
+/** 
+ * Message listener 
+ * */
+
 chrome.runtime.onMessage.addListener(
   function (request, sender, sendResponse) {
     if (request.type) {
@@ -15,6 +19,42 @@ chrome.runtime.onMessage.addListener(
     }
   }
 );
+
+/** 
+ * Navigation listeners 
+ * */
+
+chrome.webNavigation.onDOMContentLoaded.addListener(function (details) {
+  console.log('webNavigation details', details);
+
+  // @ts-ignore
+  if (details.frameType === 'outermost_frame') 
+    console.log('webNavigation url', details.url);
+
+  /*chrome.action.setBadgeBackgroundColor(
+    { color: '#00FF00' },  // Also green
+    () => {  }
+  )
+
+  /*chrome.action.setBadgeText(
+    {
+      text: "2",
+      tabId: getTabId()
+    }
+  );*/
+});
+
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+  console.log('tabs changeInfo', tabId, changeInfo, tab);
+
+  if (changeInfo.status == 'complete') {
+   }
+});
+
+/**
+ * Local helpers
+ * might go to utils
+ */
 
 async function getInfo(href: string, sendResponse: Function) {
   try {
