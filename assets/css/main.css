@@ -1,7 +1,7 @@
 /* Popup wrapper */
 
 .SCPopup {
-  background-color: #202124;
+  background-color: #18181b;
 }
 
 .SCPopup body {
@@ -889,7 +889,7 @@
   border-radius: 0;
   left: -10px;
   right: -10px;
-  top: 3px;
+  top: 12px;
   min-height: 35px;
   justify-content: left;
   padding-left: 55px;
@@ -918,7 +918,7 @@
 .SCDialogWrapper.popup .SCDialogBody {
   box-shadow: none;
   margin-top: 0px;
-  background-color: #202124;
+  background-color: #18181b;
 }
 
 .SCDialogWrapper.popup .SCSummaryContent {
