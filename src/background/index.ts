@@ -38,6 +38,8 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     const url: URL = new URL(tab.url);
     const extension: string = path.extname(url.pathname);
 
+    if (url.protocol !== 'http:' && url.protocol !== 'https:')
+      return;
     if (config.blacklistedDomains.includes(url.host))
       return;
     if (config.defaults.notAllowedExtensions.includes(extension))
@@ -52,19 +54,12 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
  **/
 
 async function setBadge(tabId: any, tab: any) {
-  const data = await getInfo(tab.url, null);
-
   try {
-    if (data.meta.success && data.meta.total_results > 0) {
+    const data = await getInfo(tab.url, null);
+
+    if (data?.meta?.success && data.meta?.total_results > 0) {
       chrome.action.setBadgeBackgroundColor(
         { color: '#1d9bf0' }
-      );
-
-      chrome.action.setBadgeText(
-        {
-          text: String(data.meta.total_results),
-          tabId: tabId,
-        }
       );
 
       // @ts-ignore
@@ -72,16 +67,9 @@ async function setBadge(tabId: any, tab: any) {
         { color: '#FFFFFF' }
       )
 
-      chrome.action.enable(tabId);
+      setBadgeText(tabId, String(data.meta.total_results))
     } else {
-      chrome.action.setBadgeText(
-        {
-          text: '',
-          tabId: tabId,
-        }
-      );
-
-      chrome.action.disable(tabId);
+      setBadgeText(tabId, '');
     }
   } catch (error) {
     console.warn(error);
@@ -98,6 +86,9 @@ async function getInfo(href: string, sendResponse: Function) {
         similarity: config.api.similarity,
       })
     });
+
+    if (!info.ok)
+      throw new Error('Request failed');
 
     const data = await info.json();
 
@@ -124,6 +115,9 @@ async function getData(href: string, sendResponse: Function) {
       })
     });
 
+    if (!info.ok)
+      throw new Error('Request failed');
+
     const data = await info.json();
 
     if (sendResponse)
@@ -137,3 +131,28 @@ async function getData(href: string, sendResponse: Function) {
       sendResponse({ meta: { success: false } });
   }
 }
+
+function setBadgeText(tabId: any, text: string) {
+  chrome.action.setBadgeText(
+    {
+      text: text,
+      tabId: tabId,
+    }
+  );
+
+  if (text !== '')
+    chrome.action.enable(tabId);
+  else
+    chrome.action.disable(tabId);
+}
+
+/*function tabExists(tabId: any) {
+  chrome.tabs.query({}, function (tabs) {
+    for (let i = 0; i < tabs.length; i++) {
+      if (tabs[i].id === tabId)
+        return true;
+    }
+  });
+
+  return false;
+}*/

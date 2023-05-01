@@ -8,13 +8,13 @@ import PopupDialog from '../shared/components/dialog/popup';
 import { IDataItem } from '../shared/types';
 
 (async function initPopupWindow() {
-  let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
   if (tab?.url) {
-    try {
-      let url = new URL(tab.url);
+    const popupDialog = new PopupDialog(document.querySelector('#wrapper'), closeCallback);
 
-      const popupDialog = new PopupDialog(document.querySelector('#wrapper'), closeCallback);
+    try {
+      const url = new URL(tab.url);
       const response = await chrome.runtime.sendMessage({ type: "getData", href: url.href });
 
       if (!response || !response.data || response.data.length === 0)
@@ -30,9 +30,9 @@ import { IDataItem } from '../shared/types';
         });
 
         popupDialog.update(data, response.meta.total_results);
-         
     } catch {
-      // ignore
+      logger.error('No URL found');
+      popupDialog.close();
     }
   }
 
@@ -40,5 +40,4 @@ import { IDataItem } from '../shared/types';
     logger.log('closeCallback');
     window.close();
   }
-
 })();

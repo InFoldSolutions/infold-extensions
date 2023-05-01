@@ -3,6 +3,9 @@ import { el, unmount, mount } from 'redom';
 import logger from '../../utils/logger';
 
 import Slideshow from '../slideshow/slideshow';
+import Groups from '../slideshow/groups';
+
+import TopHeadlines from '../headlines';
 
 import { IDataItem } from '../../types';
 
@@ -14,7 +17,11 @@ export default class Dialog {
   btnWrapper: HTMLElement
   linkElement: HTMLElement
   dialogBody: HTMLElement
+
   slideshow: Slideshow
+  topHeadlines: TopHeadlines
+
+  headlines: boolean
 
   agent: string
 
@@ -37,9 +44,16 @@ export default class Dialog {
       .log('Dialog: update');
 
     this.dialogBody.innerHTML = '';
-    this.slideshow = new Slideshow(data, totalCount);
 
-    mount(this.dialogBody, el('.SCDialogContent', this.slideshow));
+    const groups = Groups.mapToSourceGroups(data);
+    this.slideshow = new Slideshow(groups, totalCount);
+
+    if (this.headlines) {
+      this.topHeadlines = new TopHeadlines(groups);
+      mount(this.dialogBody, el('.SCDialogContent', [this.slideshow, this.topHeadlines]));
+    } else {
+      mount(this.dialogBody, el('.SCDialogContent', this.slideshow));
+    }
   }
 
   close() {

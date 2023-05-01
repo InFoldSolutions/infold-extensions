@@ -851,21 +851,49 @@
   z-index: 1;
 }
 
+/** Top Headings **/
+
+.SCTopHeadingsWrapper {
+  margin-bottom: 10px;
+}
+
+.SCTopHeadingsWrapper h3 {
+  margin-bottom: 5px;
+}
+
+.SCTopHeadlines .SCSummaryBody {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 6px 12px;
+  margin-bottom: 3px;
+}
+
+.SCTopHeadlines .SCSummaryTitle {
+  font-weight: 400;
+}
+
+.SCTopHeadlines .SClink {
+  max-width: 210px;
+}
+
+.SCTopHeadlines .SCdate svg {
+  margin-left: 3px;
+}
 
 /** Popup Dialog overwrites **/
 
 .SCDialogWrapper.popup .SCDialogCloseWrapper {
-  background: rgba(113, 118, 123, 0.25);
+  background: rgba(113, 118, 123, 0.1);
   position: relative;
   width: 100%;
   border: 0;
   border-radius: 0;
   left: -10px;
   right: -10px;
-  top: 7px;
+  top: 3px;
   min-height: 35px;
   justify-content: left;
   padding-left: 55px;
+  font-weight: 700;
 }
 
 .SCDialogWrapper.popup .SCDialogCloseWrapper svg {
@@ -884,7 +912,7 @@
 }
 
 .SCDialogWrapper.popup .SCSlideshowWrapper {
-  margin-top: 30px;
+  margin: 15px 0 20px;
 }
 
 .SCDialogWrapper.popup .SCDialogBody {
@@ -898,7 +926,9 @@
   line-height: 19px;
 }
 
-
+.SCDialogWrapper.popup .SCKeywordsWrapper {
+  margin-top: 15px;
+}
 
 /** Light mode **/
 
@@ -908,9 +938,9 @@
   }
 
   .SCDialogWrapper.popup .SCDialogCloseWrapper {
-    background: rgba(228, 229, 230, 0.4);
+    background: rgba(231, 233, 234, 0.5)
   }
-  
+
   .SCDialogWrapper.popup .SCDialogBody {
     background-color: rgb(255, 255, 255);
   }

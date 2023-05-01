@@ -1,6 +1,7 @@
 import { el, mount, unmount } from 'redom';
 
 import Slideshow from './slideshow/slideshow';
+import Groups from './slideshow/groups';
 
 import logger from '../utils/logger';
 import CloseIcon from './svgs/closeIcon';
@@ -48,7 +49,9 @@ export default class Post {
     logger.log('Post: update');
 
     this.postBody.innerHTML = '';
-    mount(this.postBody, new Slideshow(data, totalCount));
+
+    const groups = Groups.mapToSourceGroups(data);
+    mount(this.postBody, new Slideshow(groups, totalCount));
   }
 
   close() {

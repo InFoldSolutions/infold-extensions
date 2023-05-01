@@ -25,6 +25,7 @@ export default class PopupDialog extends Dialog {
 
     this.agent = 'popup';
     this.parent = wrapper;
+    this.headlines = true;
 
     this.closeCallback = closeCallback;
 

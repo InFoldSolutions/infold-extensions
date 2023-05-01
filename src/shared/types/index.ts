@@ -10,6 +10,15 @@ export type ISourceGroup = {
   toDate?: number
 }
 
+export type IHeadline = {
+  title: string
+  timestamp: number
+  link: string
+  sourceName: string
+  score: number
+  groupLabel: string
+}
+
 export type ISource = {
   name: string
   url?: string

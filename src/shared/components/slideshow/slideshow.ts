@@ -24,10 +24,12 @@ export default class Slideshow {
 
   title: string
 
-  constructor(dataitems: Array<IDataItem>, totalCount: number) {
+  constructor(groups: Array<ISourceGroup>, totalCount: number) {
     logger.log('Slideshow: constructor');
 
-    this.groups = Groups.mapToSourceGroups(dataitems);
+    this.groups = groups;
+    console.log('this.groups', this.groups);
+
     this.sourceGroups = new Groups(
       this.groups, 
       this.setCurrentSlides.bind(this),
