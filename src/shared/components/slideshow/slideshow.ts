@@ -28,8 +28,6 @@ export default class Slideshow {
     logger.log('Slideshow: constructor');
 
     this.groups = groups;
-    console.log('this.groups', this.groups);
-
     this.sourceGroups = new Groups(
       this.groups, 
       this.setCurrentSlides.bind(this),

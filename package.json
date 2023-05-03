@@ -1,6 +1,6 @@
 {
   "name": "infold-extensions",
-  "version": "0.9.5",
+  "version": "0.9.6",
   "description": "Infold Solutions browser extensions",
   "main": "index.js",
   "scripts": {

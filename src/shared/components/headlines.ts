@@ -17,18 +17,34 @@ export default class TopHeadlines {
   constructor(groups: Array<ISourceGroup>) {
     logger.log('TopHeadlines: constructor');
 
-    const headlines: IHeadline[] = groups.reduce((acc: IHeadline[], group: ISourceGroup) => {
-      const firstArticle: IArticle = group.elements[0].articles[0];
-      const source: ISource = group.elements[0].source;
+    const headlines: IHeadline[] = groups.reduce((acc: IHeadline[], group: ISourceGroup, gindex: number) => {
+      const firstArticle: IArticle = (gindex === 0 && group.elements.length > 1) ? group.elements[1].articles[0] : group.elements[0].articles[0];
+      const source: ISource = (gindex === 0 && group.elements.length > 1) ? group.elements[1].source : group.elements[0].source;
 
-      acc.push({
-        title: firstArticle.title,
-        timestamp: firstArticle.timestamp,
-        link: firstArticle.link,
-        score: firstArticle.score,
-        groupLabel: group.label,
-        sourceName: source.name
-      })
+      if (groups.length < 4 && group.elements.length > 2) {
+        const secondArticle: IArticle = (gindex === 0 && group.elements.length > 1) ? group.elements[2].articles[0] : group.elements[0].articles[0];
+        const secondSource: ISource = (gindex === 0 && group.elements.length > 1) ? group.elements[2].source : group.elements[0].source;
+
+        acc.push({
+          title: secondArticle.title,
+          timestamp: secondArticle.timestamp,
+          link: secondArticle.link,
+          score: secondArticle.score,
+          groupLabel: group.label,
+          sourceName: secondSource.name
+        });
+      }
+
+      if (acc.length < 4) {
+        acc.push({
+          title: firstArticle.title,
+          timestamp: firstArticle.timestamp,
+          link: firstArticle.link,
+          score: firstArticle.score,
+          groupLabel: group.label,
+          sourceName: source.name
+        });
+      }
 
       return acc;
     }, []);

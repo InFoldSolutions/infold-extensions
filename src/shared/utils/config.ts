@@ -2,6 +2,7 @@ const config = {
   'retryStatus': ['processing', 'analyzing'],
   'failedStatus': ['invalid', 'error'],
   'blacklistedDomains': ['twitter.com', 'reddit.com', 'youtube.com', 'www.youtube.com', 'imgur.com', 'redd.it', 'youtu.be', 'gfycat.com', 'i.redd.it', 'alb.reddit.com', 'preview.redd.it', 'help.twitter.com'],
+  'supportedProtocols': ['http:', 'https:'],
   'minTextLenght': 100,
   'api': {
     'url': 'https://api.infold.ai/articles/related',
