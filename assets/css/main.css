@@ -646,6 +646,7 @@
 }
 
 .SCGroupsWrapper ul {
+  min-width: 25px;
   border-left: 1px dashed rgba(113, 118, 123, 0.8);
   margin: 0 12px 12px 0px;
   padding-left: 6px;

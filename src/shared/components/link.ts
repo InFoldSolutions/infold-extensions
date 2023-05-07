@@ -101,10 +101,10 @@ export default class Link {
     this.status = status;
   }
 
-  async getData() {
+  async getData(maxArticleCount: number = config.api.maxArticleCount) {
     logger.log('Link: getData');
 
-    const response = await chrome.runtime.sendMessage({type: "getData", href: this.href}); 
+    const response = await chrome.runtime.sendMessage({type: "getData", href: this.href, maxArticleCount});
 
     if (!response || !response.data || response.data.length === 0)
       throw new Error('No data');
@@ -203,7 +203,7 @@ export default class Link {
     this.toggleActiveState();
 
     try {
-      await this.getData();
+      await this.getData(18);
       this.post.update(this.data, this.relatedCount);
     } catch (error) {
       logger.error(`Error while fetching data ${error}`);

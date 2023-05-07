@@ -2,6 +2,7 @@
 import path from 'path';
 
 import config from '../shared/utils/config';
+import logger from '../shared/utils/logger';
 
 /** 
  * Message listener 
@@ -15,10 +16,10 @@ chrome.runtime.onMessage.addListener(
           getInfo(request.href, sendResponse);
           return true;
         case 'getData':
-          getData(request.href, sendResponse);
+          getData(request.href, sendResponse, request.maxArticleCount);
           return true;
         default:
-          console.warn('Unknown message type', request.type);
+          logger.warn(`Unknown message type ${request.type}`);
       }
     }
   }
@@ -70,7 +71,7 @@ async function setBadge(tabId: any, tab: any) {
       setBadgeText(tabId, '');
     }
   } catch (error) {
-    console.warn(error);
+    logger.warn(error);
   }
 }
 
@@ -82,6 +83,7 @@ async function getInfo(href: string, sendResponse: Function) {
       body: JSON.stringify({
         url: href,
         similarity: config.api.similarity,
+        search: 'source'
       })
     });
 
@@ -95,21 +97,22 @@ async function getInfo(href: string, sendResponse: Function) {
     else
       return data;
   } catch (error) {
-    console.warn(error);
+    logger.warn(error);
 
     if (sendResponse)
       sendResponse({ meta: { success: false } });
   }
 }
 
-async function getData(href: string, sendResponse: Function) {
+async function getData(href: string, sendResponse: Function, maxRelatedArticles: number = config.api.maxArticleCount) {
   try {
-    const info = await fetch(`${config.api.url}?limit=${config.api.maxRelatedArticles}`, {
+    const info = await fetch(`${config.api.url}?limit=${maxRelatedArticles}`, {
       method: 'POST',
       headers: config.api.headers,
       body: JSON.stringify({
         url: href,
         similarity: config.api.similarity,
+        search: 'source'
       })
     });
 
@@ -123,7 +126,7 @@ async function getData(href: string, sendResponse: Function) {
     else
       return data;
   } catch (error) {
-    console.warn(error);
+    logger.warn(error);
 
     if (sendResponse)
       sendResponse({ meta: { success: false } });
