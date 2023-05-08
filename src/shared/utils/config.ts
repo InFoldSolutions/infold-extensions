@@ -4,10 +4,11 @@ const config = {
   'blacklistedDomains': ['twitter.com', 'reddit.com', 'youtube.com', 'www.youtube.com', 'imgur.com', 'redd.it', 'youtu.be', 'gfycat.com', 'i.redd.it', 'alb.reddit.com', 'preview.redd.it', 'help.twitter.com'],
   'supportedProtocols': ['http:', 'https:'],
   'minTextLenght': 100,
+  'maxTopHeadlines': 4,
   'api': {
     'url': 'https://api.infold.ai/articles/related',
     'similarity': 0.76,
-    'maxArticleCount': 15,
+    'maxArticleCount': 14,
     'lookupConcurrency': 4,
     'headers': {
       'Accept': 'application/json',

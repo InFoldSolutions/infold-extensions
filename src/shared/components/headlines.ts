@@ -33,9 +33,7 @@ export default class TopHeadlines {
           groupLabel: group.label,
           sourceName: secondSource.name
         });
-      }
-
-      if (acc.length < 4) {
+      } else if (acc.length < 4) {
         acc.push({
           title: firstArticle.title,
           timestamp: firstArticle.timestamp,
