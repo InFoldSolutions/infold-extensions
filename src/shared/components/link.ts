@@ -65,10 +65,10 @@ export default class Link {
       if (!data || !data.meta || data.meta.success === false)
         throw new Error('No data');
 
-      if (config.failedStatus.includes(data.meta.status))
+      if (config.defaults.failedStatus.includes(data.meta.status))
         throw new Error('Failed status');
 
-      if (config.retryStatus.includes(data.meta.status))
+      if (config.defaults.retryStatus.includes(data.meta.status))
         throw new Error('Re-try');
 
       if (data.meta.status !== 'analyzed' || data.meta.total_results === 0)

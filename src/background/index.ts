@@ -37,9 +37,11 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     const url: URL = new URL(tab.url);
     const extension: string = path.extname(url.pathname);
 
-    if (!config.supportedProtocols.includes(url.protocol))
+    if (!config.defaults.supportedProtocols.includes(url.protocol))
       return;
-    if (config.blacklistedDomains.includes(url.host))
+    if (config.defaults.blacklistedDomains.includes(url.host))
+      return;
+    if (!url.pathname || url.pathname === '/')
       return;
     if (config.defaults.notAllowedExtensions.includes(extension))
       return;
@@ -71,9 +73,42 @@ async function setBadge(tabId: any, tab: any) {
       setBadgeText(tabId, '');
     }
   } catch (error) {
-    logger.warn(error);
+    logger.warn(`Failed to set badge ${error}`);
   }
 }
+
+function setBadgeText(tabId: any, text: string) {
+  try {
+    chrome.action.setBadgeText(
+      {
+        text: text,
+        tabId: tabId,
+      }
+    );
+
+    if (text !== '')
+      chrome.action.enable(tabId);
+    else
+      chrome.action.disable(tabId);
+  } catch (error) {
+    logger.warn(`Failed to set badge text ${error}`);
+  }
+}
+
+/*function tabExists(tabId: any) {
+  chrome.tabs.query({}, function (tabs) {
+    for (let i = 0; i < tabs.length; i++) {
+      if (tabs[i].id === tabId)
+        return true;
+    }
+  });
+
+  return false;
+}*/
+
+/**
+ * API calls
+ **/
 
 async function getInfo(href: string, sendResponse: Function) {
   try {
@@ -82,8 +117,7 @@ async function getInfo(href: string, sendResponse: Function) {
       headers: config.api.headers,
       body: JSON.stringify({
         url: href,
-        similarity: config.api.similarity,
-        search: 'source'
+        similarity: config.api.similarity
       })
     });
 
@@ -132,28 +166,3 @@ async function getData(href: string, sendResponse: Function, maxRelatedArticles:
       sendResponse({ meta: { success: false } });
   }
 }
-
-function setBadgeText(tabId: any, text: string) {
-  chrome.action.setBadgeText(
-    {
-      text: text,
-      tabId: tabId,
-    }
-  );
-
-  if (text !== '')
-    chrome.action.enable(tabId);
-  else
-    chrome.action.disable(tabId);
-}
-
-/*function tabExists(tabId: any) {
-  chrome.tabs.query({}, function (tabs) {
-    for (let i = 0; i < tabs.length; i++) {
-      if (tabs[i].id === tabId)
-        return true;
-    }
-  });
-
-  return false;
-}*/

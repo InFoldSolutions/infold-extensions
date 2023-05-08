@@ -250,7 +250,7 @@ export default class TwitterAgent extends Agent {
 
         const url: URL = new URL(href);
 
-        if (config.blacklistedDomains.includes(url.host)) {
+        if (config.defaults.blacklistedDomains.includes(url.host)) {
           potentials.push({
             href: null,
             wrapperNode,
