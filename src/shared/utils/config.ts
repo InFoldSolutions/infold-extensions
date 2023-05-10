@@ -1,7 +1,7 @@
 const config = {
   'api': {
     'url': 'https://api.infold.ai/articles/related',
-    'similarity': 0.76,
+    'similarity': 0.79,
     'maxArticleCount': 14,
     'lookupConcurrency': 4,
     'headers': {
