@@ -38,13 +38,13 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     const extension: string = path.extname(url.pathname);
 
     if (!config.defaults.supportedProtocols.includes(url.protocol))
-      return;
+      return setBadgeText(tabId, '');
     if (config.defaults.blacklistedDomains.includes(url.host))
-      return;
+      return setBadgeText(tabId, '');
     if (!url.pathname || url.pathname === '/')
-      return;
+      return setBadgeText(tabId, '');
     if (config.defaults.notAllowedExtensions.includes(extension))
-      return;
+      return setBadgeText(tabId, '');
 
     setBadge(tabId, tab); // need to rename, it's async
   }
