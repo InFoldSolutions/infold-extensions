@@ -635,6 +635,11 @@
   margin: 15px 0px 0px;
 }
 
+.SCGroupsNavWrapper {
+  display: flex;
+  white-space: nowrap;
+}
+
 .twitter .SCGroupsWrapper {
   margin-top: 7px;
 }

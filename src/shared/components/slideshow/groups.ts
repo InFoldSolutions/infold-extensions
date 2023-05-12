@@ -18,7 +18,7 @@ export default class Groups {
   articleCount: HTMLElement
   articleIndex: HTMLElement
 
-  groupsNav: Array<HTMLElement>
+  groupsNav: HTMLElement
   groups: Array<ISourceGroup>
 
   activeGroupIndex: number
@@ -35,7 +35,7 @@ export default class Groups {
     this.onArticleNav = onArticleNav;
 
     this.groups = groups;
-    this.groupsNav = this.groups.map((sourceGroup: ISourceGroup, gindex: number): HTMLElement => {
+    this.groupsNav = el(`.SCGroupsNavWrapper`, [this.groups.map((sourceGroup: ISourceGroup, gindex: number): HTMLElement => {
       return el('ul', [
         el('span.SCDateGroup', sourceGroup.label),
         sourceGroup.elements.map((dataitem: IDataItem, dindex: number): HTMLElement => {
@@ -43,7 +43,7 @@ export default class Groups {
             el('img', { src: dataitem.source.icon, title: dataitem.source.name, alt: dataitem.source.name }));
         })
       ])
-    });
+    })]);
 
     this.articleCount = el('span.SCArticleCount');
     this.articleIndex = el('span.SCCurrentArticleIndex');
