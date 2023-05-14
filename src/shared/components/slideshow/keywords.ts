@@ -36,10 +36,10 @@ export default class Keywords {
 
     this.el = el('.SCKeywordsContent', this.renderKeywords(keywords));
 
-    this.prevButton = el('.SCArrow.SCLeft', new LeftArrowIcon());
+    this.prevButton = el('.SCArrow.SCLeft', el('i.fa.fa-angle-left'));
     mount(this.el, this.prevButton);
 
-    this.nextButton = el('.SCArrow.SCRight', new RightArrowIcon);
+    this.nextButton = el('.SCArrow.SCRight', el('i.fa.fa-angle-right'));
     mount(this.el, this.nextButton);
 
     if (this.nextButton)

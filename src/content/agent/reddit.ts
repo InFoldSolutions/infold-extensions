@@ -281,40 +281,19 @@ export default class RedditAgent extends Agent {
 
       const elements: HTMLElement[] = Array.from(post.querySelectorAll('a[target="_blank"], a[data-testid="outbound-link"]'));
 
-      if (elements.length === 0) {
-        potentials.push({
-          href: null,
-          wrapperNode,
-          article: post
-        });
-
+      if (elements.length === 0) 
         continue;
-      }
 
       for (let i = 0; i < elements.length; i++) {
         const element = elements[i] as HTMLAnchorElement;
         const url: URL = new URL(element.href);
         const extension: string = path.extname(url.pathname);
 
-        if (config.defaults.blacklistedDomains.includes(url.host)) {
-          potentials.push({
-            href: null,
-            wrapperNode,
-            article: post
-          });
-  
+        if (config.defaults.blacklistedDomains.includes(url.host)) 
           continue;
-        }
 
-        if (config.defaults.notAllowedExtensions.includes(extension)) {
-          potentials.push({
-            href: null,
-            wrapperNode,
-            article: post
-          });
-  
+        if (config.defaults.notAllowedExtensions.includes(extension)) 
           continue;
-        }
 
         potentials.push({
           href: element.href,

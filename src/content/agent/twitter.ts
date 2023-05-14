@@ -225,40 +225,19 @@ export default class TwitterAgent extends Agent {
       if (wrapperNode.querySelector('.SCDialog'))
         continue;
 
-      if (elements.length === 0) {
-        potentials.push({
-          href: null,
-          wrapperNode,
-          article
-        });
-
+      if (elements.length === 0) 
         continue;
-      }
 
       for (let i = 0; i < elements.length; i++) {
         const href: string = elements[i];
 
-        if (!/http|https/.test(href)) {
-          potentials.push({
-            href: null,
-            wrapperNode,
-            article
-          });
-
+        if (!/http|https/.test(href)) 
           continue;
-        }
 
         const url: URL = new URL(href);
 
-        if (config.defaults.blacklistedDomains.includes(url.host)) {
-          potentials.push({
-            href: null,
-            wrapperNode,
-            article
-          });
-
+        if (config.defaults.blacklistedDomains.includes(url.host)) 
           continue;
-        }
           
         potentials.push({
           href,

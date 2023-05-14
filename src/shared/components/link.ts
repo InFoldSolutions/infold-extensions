@@ -130,7 +130,7 @@ export default class Link {
     if (!this.isTextVersion && !this.isTextCompactVersion) {
       buttonContent.push(el(`span.SCIconWrapper`, [
         el('span.SCiconBackground'),
-        el(`i.far.fa-lightbulb-on`)
+        el(`i.fad.fa-lightbulb-on`)
       ]));
     }
 

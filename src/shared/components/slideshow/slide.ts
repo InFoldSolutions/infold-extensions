@@ -59,10 +59,10 @@ export default class Slide {
     
     this.summaryInfo = [
       el('a.SCHandle.SClink', data.handle, { title: data.handle, href: twitterHandleLink, target: '_blank' }),
-      el('span.SCdate.SCIcon', { title: `Publish date` }, [new CalendarIcon(), el('span', timeAgo.format(data.timestamp, 'mini'), ' ago')]),
-      el('span.SCIcon', { title: `Relevance` }, [new LinkIcon(), el('span.SCScore', `${score}%`)]),
+      el('span.SCdate.SCIcon', { title: `Publish date` }, [el('i.fad.fa-calendar-alt'), el('span', timeAgo.format(data.timestamp, 'mini'), ' ago')]),
+      el('span.SCIcon', { title: `Relevance` }, [el('i.fad.fa-link'), el('span.SCScore', `${score}%`)]),
       el('a.SClink.SCMarginRight', linkText, { title: data.link, href: data.link, target: '_blank' }),
-      el('span.SCIcon.SCTipIcon', new Tip(data.sourceName, 5))
+      //el('span.SCIcon.SCTipIcon', new Tip(data.sourceName, 5))
     ]
 
     if (data.type === 'social' && data.icon) {

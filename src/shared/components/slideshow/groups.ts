@@ -1,4 +1,4 @@
-import { el } from 'redom';
+import { el, mount } from 'redom';
 
 import { IArticle, IDateGroup, IDataItem, ISource, ISourceGroup } from '../../types';
 
@@ -17,8 +17,9 @@ export default class Groups {
   articleNav: HTMLElement
   articleCount: HTMLElement
   articleIndex: HTMLElement
-
   groupsNav: HTMLElement
+  addNewBtn: HTMLElement
+
   groups: Array<ISourceGroup>
 
   activeGroupIndex: number
@@ -34,6 +35,8 @@ export default class Groups {
     this.onGroupSelect = onGroupSelect;
     this.onArticleNav = onArticleNav;
 
+    this.addNewBtn = el(`.SCAddNewBtn`, [el('span', el('i.fad.fa-plus-circle')), el('span.SCAddNewBtnText', 'Add')], { title: 'Add new source' });
+
     this.groups = groups;
     this.groupsNav = el(`.SCGroupsNavWrapper`, [this.groups.map((sourceGroup: ISourceGroup, gindex: number): HTMLElement => {
       return el('ul', [
@@ -43,7 +46,7 @@ export default class Groups {
             el('img', { src: dataitem.source.icon, title: dataitem.source.name, alt: dataitem.source.name }));
         })
       ])
-    })]);
+    }), this.addNewBtn]);
 
     this.articleCount = el('span.SCArticleCount');
     this.articleIndex = el('span.SCCurrentArticleIndex');
@@ -53,23 +56,7 @@ export default class Groups {
       new StatsIcon()
     ]);
 
-    this.articleNav = el('.SCArticleInfo', [
-      el('.SCArticleNav', [
-        el('span.SCArrow.SCLeft', new LeftArrowIcon()),
-        this.articleIndex,
-        el('span.SCSeperator', '/'),
-        this.articleCount,
-        el('span.SCArrow.SCRight', new RightArrowIcon())
-      ]),
-      this.articleStats
-    ]
-    );
-
-    this.el = el(`.SCGroupsWrapper`, [
-      this.groupsNav,
-      this.articleNav
-    ]);
-
+    this.el = el(`.SCGroupsWrapper`, this.groupsNav);
     this.el.onclick = (evt: Event) => {
       evt.stopPropagation();
 

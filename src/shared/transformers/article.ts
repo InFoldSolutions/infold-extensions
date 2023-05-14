@@ -69,6 +69,9 @@ export default function transformArticle(data: any): IArticle {
 
 // We filter some obvious false positives
 function filterKeywords(data: any) {
+  if (data.keyword.length < 3)
+    return false;
+    
   if (config.keywordsBlacklist.includes(data.keyword.toLowerCase()))
     return false;
 

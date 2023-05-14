@@ -87,7 +87,7 @@ export default class Agent {
       for (let i = 0; i < addNewCount; i++) {
         const link = this.pendingProcesses[i];
 
-        if (!link)
+        if (!link || !link.href)
           continue;
 
         this.currentProcesses.push(link);

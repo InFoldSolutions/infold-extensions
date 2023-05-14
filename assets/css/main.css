@@ -38,6 +38,9 @@
 
 .SCbuttonWrapper .SCcount {
   display: flex;
+  min-width: calc(1em + 7px);
+  justify-content: center;
+  line-height: 20px;
 }
 
 .SCiconBackground {
@@ -56,6 +59,10 @@
   background-color: rgba(29, 155, 240, 0.1);
 }
 
+.SCbuttonWrapper.SCNoResults:hover .SCiconBackground {
+  background-color: rgba(113, 118, 123, 0.1);
+}
+
 .SCIconWrapper {
   display: inline-block;
   position: relative;
@@ -65,7 +72,7 @@
 }
 
 .SCIconWrapper i {
-  top: 1px;
+  top: 1.5px;
   position: relative;
 }
 
@@ -143,6 +150,11 @@
   background-color: transparent;
 }
 
+.SCbuttonWrapper.reddit .SCIconWrapper i {
+  top: 2.2px;
+  position: relative;
+}
+
 .SCbuttonWrapper.reddit .SCTextWrapper {
   font-size: 12px;
   line-height: 12px;
@@ -179,6 +191,7 @@
 
 .SCbuttonWrapper.reddit .SCcount {
   margin-right: 2px;
+  min-width: 0;
 }
 
 .SCbuttonWrapper.reddit:hover .SCiconBackground {
@@ -432,6 +445,17 @@
   font-size: 15px;
 }
 
+.SCSummaryInfo i.fad.fa-link {
+  font-size: 15px;
+  margin-top: 2px;
+  margin-right: 1px;
+}
+
+.SCSummaryInfo i.fad.fa-calendar-alt {
+  margin-right: 6px;
+  margin-top: 0px;
+}
+
 .SCSummaryInfo i.fa-reddit {
   color: #ff4500;
 }
@@ -593,7 +617,7 @@
 .SClink {
   color: rgb(29, 155, 240);
   text-decoration: none;
-  max-width: 140px;
+  max-width: 220px;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -607,7 +631,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  margin-right: 5px;
+  margin-right: 6px;
 }
 
 .SCDialogWrapper .SCHandle {
@@ -651,12 +675,43 @@
 }
 
 .SCGroupsWrapper ul {
-  min-width: 25px;
+  min-width: 19px;
   border-left: 1px dashed rgba(113, 118, 123, 0.8);
   margin: 0 12px 12px 0px;
   padding-left: 6px;
   position: relative;
   transition: border-color 0.2s ease-in-out;
+}
+
+.SCGroupsWrapper .SCAddNewBtn {
+  display: flex;
+  align-items: baseline;
+  border-left: 1px dashed rgba(113, 118, 123, 0.8);
+  margin: 0px 12px 12px 0px;
+  padding-left: 5px;
+  cursor: pointer;
+  align-items: center;
+}
+
+.SCGroupsWrapper .SCAddNewBtnText {
+  color: rgba(113, 118, 123, 0.5);
+  font-size: 0.8em;
+  margin: -1px 0px 0px 3px;
+  font-weight: 700;
+  display: none;
+}
+
+.SCGroupsWrapper .SCAddNewBtn:hover .SCAddNewBtnText {
+  display: block;
+}
+
+.SCGroupsWrapper .SCAddNewBtn i {
+  font-size: 1.7em;
+  opacity: 0.25;
+}
+
+.SCGroupsWrapper .SCAddNewBtn:hover i {
+  opacity: 0.45;
 }
 
 .SCGroupsWrapper .SCDateGroup {
@@ -709,7 +764,7 @@
 
 .SCArticleInfo {
   display: flex;
-  margin: 0px 0px 0 auto;
+  margin: 4px 0px 0 auto;
   flex-direction: column;
   color: rgb(113, 118, 123);
   font-size: 0.8em;
@@ -768,10 +823,11 @@
   opacity: 1;
 }
 
-.SCArrow svg {
-  fill: currentColor;
-  width: 20px;
-  height: 20px;
+.SCArrow i {
+  opacity: 0.7;
+  width: auto;
+  height: auto;
+  font-size: 1.3em;
 }
 
 .SCArrow.SCLeft {
@@ -879,7 +935,7 @@
 }
 
 .SCTopHeadlines .SClink {
-  max-width: 210px;
+  max-width: 260px;
 }
 
 .SCTopHeadlines .SCdate svg {
@@ -1211,7 +1267,7 @@
   position: relative;
   left: 50%;
   width: 35px;
-  margin-top: 11.5%;
+  margin-top: 12%;
   margin-left: -17.5px;
   height: 35px;
   border-width: 4px;
