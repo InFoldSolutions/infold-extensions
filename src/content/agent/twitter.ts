@@ -59,7 +59,8 @@ export default class TwitterAgent extends Agent {
     if (this.mainBody) {
       this.bodyObserver.disconnect();
       this.startMainObserver();
-    }
+    } else 
+      logger.warn('TwitterAgent: onBodyChange - mainBody not found');
   }
 
   startMainObserver() {

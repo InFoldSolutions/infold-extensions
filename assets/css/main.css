@@ -203,6 +203,7 @@
 .SCPostBodyWrapper {
   min-height: 220px;
   position: relative;
+  color: rgb(231, 233, 234);
 }
 
 .SCPostBodyWrapper .SCSummaryTitle {
@@ -741,6 +742,7 @@
   border: solid 2px rgba(239, 243, 244, 0);
   align-self: flex-end;
   user-select: none;
+  transition: 50ms transform linear;
 }
 
 .SCGroupsWrapper li img {
@@ -752,10 +754,12 @@
 
 .SCGroupsWrapper li:hover {
   border-color: rgba(29, 155, 240, 0.8);
+  transform: scale(1.05);
 }
 
 .SCGroupsWrapper li.active {
   border-color: rgb(29, 155, 240);
+  transform: scale(1.1);
 }
 
 /**
@@ -935,7 +939,7 @@
 }
 
 .SCTopHeadlines .SClink {
-  max-width: 260px;
+  max-width: 240px;
 }
 
 .SCTopHeadlines .SCdate svg {
@@ -1058,6 +1062,7 @@
 
   .SCPostBodyWrapper.twitter {
     border-bottom-color: rgb(239, 243, 244);
+    color: rgb(0, 0, 0);
   }
 
   .SCPostBodyWrapper.twitter .SCSlideshow {

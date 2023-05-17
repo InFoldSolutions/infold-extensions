@@ -14,7 +14,7 @@ export default class Slideshow {
 
   groups: Array<ISourceGroup>
 
-  sourceGroups: Groups // HTML component
+  sourceGroups: Groups // HTML/ReDom component
   slides: List // ReDom component
   currentSlides: Array<ISlideBody>
 

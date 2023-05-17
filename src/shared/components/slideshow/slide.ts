@@ -11,8 +11,6 @@ import logger from '../../utils/logger';
 
 import Tip from '../tip';
 
-import CalendarIcon from '../svgs/calendarIcon';
-import LinkIcon from '../svgs/linkIcon';
 import RedditIcon from '../svgs/redditIcon';
 import Keywords from './keywords';
 

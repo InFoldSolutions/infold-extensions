@@ -45,7 +45,7 @@ export default class PopupDialog extends Dialog {
   }
 
   close() {
-    logger.log('RedditDialog: close');
+    logger.log('PopupDialog: close');
 
     if (this.closeCallback)
       this.closeCallback();
