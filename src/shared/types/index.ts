@@ -15,6 +15,7 @@ export type IHeadline = {
   timestamp: number
   link: string
   sourceName: string
+  handle?: string
   score: number
   groupLabel: string
 }

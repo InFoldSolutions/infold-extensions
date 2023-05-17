@@ -31,7 +31,8 @@ export default class TopHeadlines {
           link: secondArticle.link,
           score: secondArticle.score,
           groupLabel: group.label,
-          sourceName: secondSource.name
+          sourceName: secondSource.name,
+          handle: secondSource.handle
         });
       } else if (acc.length < 4) {
         acc.push({
@@ -48,10 +49,14 @@ export default class TopHeadlines {
     }, []);
 
     this.el = el('.SCTopHeadingsWrapper', [el('h3', 'Top Headlines'), el('.SCTopHeadlines', headlines.map((headline: IHeadline) => {
+      const score: number = headline.score ? Math.round(headline.score * 100) : 0;
       const linkText: string = headline.link.replace(/https\:\/\/|http\:\/\/|www\./gi, '');
       const summaryInfo = [
-        el('span.SCdate.SCIcon', { title: `Publish date` }, [`${headline.sourceName} - `, new CalendarIcon(), timeAgo.format(headline.timestamp, 'mini'), ` ago`]),
+        el('span.SCHandle', `${headline.sourceName}`),
+        el('span.SCdate.SCIcon', { title: `Publish date` }, ['-', timeAgo.format(headline.timestamp, 'mini'), ` ago`, '-']),
+        el('span.SCIcon', { title: `Relevance` }, [el('span.SCScore', `${score}%`)]),
         el('a.SClink.SCMarginRight', linkText, { title: headline.link, href: headline.link, target: '_blank' }),
+        el('a.SClink', el('i.fad.fa-external-link'), { title: headline.link, href: headline.link, target: '_blank' })
       ]
 
       return el('.SCSummaryBody', [
