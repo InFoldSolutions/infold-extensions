@@ -203,7 +203,7 @@ export default class Link {
     this.toggleActiveState();
 
     try {
-      await this.getData(18);
+      await this.getData(20);
       this.post.update(this.data, this.relatedCount);
     } catch (error) {
       logger.error(`Error while fetching data ${error}`);
