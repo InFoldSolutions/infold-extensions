@@ -7,6 +7,9 @@ import logger from '../utils/logger';
 import CloseIcon from './svgs/closeIcon';
 
 import { IDataItem } from '../types';
+import events from '../services/events';
+
+import SubmitView from './submit';
 
 export default class Post {
 
@@ -15,11 +18,20 @@ export default class Post {
   btnWrapper: HTMLElement
   linkElement: HTMLElement
   closeBtn: HTMLElement
+
   postBody: HTMLElement
+  postContent: HTMLElement
+
+  submitView: SubmitView
 
   agent: string
+  totalCount: number
+  data: IDataItem[]
 
   closeCallback: Function
+
+  openSubmitViewBind: EventListener
+  updateBind: EventListener
 
   constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement, closeCallback: Function) {
     logger.log('Post: constructor');
@@ -42,7 +54,41 @@ export default class Post {
       this.close();
     }
 
+    this.onEvents();
+
     mount(this.article, this.el);
+  }
+
+  onEvents() {
+    logger.log('Dialog: onEvents');
+
+    this.openSubmitViewBind = this.openSubmitView.bind(this);
+    this.updateBind = this.update.bind(this);
+
+    events.on('openSubmitView', this.openSubmitViewBind);
+    events.on('updateDialog', this.updateBind); // default slideshow view, should probably be renamed
+  }
+
+  offEvents() {
+    logger.log('Dialog: offEvents');
+
+    events.off('openSubmitView', this.openSubmitViewBind);
+    events.off('updateDialog', this.updateBind);
+  }
+
+  openSubmitView() {
+    logger
+      .log('Dialog: openSubmitView');
+
+    if (this.postContent)
+      unmount(this.postBody, this.postContent);
+
+    this.postContent.innerHTML = '';
+
+    this.submitView = new SubmitView();
+    this.postContent = el('.SCPostContent', this.submitView);
+
+    mount(this.postBody, this.postContent);
   }
 
   update(data?: IDataItem[], totalCount?: number) {
@@ -50,8 +96,19 @@ export default class Post {
 
     this.postBody.innerHTML = '';
 
+    // fallback to this.data
+    data = data || this.data;
+    totalCount = totalCount || this.totalCount;
+
+    // reset in case new data was passed
+    this.data = data;
+    this.totalCount = totalCount;
+
     const groups = Groups.mapToSourceGroups(data);
-    mount(this.postBody, new Slideshow(groups, totalCount));
+
+    this.postContent = el('.SCPostContent', new Slideshow(groups, totalCount));
+
+    mount(this.postBody, this.postContent);
   }
 
   close() {

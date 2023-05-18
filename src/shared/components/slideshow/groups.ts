@@ -9,6 +9,7 @@ import { findParentByCls, shuffleArray } from '../../utils/helpers';
 import RightArrowIcon from '../svgs/rightArrowIcon';
 import LeftArrowIcon from '../svgs/leftArrowIcon';
 import StatsIcon from '../svgs/statsIcon';
+import events from '../../services/events';
 
 export default class Groups {
 
@@ -61,7 +62,14 @@ export default class Groups {
       evt.stopPropagation();
 
       const target: HTMLElement = evt.target as HTMLElement;
-      const arrow = findParentByCls(target, 'SCArrow', 3);
+      const addNew: HTMLElement = findParentByCls(target, 'SCAddNewBtn', 3);
+
+      if (addNew) {
+        events.emit('openSubmitView');
+        return;
+      }
+
+      const arrow: HTMLElement = findParentByCls(target, 'SCArrow', 3);
 
       if (arrow) {
         if (arrow.classList.contains('SCLeft')) {
