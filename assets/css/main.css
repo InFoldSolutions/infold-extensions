@@ -6,6 +6,7 @@
 
 .SCPopup body {
   overflow: hidden;
+  margin-bottom: 0;
 }
 
 /* Button css */
@@ -210,6 +211,11 @@
   width: calc(100% - 25px);
 }
 
+.SCPostContent {
+  margin: 16px 0px 20px;
+  padding: 0px 4px;
+}
+
 .SCPostCloseWrapper {
   position: absolute;
   top: 9px;
@@ -255,11 +261,6 @@
   top: 11px;
 }
 
-.SCPostBodyWrapper.twitter .SCSlideshowWrapper {
-  margin: 16px 0px 20px;
-  padding: 0px 4px;
-}
-
 .SCPostBodyWrapper.twitter .SCSlideshow {
   width: calc(100% - 8px);
 }
@@ -276,7 +277,8 @@
   background-color: rgba(215, 218, 220, 0.1);
 }
 
-.SCPostBodyWrapper.reddit .SCSummaryTitle {
+.SCPostBodyWrapper.reddit .SCSummaryTitle,
+.SCPostBodyWrapper.reddit .SCSubmitViewTitle {
   color: rgb(215, 218, 220);
   font-size: 16px;
   font-weight: 500;
@@ -298,14 +300,19 @@
   margin-top: 13px;
 }
 
-.SCPostBodyWrapper.reddit .SCSlideshowWrapper {
-  margin: 15px 0px 20px;
+.SCPostBodyWrapper.reddit .SCPostContent {
+  margin-bottom: 30px;
 }
 
 .SCPostBodyWrapper.reddit .SCKeyword {
   font-family: Noto Sans, Arial, sans-serif;
   font-size: 14px;
 }
+
+.SCPostBodyWrapper.reddit .SCRelatedViewBtn {
+  bottom: 21px;
+}
+
 
 /* Dialog display */
 
@@ -853,6 +860,166 @@
 }
 
 /** 
+* Submit Article View
+**/
+
+.SCSubmitViewContent {
+  display: flex;
+  flex-flow: column;
+  min-height: 160px;
+}
+
+.SCSubmitViewTitle {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.SCSubmitViewBodyText {
+  font-size: 14px;
+  margin-bottom: 10px;
+  line-height: 20px;
+  color: rgb(113, 118, 123);
+}
+
+.SCSubmitViewForm {
+  display: flex;
+  margin-bottom: 10px;
+  width: 100%;
+  position: relative;
+}
+
+.SCSubmitViewInput {
+  background-color: rgba(0, 0, 0, 0.03);
+  font-size: 16px;
+  border: 0;
+  padding: 12px 12px;
+  width: 100%;
+}
+
+.SCSubmitViewInput:focus {
+  outline: none;
+}
+
+.SCSubmitViewSubmitBtn {
+  background-color: rgba(0, 0, 0, 0.1);
+  right: 0;
+  top: 0;
+  position: relative;
+  border: none;
+  padding: 0px 18px;
+  margin-top: 0;
+  color: rgba(113, 118, 123, 0.9);
+  font-size: 0.95em;
+  cursor: pointer;
+}
+
+.SCSubmitViewMsg {
+  position: absolute;
+  color: rgba(113, 118, 123, 0.8);
+  font-size: 0.8em;
+  font-weight: normal;
+  bottom: -18px;
+  left: 11px;
+}
+
+.SCSubmitViewInfoBox {
+  display: flex;
+  margin: 30px 0px 0px;
+  gap: 10px;
+}
+
+.SCSubmitViewInfoBox .SCLeftColumn {
+  width: 93px;
+  align-items: center;
+  display: flex;
+  flex-flow: column;
+}
+
+.SCSubmitViewInfoBox .SCRightColumn {
+  align-items: center;
+  display: flex;
+  max-width: 65%;
+}
+
+.SCSubmitViewInfoBoxTitle {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  color: rgba(113, 118, 123, 1);
+}
+
+.SCSubmitViewInfoBoxTitle i {
+  font-size: 1.4em;
+  margin-right: 6px;
+}
+
+.SCSubmitViewInfoBoxText {
+  font-size: 14px;
+  line-height: 18px;
+  color: rgb(113, 118, 123);
+}
+
+.SCSubmitViewTwitter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  background-color: rgb(29, 155, 240);
+  color: rgb(231, 233, 234);
+  font-size: 0.9em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s linear;
+  opacity: 0.7;
+}
+
+.SCSubmitViewTwitter i {
+  margin-right: 5px;
+  font-size: 1.2em;
+}
+
+.SCSubmitViewNote {
+  color: rgba(113, 118, 123, 0.8);
+  font-size: 0.8em;
+  font-weight: normal;
+}
+
+.SCRelatedViewBtn {
+  color: rgba(113, 118, 123, 0.65);
+  position: absolute;
+  bottom: 31px;
+  right: 18px;
+  font-weight: 700;
+  font-size: 0.85em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s linear;
+  opacity: 0.7;
+}
+
+.SCRelatedViewBtn:hover {
+  opacity: 0.95;
+}
+
+.SCRelatedViewBtn i {
+  margin-left: 6px;
+  opacity: 0.7;
+  font-size: 1.9em;
+}
+
+.SCRelatedViewBtn:hover i {
+  opacity: 0.9;
+}
+
+.SCPostBodyWrapper .SCRelatedViewBtn {
+  right: 5px;
+}
+
+/** 
 * Slideshow 
 * inspired by https://codepen.io/KamilDyrek/pen/ejmRxV
 **/
@@ -924,10 +1091,6 @@
 
 /** Top Headings **/
 
-.SCTopHeadingsWrapper {
-  margin-bottom: 10px;
-}
-
 .SCTopHeadingsWrapper h3 {
   margin-bottom: 8px;
   font-size: 16px;
@@ -944,7 +1107,7 @@
 }
 
 .SCTopHeadlines .SClink {
-  max-width: 220px;
+  max-width: 200px;
 }
 
 .SCTopHeadlines .SCdate svg {
@@ -981,14 +1144,6 @@
   height: 25px;
   width: 25px;
   left: 20px;
-}
-
-.SCDialogWrapper.popup .SCDialogContent {
-  padding: 1px 16px;
-}
-
-.SCDialogWrapper.popup .SCSlideshowWrapper {
-  margin: 15px 0 20px;
 }
 
 .SCDialogWrapper.popup .SCDialogBody {
@@ -1085,9 +1240,18 @@
   .SCGroupsWrapper .SCAddNewBtn i {
     opacity: 0.3;
   }
-  
+
   .SCGroupsWrapper .SCAddNewBtn:hover i {
     opacity: 0.6;
+  }
+
+  .SCSubmitViewInput {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: rgb(231, 233, 234);
+  }
+
+  .SCSubmitViewSubmitBtn {
+    background-color: rgba(255, 255, 255, 0.15);
   }
 }
 
@@ -1138,7 +1302,8 @@
   top: 0px;
 }
 
-.SCDialogWrapper.reddit .SCSummaryTitle {
+.SCDialogWrapper.reddit .SCSummaryTitle,
+.SCDialogWrapper.reddit .SCSubmitViewTitle {
   font-weight: 500;
   font-size: 16px;
   color: rgb(215, 218, 220);
@@ -1214,7 +1379,9 @@
 }
 
 .theme-light .SCPostBodyWrapper.reddit .SCSummaryTitle,
-.theme-light .SCDialogWrapper.reddit .SCSummaryTitle {
+.theme-light .SCPostBodyWrapper.reddit .SCSubmitViewTitle,
+.theme-light .SCDialogWrapper.reddit .SCSummaryTitle,
+.theme-light .SCDialogWrapper.reddit .SCSubmitViewTitle {
   color: rgb(26, 26, 27);
 }
 

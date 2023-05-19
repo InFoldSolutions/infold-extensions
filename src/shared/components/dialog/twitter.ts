@@ -21,9 +21,7 @@ export default class TwitterDialog extends Dialog {
   constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement, closeCallback: Function) {
     logger.log('TwitterDialog: constructor');
 
-    super(agent, article, btnWrapper, linkElement);
-
-    this.closeCallback = closeCallback;
+    super(agent, article, btnWrapper, linkElement, closeCallback);
 
     this.mainElement = document.querySelector('main');
     this.sectionElement = this.mainElement.querySelector('section');
@@ -48,9 +46,7 @@ export default class TwitterDialog extends Dialog {
   close() {
     logger.log('TwitterDialog: close');
 
-    this.closeCallback();
-    unmount(this.parent, this.el);
-
+    super.close();
     this.parent.style.zIndex = '0';
   }
 

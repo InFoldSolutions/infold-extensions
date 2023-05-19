@@ -21,9 +21,7 @@ export default class RedditDialog extends Dialog {
   constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement, closeCallback: Function) {
     logger.log('RedditDialog: constructor');
 
-    super(agent, article, btnWrapper, linkElement);
-
-    this.closeCallback = closeCallback;
+    super(agent, article, btnWrapper, linkElement, closeCallback);
 
     this.parent = article.parentElement.parentElement;
     this.parent.style.position = 'relative';
@@ -48,8 +46,7 @@ export default class RedditDialog extends Dialog {
   close() {
     logger.log('RedditDialog: close');
 
-    this.closeCallback();
-    unmount(this.parent, this.el);
+    super.close();
     this.parent.style.removeProperty('position');
   }
 

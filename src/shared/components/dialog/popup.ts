@@ -21,7 +21,7 @@ export default class PopupDialog extends Dialog {
   constructor(wrapper: HTMLElement, closeCallback?: Function) {
     logger.log('PopupDialog: constructor');
 
-    super();
+    super(null, null, null, null, closeCallback);
 
     this.agent = 'popup';
     this.parent = wrapper;
@@ -47,7 +47,6 @@ export default class PopupDialog extends Dialog {
   close() {
     logger.log('PopupDialog: close');
 
-    if (this.closeCallback)
-      this.closeCallback();
+    super.close();
   }
 }

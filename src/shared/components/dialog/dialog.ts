@@ -31,18 +31,24 @@ export default class Dialog {
   agent: string
   totalCount: number
 
+  closeCallback: Function
+
   data: IDataItem[]
 
   openSubmitViewBind: EventListener
   updateBind: EventListener
 
-  constructor(agent?: string, article?: HTMLElement, btnWrapper?: HTMLElement, linkElement?: HTMLElement) {
+  constructor(agent?: string, article?: HTMLElement, btnWrapper?: HTMLElement, linkElement?: HTMLElement, closeCallback?: Function) {
     logger.log('Dialog: constructor');
+
+    if (closeCallback)
+      this.closeCallback = closeCallback;
+    if (linkElement)
+      this.linkElement = linkElement;
 
     this.btnWrapper = btnWrapper;
     this.agent = agent;
     this.article = article;
-    this.linkElement = linkElement;
 
     // Start listening for events
     this.onEvents();
@@ -95,7 +101,7 @@ export default class Dialog {
     this.dialogBody.innerHTML = '';
 
     // fallback to this.data
-    data = data || this.data; 
+    data = data || this.data;
     totalCount = totalCount || this.totalCount;
 
     // reset in case new data was passed
@@ -120,6 +126,9 @@ export default class Dialog {
     logger.log('Dialog: close');
 
     this.offEvents();
+
+    if (this.closeCallback)
+      this.closeCallback();
 
     unmount(this.parent, this.el);
 
