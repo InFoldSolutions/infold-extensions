@@ -60,7 +60,7 @@ export default class Link {
       if (!this.href)
         throw new Error('No href');
 
-      const data = await chrome.runtime.sendMessage({type: "getInfo", href: this.href});
+      const data = await chrome.runtime.sendMessage({ type: "getInfo", href: this.href });
 
       if (!data || !data.meta || data.meta.success === false)
         throw new Error('No data');
@@ -104,7 +104,7 @@ export default class Link {
   async getData(maxArticleCount: number = config.api.maxArticleCount) {
     logger.log('Link: getData');
 
-    const response = await chrome.runtime.sendMessage({type: "getData", href: this.href, maxArticleCount});
+    const response = await chrome.runtime.sendMessage({ type: "getData", href: this.href, maxArticleCount });
 
     if (!response || !response.data || response.data.length === 0)
       throw new Error('No data');
@@ -247,7 +247,9 @@ export default class Link {
       this.dialog.update(this.data, this.relatedCount);
     } catch (error) {
       logger.error(`Error while fetching data ${error}`);
-      this.dialog.close();
+
+      if (this.dialog)
+        this.dialog.close();
     }
   }
 

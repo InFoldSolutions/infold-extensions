@@ -16,6 +16,7 @@ export default class SubmitView {
   inputMsg: HTMLElement
   infoBox: HTMLElement
   userLogin: HTMLElement
+  loginBtn: HTMLElement
 
   constructor() {
     logger.log('SubmitView: constructor');
@@ -67,14 +68,19 @@ export default class SubmitView {
       }
     }
 
+    this.loginBtn = el('span.SCSubmitViewTwitter', [el('i.fad.fa-lock'), 'Login']);
     this.userLogin = el('.SCSubmitViewInfoBox', [
       el('.SCLeftColumn', [
-        el('span.SCSubmitViewTwitter', [el('i.fad.fa-lock'), 'Login']),
+        this.loginBtn
       ]),
       el('.SCRightColumn', [
-        el('span.SCSubmitViewInfoBoxText', 'Submissions get a higher credibility score when associated with a registered account.'),
+        el('span.SCSubmitViewInfoBoxText', 'Submissions can get a higher credibility score when associated with a registered account.'),
       ])
-    ])
+    ]);
+
+    this.loginBtn.onclick = () => {
+      alert('Soon..');
+    }
 
     this.infoBox = el('.SCSubmitViewInfoBox', [
       el('.SCLeftColumn', [
@@ -85,7 +91,7 @@ export default class SubmitView {
         el('span.SCSubmitViewInfoBoxTitle', [el('i.fad.fa-long-arrow-alt-right'), 'Why login?']),
         el('span.SCSubmitViewInfoBoxText', 'Item gets a higher credibility score when associated with a Twitter account.'),
       ])
-    ])
+    ]);
 
     this.viewContent = el('span.SCSubmitViewContent', [
       el('span.SCSubmitViewTitle', 'Submit a new article'),
