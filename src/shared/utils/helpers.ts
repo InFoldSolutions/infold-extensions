@@ -95,6 +95,19 @@ export function isPostPage(): boolean {
   return false;
 }
 
+export function isHttpValid(url: string) {
+  try {
+    const newUrl = new URL(url);
+
+    if (!newUrl.pathname || newUrl.pathname === '/')
+      throw new Error('Invalid URL');
+
+    return newUrl.protocol === 'http:' || newUrl.protocol === 'https:';
+  } catch (err) {
+    return false;
+  }
+ }
+
 export function timeDelay(time: number): Promise<any> {
   return new Promise(resolve => setTimeout(resolve, time));
 }

@@ -86,6 +86,7 @@ export default class Dialog {
     this.dialogBody.innerHTML = '';
 
     this.submitView = new SubmitView();
+    
     this.dialogContent = el('.SCDialogContent', this.submitView);
 
     mount(this.dialogBody, this.dialogContent);
