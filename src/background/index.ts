@@ -87,9 +87,10 @@ function setBadgeText(tabId: any, text: string) {
     );
 
     if (text !== '')
-      chrome.action.enable(tabId);
+      chrome.action.setPopup({ tabId: tabId, popup: 'popup.html' })
     else
-      chrome.action.disable(tabId);
+      chrome.action.setPopup({ tabId: tabId, popup: '' })
+
   } catch (error) {
     logger.warn(`Failed to set badge text ${error}`);
   }

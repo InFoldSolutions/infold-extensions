@@ -689,7 +689,7 @@
 
 .SCGroupsWrapper ul {
   min-width: 19px;
-  border-left: 1px dashed rgba(113, 118, 123, 0.8);
+  border-left: 1px solid rgba(113, 118, 123, 0.4);
   margin: 0 12px 12px 0px;
   padding-left: 6px;
   position: relative;
@@ -751,6 +751,7 @@
   z-index: 2;
   cursor: pointer;
   overflow: hidden;
+  /*background: #FFF;*/
   border-radius: 50%;
   border: solid 2px rgba(239, 243, 244, 0);
   align-self: flex-end;

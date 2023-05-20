@@ -4,6 +4,7 @@ import { mount } from 'redom';
 import { IPotentialLink } from '../../shared/types';
 
 import Agent from './agent';
+import Observer from '../observer';
 
 import Link from "../../shared/components/link";
 
@@ -15,11 +16,12 @@ import { isPostPage } from '../../shared/utils/helpers';
 
 export default class RedditAgent extends Agent {
 
-  bodyObserver: MutationObserver
-  pageObserver: MutationObserver
-  contentWrapperObserver: MutationObserver
-  contentObserver: MutationObserver
+  bodyObserver: Observer
+  pageObserver: Observer
+  contentWrapperObserver: Observer
+  contentObserver: Observer
 
+  contentBodyClassSelector: string
   contentBodyClass: string
   contentWrapperClass: string
   outboundLinkClass: string
@@ -53,42 +55,19 @@ export default class RedditAgent extends Agent {
     this.groupWrapperClasses = ['_3-miAEojrCvx_4FQ8x3P-s', '_2IpBiHtzKzIxk2fKI4UOv1', '_3jwri54NGT-SRatPIZYiMo'];
   }
 
-  start() {
+  async start() {
     logger.log('RedditAgent: start');
 
     super.start();
 
-    this.pageWrapper = document.getElementById(this.pageWrapperID);
+    this.bodyObserver = new Observer(`#${this.bodyWrapperID}`, document.body, this.onBodyChange.bind(this));
+    await this.bodyObserver.start();
 
-    if (!this.pageWrapper)
-      return;
+    this.pageObserver = new Observer(`#${this.pageWrapperID}`, document.body, this.onPageChange.bind(this));
+    await this.pageObserver.start();
 
-    this.pageObserver = new MutationObserver(this.onPageChange.bind(this));
-    this.pageObserver.observe(this.pageWrapper, {
-      childList: true
-    });
-
-    this.bodyWrapper = document.getElementById(this.bodyWrapperID);
-
-    if (!this.bodyWrapper)
-      return;
-
-    this.bodyObserver = new MutationObserver(this.onBodyChange.bind(this));
-    this.bodyObserver.observe(this.bodyWrapper, {
-      childList: true
-    });
-
-    const contentWrapper: HTMLElement = this.pageWrapper.querySelector(`.${this.contentWrapperClass}`);
-
-    if (contentWrapper)
-      this.startContentWrapperObserver(contentWrapper);
-
-    let contentBody: HTMLElement = this.getContentBody();
-
-    if (contentBody) {
-      this.startContentObserver(contentBody);
-      return;
-    }
+    await this.startContentWrapperObserver();
+    await this.startContentObserver();
 
     const postBody: HTMLElement = document.querySelector(`.${this.postWrapperClass}`);
 
@@ -98,47 +77,26 @@ export default class RedditAgent extends Agent {
     }
   }
 
-  onPageChange() {
+  onPageChange(records: MutationRecord[]) {
     logger.log('RedditAgent: onPageChange');
 
-    if (this.contentObserver)
-      this.stopContentObserver();
-
-    const contentWrapper: HTMLElement = this.pageWrapper.querySelector(`.${this.contentWrapperClass}`);
-
-    if (contentWrapper)
-      this.startContentWrapperObserver(contentWrapper);
-
-    if (this.contentInterval)
-      clearInterval(this.contentInterval);
-
-    this.contentInterval = setInterval(() => {
-      const contentBody = this.getContentBody();
-
-      if (contentBody) {
-        clearInterval(this.contentInterval);
-        this.startContentObserver(contentBody);
-      }
-    }, 1000);
+    this.startContentWrapperObserver();
+    //this.startContentObserver();
   }
 
-  onContentWrapperChange() {
+  onContentWrapperChange(records: MutationRecord[]) {
     logger.log('RedditAgent: onContentWrapperChange');
 
-    if (this.contentObserver)
-      this.stopContentObserver();
-
-    if (this.contentInterval)
-      clearInterval(this.contentInterval);
-
-    this.contentInterval = setInterval(() => {
-      const contentBody = this.getContentBody();
-
-      if (contentBody) {
-        clearInterval(this.contentInterval);
-        this.startContentObserver(contentBody);
+    records.forEach((record: MutationRecord) => {
+      if (record.type === 'attributes') {
+        this.startContentObserver();
+      } else if (record.type === 'childList') {
+        record.addedNodes.forEach((addedNode: Element) => {
+          if (addedNode.classList.contains(this.contentBodyClass) || addedNode.querySelector(`.${this.contentBodyClass}`))
+            this.startContentObserver();
+        });
       }
-    }, 1000);
+    });
   }
 
   onBodyChange(records: MutationRecord[]) {
@@ -149,15 +107,15 @@ export default class RedditAgent extends Agent {
     }
   }
 
-  getContentBody(): HTMLElement {
+  getContentBodyClassSelector(): string {
     logger.log('RedditAgent: getContentBody');
 
-    let contentBody: HTMLElement = this.pageWrapper.querySelector(`[data-testid="posts-list"]`);
+    let contentBody: HTMLElement = this.pageObserver.element.querySelector(`[data-testid="posts-list"]`);
 
-    if (!contentBody)
-      contentBody = this.pageWrapper.querySelector(`.${this.contentBodyClass}`);
+    if (contentBody)
+      return `[data-testid="posts-list"]`;
 
-    return contentBody;
+    return `.${this.contentBodyClass}`;
   }
 
   stopContentWrapperObserver() {
@@ -168,18 +126,18 @@ export default class RedditAgent extends Agent {
     this.contentWrapper = null;
   }
 
-  startContentWrapperObserver(contentWrapper: HTMLElement) {
+  async startContentWrapperObserver() {
     logger.log('RedditAgent: startContentWrapperObserver');
 
     if (this.contentWrapperObserver)
       this.stopContentWrapperObserver();
 
-    this.contentWrapper = contentWrapper;
-    this.contentWrapperObserver = new MutationObserver(this.onContentWrapperChange.bind(this))
-    this.contentWrapperObserver.observe(this.contentWrapper, {
-      childList: true,
-      attributes: true,
-    });
+    const contentWrapper: HTMLElement = this.pageObserver.element.querySelector(`.${this.contentWrapperClass}`);
+
+    if (contentWrapper) {
+      this.contentWrapperObserver = new Observer(contentWrapper, this.pageObserver.element, this.onContentWrapperChange.bind(this), false, true);
+      await this.contentWrapperObserver.start();
+    }
   }
 
   stopContentObserver() {
@@ -192,17 +150,16 @@ export default class RedditAgent extends Agent {
     //this.clearActiveLinks();
   }
 
-  startContentObserver(contentBody: HTMLElement) {
+  async startContentObserver() {
     logger.log('RedditAgent: startContentObserver');
 
     if (this.contentObserver)
       this.stopContentObserver();
 
-    this.contentBody = contentBody;
-    this.contentObserver = new MutationObserver(this.onDomChange.bind(this))
-    this.contentObserver.observe(this.contentBody, {
-      childList: true
-    });
+    this.contentBodyClassSelector = this.getContentBodyClassSelector();
+
+    this.contentObserver = new Observer(this.contentBodyClassSelector, this.pageObserver.element, this.onDomChange.bind(this));
+    await this.contentObserver.start();
 
     this.onDomChange();
   }
@@ -228,8 +185,8 @@ export default class RedditAgent extends Agent {
         });
       });
     } else {
-      if (this.contentBody && !isPostPage())
-        potentialLinks = this.getPotentialLinksFromElement(this.contentBody);
+      if (this.contentObserver && !isPostPage())
+        potentialLinks = this.getPotentialLinksFromElement(this.contentObserver.element);
 
       if (this.postBody && isPostPage())
         potentialLinks = this.getPotentialLinksFromElement(this.postBody);
@@ -281,7 +238,7 @@ export default class RedditAgent extends Agent {
 
       const elements: HTMLElement[] = Array.from(post.querySelectorAll('a[target="_blank"], a[data-testid="outbound-link"]'));
 
-      if (elements.length === 0) 
+      if (elements.length === 0)
         continue;
 
       for (let i = 0; i < elements.length; i++) {
@@ -289,10 +246,10 @@ export default class RedditAgent extends Agent {
         const url: URL = new URL(element.href);
         const extension: string = path.extname(url.pathname);
 
-        if (config.defaults.blacklistedDomains.includes(url.host)) 
+        if (config.defaults.blacklistedDomains.includes(url.host))
           continue;
 
-        if (config.defaults.notAllowedExtensions.includes(extension)) 
+        if (config.defaults.notAllowedExtensions.includes(extension))
           continue;
 
         potentials.push({

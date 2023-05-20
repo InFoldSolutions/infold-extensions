@@ -23,7 +23,7 @@ export default class Agent {
     this.processing = false;
   }
 
-  start() {
+  async start() {
     logger.log('Agent: start');
 
     /*if (typeof chrome !== 'undefined') { // detect chrome (is global)

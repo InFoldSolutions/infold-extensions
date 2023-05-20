@@ -3,6 +3,7 @@ import { mount } from 'redom';
 import { IPotentialLink } from '../../shared/types';
 
 import Agent from './agent';
+import Observer from '../observer';
 
 import Link from "../../shared/components/link";
 
@@ -12,98 +13,40 @@ import { timeDelay } from '../../shared/utils/helpers';
 
 export default class TwitterAgent extends Agent {
 
-  bodyObserver: MutationObserver
-  contentObserver: MutationObserver
-  mainObserver: MutationObserver
-
-  contentBody: HTMLElement
-  listBody: Element
-  mainBody: Element
-  rootBody: HTMLElement
-  rootID: string
-
-  contentInterval: NodeJS.Timeout
+  contentObserver: Observer
+  mainObserver: Observer
 
   constructor() {
     logger.log('TwitterAgent: constructor');
-
     super();
 
     this.providerType = config.agents.twitter.providerType;
-    this.rootID = config.agents.twitter.rootID;
   }
 
-  start() {
+  async start() {
     logger.log('TwitterAgent: start');
-
     super.start();
 
-    this.contentObserver = null;
-    this.bodyObserver = null;
+    this.mainObserver = new Observer('main > div', document.body, this.mainBodyChange.bind(this));
+    await this.mainObserver.start();
 
-    this.rootBody = document.getElementById(this.rootID);
-
-    this.bodyObserver = new MutationObserver(this.onBodyChange.bind(this));
-    this.bodyObserver.observe(this.rootBody, {
-      childList: true,
-      subtree: true
-    });
+    //console.log('this.mainObserver', this.mainObserver)
+    logger.log('Main Observer started');
+    this.mainBodyChange();
   }
 
-  onBodyChange() {
-    logger.log('TwitterAgent: onBodyChange');
-
-    // We need to locate main > div for simple child observering
-    this.mainBody = this.rootBody.querySelector(`main > div`);
-
-    if (this.mainBody) {
-      this.bodyObserver.disconnect();
-      this.startMainObserver();
-    } else 
-      logger.warn('TwitterAgent: onBodyChange - mainBody not found');
-  }
-
-  startMainObserver() {
-    logger.log('TwitterAgent: startMainObserver');
-
-    this.mainObserver = new MutationObserver(this.mainBodyChange.bind(this))
-    this.mainObserver.observe(this.mainBody, {
-      childList: true
-    });
-  }
-
-  mainBodyChange() {
+  async mainBodyChange() {
     logger.log('TwitterAgent: mainBodyChange');
-
-    if (this.contentInterval)
-      clearInterval(this.contentInterval);
 
     if (this.contentObserver)
       this.stopContentObserver();
 
-    this.contentInterval = setInterval(() => {
-      this.startContentObserver();
+    this.contentObserver = new Observer(`div[data-testid="primaryColumn"]`, this.mainObserver.element, this.onDomChange.bind(this), true);
+    await this.contentObserver.start();
 
-      if (this.contentObserver)
-        clearInterval(this.contentInterval);
-    }, 1000);
-  }
-
-  startContentObserver() {
-    logger.log('TwitterAgent: startContentObserver');
-
-    this.listBody = document.querySelector(`div[data-testid="primaryColumn"]`);
-
-    if (!this.listBody)
-      return;
-
+    //console.log('this.contentObserver', this.contentObserver);
+    logger.log('Content Observer started');
     this.onDomChange();
-
-    this.contentObserver = new MutationObserver(this.onDomChange.bind(this))
-    this.contentObserver.observe(this.listBody, {
-      childList: true,
-      subtree: true
-    });
   }
 
   stopContentObserver() {
@@ -131,9 +74,9 @@ export default class TwitterAgent extends Agent {
             potentialLinks = potentialLinks.concat(this.getPotentialLinksFromElement(addedNode));
         });
       })
-    } else if (this.listBody) { // default to listBody
-      logger.log('TwitterAgent: findLinks - default to listBody');
-      potentialLinks = this.getPotentialLinksFromElement(this.listBody);
+    } else if (this.contentObserver.element) { // default to this.contentObserver.element
+      logger.log('TwitterAgent: findLinks - default to this.contentObserver.element');
+      potentialLinks = this.getPotentialLinksFromElement(this.contentObserver.element);
     }
 
     potentialLinks.forEach((potentialLink: IPotentialLink) => {
