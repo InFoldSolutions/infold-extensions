@@ -67,14 +67,14 @@ export default class RedditAgent extends Agent {
     await this.pageObserver.start();
 
     await this.startContentWrapperObserver();
-    await this.startContentObserver();
 
     const postBody: HTMLElement = document.querySelector(`.${this.postWrapperClass}`);
 
     if (postBody) {
       this.postBody = postBody;
       this.onDomChange();
-    }
+    } else
+      this.startContentObserver();
   }
 
   onPageChange(records: MutationRecord[]) {
