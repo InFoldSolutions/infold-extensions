@@ -75,19 +75,10 @@ export default class Link {
         throw new Error('No results');
 
       this.relatedCount = data.meta.total_results;
-
-      this.setStatus('success');
-      this.el.classList.add('SCHasResults');
-
-      if (this.countEl)
-        this.countEl.innerHTML = this.relatedCount.toString();
-
-      if (this.textEl)
-        this.textEl.innerHTML = 'Related';
+      this.setResults();
     } catch (error) {
       logger.error('Error while fetching data');
 
-      this.setStatus('error');
       this.setNoneResults();
     }
 
@@ -151,9 +142,30 @@ export default class Link {
     this.el.onclick = this.onClickHandler;
   }
 
+  setResults() {
+    logger.log('Link: setResults');
+
+    this.setStatus('success');
+    this.el.classList.add('SCHasResults');
+
+    if (this.countEl)
+      this.countEl.innerHTML = this.relatedCount.toString();
+
+    if (this.textEl)
+      this.textEl.innerHTML = 'Related';
+
+    /*const iconWrapper = this.el.querySelector('.SCIconWrapper');
+
+    if (iconWrapper) {
+      //iconWrapper.querySelector('i').classList.remove('fa-lightbulb-on');
+      //iconWrapper.querySelector('i').classList.add('fa-lightbulb');
+    }*/
+  }
+
   setNoneResults() {
     logger.log('Link: setNoneResults');
 
+    this.setStatus('none');
     this.el.classList.add('SCNoResults');
 
     const textWrapper = this.el.querySelector('.SCTextWrapper');
