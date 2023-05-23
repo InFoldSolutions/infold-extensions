@@ -29,7 +29,7 @@ export default class PopupDialog extends Dialog {
 
     this.closeCallback = closeCallback;
 
-    this.closeBtn = el('.SCDialogCloseWrapper', ['InFold', new CloseIcon]);
+    this.closeBtn = el('.SCDialogCloseWrapper', ['Related Articles', new CloseIcon]);
     this.closeBtn.onclick = () => {
       this.close();
     }

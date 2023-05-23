@@ -1,5 +1,5 @@
 
-const debug: boolean = false;
+const debug: boolean = true;
 
 class Logger {
 

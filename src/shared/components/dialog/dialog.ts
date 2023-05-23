@@ -8,7 +8,7 @@ import Slideshow from '../slideshow/slideshow';
 import Groups from '../slideshow/groups';
 
 import TopHeadlines from '../headlines';
-import SubmitView from '../submit';
+import SubmitView from '../view/submit';
 
 import { IDataItem, ISourceGroup } from '../../types';
 

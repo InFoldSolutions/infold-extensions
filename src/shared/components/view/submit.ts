@@ -1,9 +1,11 @@
 import { el, mount } from 'redom';
 
-import logger from '../utils/logger';
-import events from '../services/events';
+import logger from '../../utils/logger';
+import events from '../../services/events';
 
-import { isHttpValid, timeDelay } from '../utils/helpers';
+import { isHttpValid } from '../../utils/helpers';
+
+import LoginBox from '../login';
 
 export default class SubmitView {
 
@@ -15,8 +17,6 @@ export default class SubmitView {
   inputSubmit: HTMLButtonElement
   inputMsg: HTMLElement
   infoBox: HTMLElement
-  userLogin: HTMLElement
-  loginBtn: HTMLElement
 
   constructor() {
     logger.log('SubmitView: constructor');
@@ -68,39 +68,25 @@ export default class SubmitView {
       }
     }
 
-    this.loginBtn = el('span.SCSubmitViewTwitter', [el('i.fad.fa-lock'), 'Login']);
-    this.userLogin = el('.SCSubmitViewInfoBox', [
+    this.infoBox = el('.SCViewInfoBox', [
       el('.SCLeftColumn', [
-        this.loginBtn
+        el('span.SCViewInfoBoxTitle', [el('i.fad.fa-long-arrow-alt-right'), 'How is score calculated?']),
+        el('span.SCViewInfoBoxText', 'Item gets a higher credibility score when associated with a Twitter account.'),
       ]),
       el('.SCRightColumn', [
-        el('span.SCSubmitViewInfoBoxText', 'Submissions can get a higher credibility score when associated with a registered account.'),
+        el('span.SCViewInfoBoxTitle', [el('i.fad.fa-long-arrow-alt-right'), 'Why login?']),
+        el('span.SCViewInfoBoxText', 'Item gets a higher credibility score when associated with a Twitter account.'),
       ])
     ]);
 
-    this.loginBtn.onclick = () => {
-      alert('Soon..');
-    }
-
-    this.infoBox = el('.SCSubmitViewInfoBox', [
-      el('.SCLeftColumn', [
-        el('span.SCSubmitViewInfoBoxTitle', [el('i.fad.fa-long-arrow-alt-right'), 'How is score calculated?']),
-        el('span.SCSubmitViewInfoBoxText', 'Item gets a higher credibility score when associated with a Twitter account.'),
-      ]),
-      el('.SCRightColumn', [
-        el('span.SCSubmitViewInfoBoxTitle', [el('i.fad.fa-long-arrow-alt-right'), 'Why login?']),
-        el('span.SCSubmitViewInfoBoxText', 'Item gets a higher credibility score when associated with a Twitter account.'),
-      ])
-    ]);
-
-    this.viewContent = el('span.SCSubmitViewContent', [
+    this.viewContent = el('.SCSubmitViewContent', [
       el('span.SCSubmitViewTitle', 'Submit a new article'),
       el('span.SCSubmitViewBodyText', 'Attach a new article that other users might find relevant:'),
       this.inputForm,
-      this.userLogin,
+      new LoginBox(),
       this.backBtn
     ]);
 
-    this.el = el('span.SCSubmitViewWrapper', this.viewContent);
+    this.el = el('.SCSubmitViewWrapper', this.viewContent);
   }
 }

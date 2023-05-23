@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "InFold.ai",
+  "name": "InFold",
   "description": "Take a deeper dive into any topic without changing your workflow. We read and compare thounds of source, so you don't have to.",
   "version": "$VERSION",
   "icons": {
@@ -13,7 +13,8 @@
     }
   },
   "permissions": [
-    "tabs"
+    "tabs",
+    "storage"
   ],
   "host_permissions": [
     "*://*.reddit.com/*",

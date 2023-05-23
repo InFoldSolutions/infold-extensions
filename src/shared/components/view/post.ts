@@ -1,13 +1,13 @@
 import { el, mount, unmount } from 'redom';
 
-import Slideshow from './slideshow/slideshow';
-import Groups from './slideshow/groups';
+import Slideshow from '../slideshow/slideshow';
+import Groups from '../slideshow/groups';
 
-import logger from '../utils/logger';
-import CloseIcon from './svgs/closeIcon';
+import logger from '../../utils/logger';
+import CloseIcon from '../svgs/closeIcon';
 
-import { IDataItem } from '../types';
-import events from '../services/events';
+import { IDataItem } from '../../types';
+import events from '../../services/events';
 
 import SubmitView from './submit';
 

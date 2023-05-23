@@ -934,26 +934,26 @@
   cursor: default;
 }
 
-.SCSubmitViewInfoBox {
+.SCViewInfoBox {
   display: flex;
-  margin: 30px 0px 0px;
+  margin: 0px 0px 0px;
   gap: 10px;
 }
 
-.SCSubmitViewInfoBox .SCLeftColumn {
+.SCViewInfoBox .SCLeftColumn {
   width: 93px;
   align-items: center;
   display: flex;
   flex-flow: column;
 }
 
-.SCSubmitViewInfoBox .SCRightColumn {
+.SCViewInfoBox .SCRightColumn {
   align-items: center;
   display: flex;
   max-width: 65%;
 }
 
-.SCSubmitViewInfoBoxTitle {
+.SCViewInfoBoxTitle {
   font-size: 14px;
   font-weight: 700;
   margin-bottom: 10px;
@@ -962,12 +962,12 @@
   color: rgba(113, 118, 123, 1);
 }
 
-.SCSubmitViewInfoBoxTitle i {
+.SCViewInfoBoxTitle i {
   font-size: 1.4em;
   margin-right: 6px;
 }
 
-.SCSubmitViewInfoBoxText {
+.SCViewInfoBoxText {
   font-size: 14px;
   line-height: 18px;
   color: rgb(113, 118, 123);
@@ -1028,6 +1028,80 @@
 
 .SCPostBodyWrapper .SCRelatedViewBtn {
   right: 5px;
+}
+
+/**
+* Settings View
+**/
+
+.SCSettingsViewWrapper {
+  min-width: 440px;
+  padding: 23px 16px 25px;
+  font-size: 15px;
+}
+
+.SCSettingsViewTitle {
+  background: rgba(113, 118, 123, 0.1);
+  position: relative;
+  width: calc(100% + 20px);
+  border: 0;
+  border-radius: 0;
+  left: -25px;
+  right: -10px;
+  top: -18px;
+  min-height: 35px;
+  justify-content: left;
+  padding-left: 55px;
+  line-height: 20px;
+  font-weight: 700;
+  align-items: center;
+  display: flex;
+  line-height: 20px;
+}
+
+.SCSettingsViewTitle::before {
+  background: url(../images/icons/icon_128.png) no-repeat center center;
+  background-size: 100%;
+  content: "";
+  position: absolute;
+  height: 25px;
+  width: 25px;
+  left: 20px;
+}
+
+.SCViewHr {
+  height: 1px;
+  position: relative;
+  width: 100%;
+  margin: 12px 0px;
+  border: none;
+  border-bottom: 1px solid rgba(113, 118, 123, 0.1);
+}
+
+.SCSettingsViewBodyText {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.SCSettingsViewBodyText svg {
+  fill: #46d160;
+  width: 18px;
+}
+
+.SCFormRow {
+  flex-flow: row;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.SCFormRow:last-child {
+  margin-left: auto;
+}
+
+.SCSettingsViewLabel {
+  margin-left: auto;
 }
 
 /** 
@@ -1480,12 +1554,12 @@
   margin-top: 16%;
 }
 
-.SCSubmitViewSubmitBtn .SCLoader, 
-.SCPostBodyWrapper .SCPostBody .SCSubmitViewSubmitBtn .SCLoader, 
+.SCSubmitViewSubmitBtn .SCLoader,
+.SCPostBodyWrapper .SCPostBody .SCSubmitViewSubmitBtn .SCLoader,
 .SCDialogWrapper .SCDialogBody .SCSubmitViewSubmitBtn .SCLoader {
   border: 2.5px solid rgba(113, 118, 123, 0.1);
   border-bottom-color: rgba(113, 118, 123, 0.5);
-  
+
   width: 20px;
   height: 20px;
 
@@ -1506,4 +1580,72 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+/**
+  Switch
+  Inspired by: https://www.w3schools.com/howto/howto_css_switch.asp
+**/
+
+/* The switch - the box around the slider */
+.SCSwitch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+}
+
+/* Hide default HTML checkbox */
+.SCSwitch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.SCSlider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(113, 118, 123, 0.25);
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.SCSlider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 2.5px;
+  bottom: 2.5px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked+.SCSlider {
+  background-color: rgba(29, 155, 240, 0.7);
+}
+
+input:focus+.SCSlider {
+  box-shadow: 0 0 1px rgba(29, 155, 240, 0.7);
+}
+
+input:checked+.SCSlider:before {
+  -webkit-transform: translateX(22px);
+  -ms-transform: translateX(22px);
+  transform: translateX(22px);
+}
+
+/* Rounded sliders */
+.SCSlider.round {
+  border-radius: 34px;
+}
+
+.SCSlider.round:before {
+  border-radius: 50%;
 }

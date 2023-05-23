@@ -4,6 +4,8 @@ import path from 'path';
 import config from '../shared/utils/config';
 import logger from '../shared/utils/logger';
 
+import { getInfo, getData } from '../shared/utils/api';
+
 /** 
  * Message listener 
  * */
@@ -33,6 +35,8 @@ chrome.runtime.onMessage.addListener(
 // https://stackoverflow.com/questions/69598656/prevent-popup-if-current-tab-url-is-not-permitted-in-manifest-v3
 
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+  console.log('onUpdated', tabId, changeInfo, tab);
+
   if (changeInfo.status == 'complete') {
     const url: URL = new URL(tab.url);
     const extension: string = path.extname(url.pathname);
@@ -86,11 +90,6 @@ function setBadgeText(tabId: any, text: string) {
       }
     );
 
-    if (text !== '')
-      chrome.action.setPopup({ tabId: tabId, popup: 'popup.html' })
-    else
-      chrome.action.setPopup({ tabId: tabId, popup: '' })
-
   } catch (error) {
     logger.warn(`Failed to set badge text ${error}`);
   }
@@ -106,64 +105,3 @@ function setBadgeText(tabId: any, text: string) {
 
   return false;
 }*/
-
-/**
- * API calls
- **/
-
-async function getInfo(href: string, sendResponse: Function) {
-  try {
-    const info = await fetch(`${config.api.url}/meta`, {
-      method: 'POST',
-      headers: config.api.headers,
-      body: JSON.stringify({
-        url: href,
-        similarity: config.api.similarity
-      })
-    });
-
-    if (!info.ok)
-      throw new Error('Request failed');
-
-    const data = await info.json();
-
-    if (sendResponse)
-      sendResponse(data);
-    else
-      return data;
-  } catch (error) {
-    logger.warn(error);
-
-    if (sendResponse)
-      sendResponse({ meta: { success: false } });
-  }
-}
-
-async function getData(href: string, sendResponse: Function, maxRelatedArticles: number = config.api.maxArticleCount) {
-  try {
-    const info = await fetch(`${config.api.url}?limit=${maxRelatedArticles}`, {
-      method: 'POST',
-      headers: config.api.headers,
-      body: JSON.stringify({
-        url: href,
-        similarity: config.api.similarity,
-        search: 'source'
-      })
-    });
-
-    if (!info.ok)
-      throw new Error('Request failed');
-
-    const data = await info.json();
-
-    if (sendResponse)
-      sendResponse(data);
-    else
-      return data;
-  } catch (error) {
-    logger.warn(error);
-
-    if (sendResponse)
-      sendResponse({ meta: { success: false } });
-  }
-}

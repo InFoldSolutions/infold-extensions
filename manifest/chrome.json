@@ -8,7 +8,8 @@
     "128": "images/icons/icon_128.png"
   },
   "permissions": [
-    "tabs"
+    "tabs",
+    "storage"
   ],
   "host_permissions": [
     "*://*.reddit.com/*",

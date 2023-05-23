@@ -10,7 +10,7 @@ import logger from '../utils/logger';
 import RedditDialog from './dialog/reddit';
 import TwitterDialog from './dialog/twitter';
 
-import Post from './post';
+import Post from './view/post';
 import transformSource from '../transformers/source';
 import transformArticle from '../transformers/article';
 
@@ -77,7 +77,7 @@ export default class Link {
       this.relatedCount = data.meta.total_results;
       this.setResults();
     } catch (error) {
-      logger.error('Error while fetching data');
+      logger.log(`Failed to get info ${error.message}`);
 
       this.setNoneResults();
     }
@@ -218,7 +218,7 @@ export default class Link {
       await this.getData(20);
       this.post.update(this.data, this.relatedCount);
     } catch (error) {
-      logger.error(`Error while fetching data ${error}`);
+      logger.error(`Failed to update post view ${error}`);
       this.post.close();
     }
   }
@@ -258,7 +258,7 @@ export default class Link {
       await this.getData();
       this.dialog.update(this.data, this.relatedCount);
     } catch (error) {
-      logger.error(`Error while fetching data ${error}`);
+      logger.warn(`Failed to update dialog ${error}`);
 
       if (this.dialog)
         this.dialog.close();
