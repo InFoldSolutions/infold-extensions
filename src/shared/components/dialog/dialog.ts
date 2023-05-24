@@ -9,6 +9,7 @@ import Groups from '../slideshow/groups';
 
 import TopHeadlines from '../headlines';
 import SubmitView from '../view/submit';
+import SettingsView from '../view/settings';
 
 import { IDataItem, ISourceGroup } from '../../types';
 
@@ -23,7 +24,6 @@ export default class Dialog {
   dialogBody: HTMLElement
   dialogContent: HTMLElement
 
-  submitView: SubmitView
   slideshow: Slideshow
   topHeadlines: TopHeadlines
 
@@ -36,6 +36,7 @@ export default class Dialog {
   data: IDataItem[]
 
   openSubmitViewBind: EventListener
+  openSettingsViewBind: EventListener
   updateBind: EventListener
 
   constructor(agent?: string, article?: HTMLElement, btnWrapper?: HTMLElement, linkElement?: HTMLElement, closeCallback?: Function) {
@@ -58,9 +59,11 @@ export default class Dialog {
     logger.log('Dialog: onEvents');
 
     this.openSubmitViewBind = this.openSubmitView.bind(this);
+    this.openSettingsViewBind = this.openSettingsView.bind(this);
     this.updateBind = this.update.bind(this);
 
     events.on('openSubmitView', this.openSubmitViewBind);
+    events.on('openSettingsView', this.openSettingsViewBind);
     events.on('updateDialog', this.updateBind); // default slideshow view, should probably be renamed
   }
 
@@ -68,6 +71,7 @@ export default class Dialog {
     logger.log('Dialog: offEvents');
 
     events.off('openSubmitView', this.openSubmitViewBind);
+    events.off('openSettingsView', this.openSettingsViewBind);
     events.off('updateDialog', this.updateBind);
   }
 
@@ -84,11 +88,23 @@ export default class Dialog {
       unmount(this.dialogBody, this.dialogContent);
 
     this.dialogBody.innerHTML = '';
-
-    this.submitView = new SubmitView();
     
-    this.dialogContent = el('.SCDialogContent', this.submitView);
+    this.dialogContent = el('.SCDialogContent', new SubmitView());
 
+    mount(this.dialogBody, this.dialogContent);
+  }
+
+  openSettingsView() {
+    logger
+      .log('Dialog: openSettingsView');
+
+    if (this.dialogContent)
+      unmount(this.dialogBody, this.dialogContent);
+    
+    this.dialogBody.innerHTML = '';
+
+    this.dialogContent = el('.SCDialogContent', new SettingsView());
+    
     mount(this.dialogBody, this.dialogContent);
   }
 

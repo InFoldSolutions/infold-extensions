@@ -885,7 +885,7 @@
 
 .SCSubmitViewForm {
   display: flex;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   width: 100%;
   position: relative;
 }
@@ -1035,9 +1035,12 @@
 **/
 
 .SCSettingsViewWrapper {
-  min-width: 440px;
+  width: 430px;
   padding: 23px 16px 25px;
   font-size: 15px;
+  background-color: transparent;
+  font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: rgb(231, 233, 234);
 }
 
 .SCSettingsViewTitle {
@@ -1214,11 +1217,15 @@
   justify-content: left;
   padding-left: 55px;
   font-weight: 700;
+  cursor: default;
 }
 
-.SCDialogWrapper.popup .SCDialogCloseWrapper svg {
+.SCDialogWrapper.popup .SCDialogCloseWrapper i {
   position: absolute;
   right: 55px;
+  color: rgba(113, 118, 123, 0.8);
+  cursor: pointer;
+  font-size: 1.1em;
 }
 
 .SCDialogWrapper.popup .SCDialogCloseWrapper::before {
@@ -1332,11 +1339,23 @@
 
   .SCSubmitViewInput {
     background-color: rgba(255, 255, 255, 0.1);
-    color: rgb(231, 233, 234);
+    color: rgb(215, 218, 220);
   }
 
   .SCSubmitViewSubmitBtn {
     background-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .SCSettingsViewTitle {
+    color: rgb(215, 218, 220);
+  }
+
+  .SCSubmitViewTitle {
+    color: rgb(215, 218, 220);
+  }
+
+  .SCSettingsViewBodyText {
+    color: rgb(215, 218, 220);
   }
 }
 
@@ -1366,7 +1385,7 @@
 
 .SCDialogWrapper.reddit .SCDialogCloseWrapper {
   right: 26px;
-  top: 22px;
+  top: 21px;
 }
 
 .SCDialogWrapper.reddit .SCDialogCloseWrapper:hover {
@@ -1620,8 +1639,8 @@
   content: "";
   height: 22px;
   width: 22px;
-  left: 2.5px;
-  bottom: 2.5px;
+  left: 3px;
+  bottom: 3px;
   background-color: white;
   -webkit-transition: .4s;
   transition: .4s;

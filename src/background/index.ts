@@ -35,8 +35,6 @@ chrome.runtime.onMessage.addListener(
 // https://stackoverflow.com/questions/69598656/prevent-popup-if-current-tab-url-is-not-permitted-in-manifest-v3
 
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-  console.log('onUpdated', tabId, changeInfo, tab);
-
   if (changeInfo.status == 'complete') {
     const url: URL = new URL(tab.url);
     const extension: string = path.extname(url.pathname);

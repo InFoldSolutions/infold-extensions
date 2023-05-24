@@ -1,9 +1,10 @@
-import { el, mount, unmount } from 'redom';
+import { el, mount } from 'redom';
 
 import logger from '../../utils/logger';
 
+import events from '../../services/events';
+
 import Dialog from './dialog';
-import CloseIcon from '../svgs/closeIcon';
 
 export default class PopupDialog extends Dialog {
 
@@ -29,9 +30,12 @@ export default class PopupDialog extends Dialog {
 
     this.closeCallback = closeCallback;
 
-    this.closeBtn = el('.SCDialogCloseWrapper', ['Related Articles', new CloseIcon]);
-    this.closeBtn.onclick = () => {
-      this.close();
+    this.closeBtn = el('.SCDialogCloseWrapper', ['Related Articles', el('i.fad.fa-stream')]);
+    this.closeBtn.onclick = (e: PointerEvent) => {
+      const target = e.target as HTMLElement;
+
+      if (target.classList.contains('fad'))
+        events.emit('openSettingsView');
     }
 
     this.dialogBody = el('.SCDialogBody', el('span.SCLoader'));
