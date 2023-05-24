@@ -8,14 +8,16 @@ class Settings {
 
   synced: boolean = false
 
-  supportedSettings: Array<String> = ['searchType', 'similarityScore', 'articleCount', 'apiUrl']
+  supportedSettings: Array<String> = ['searchType', 'similarityScore', 'articleCount', 'apiUrl', 'redditAgent', 'twitterAgent']
 
   localSettings: any = {}
   defaultSettings: any = {
     searchType: 'source', // similarity, source,
     similarityScore: config.api.similarity,
     articleCount: config.api.maxArticleCount,
-    apiUrl: config.api.url
+    apiUrl: config.api.url,
+    redditAgent: true,
+    twitterAgent: true,
   }
 
   constructor() {
@@ -69,5 +71,6 @@ class Settings {
 }
 
 const settings = new Settings(); // singelton
+settings.load();
 
 export default settings;

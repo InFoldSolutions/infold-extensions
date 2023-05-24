@@ -8,7 +8,7 @@ export default class LoginBox {
   loginBtn: HTMLElement
 
   constructor() {
-    logger.log('SubmitView: constructor');
+    logger.log('LoginBox: constructor');
 
     this.loginBtn = el('span.SCSubmitViewTwitter', [el('i.fad.fa-lock'), 'Login']);
     this.loginBtn.onclick = () => {

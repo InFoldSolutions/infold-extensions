@@ -25,6 +25,7 @@ export default class Link {
   relatedCount: number
 
   active: boolean
+  destroyed: boolean
 
   wrapper: HTMLElement
   parent: HTMLElement
@@ -62,6 +63,9 @@ export default class Link {
 
       const data = await chrome.runtime.sendMessage({ type: "getInfo", href: this.href });
 
+      if (this.destroyed)
+        throw new Error('Destroyed');
+
       if (!data || !data.meta || data.meta.success === false)
         throw new Error('No data');
 
@@ -78,6 +82,9 @@ export default class Link {
       this.setResults();
     } catch (error) {
       logger.log(`Failed to get info ${error.message}`);
+
+      if (this.destroyed)
+        return;
 
       this.setNoneResults();
     }
@@ -298,8 +305,21 @@ export default class Link {
   destroy() {
     logger.log('Link: destroy');
 
-    this.el.removeEventListener('click', this.onClickHandler);
-    unmount(this.parent, this.el);
+    this.destroyed = true;
+    this.article.classList.remove(config.defaults.processedClass);
+
+    if (this.dialog) {
+      this.dialog.close();
+    }
+
+    if (this.post) {
+      this.post.close();
+    }
+
+    if (this.el) {
+      this.el.removeEventListener('click', this.onClickHandler);
+      unmount(this.parent, this.el);
+    }
   }
 
   get isDialog(): boolean {

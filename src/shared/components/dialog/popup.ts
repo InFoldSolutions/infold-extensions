@@ -11,8 +11,9 @@ export default class PopupDialog extends Dialog {
   el: HTMLElement
   parent: HTMLElement
   dialogBody: HTMLElement
-  closeBtn: HTMLElement
-
+  title: HTMLElement
+  titleText: HTMLElement
+  titleIcon: HTMLElement
   linkElement: HTMLElement
 
   dialogStyle: Object
@@ -28,10 +29,13 @@ export default class PopupDialog extends Dialog {
     this.parent = wrapper;
     this.headlines = true;
 
+    this.titleText = el('span.SCTitleText', 'Related Articles');
+    this.titleIcon = el('i.fad.fa-stream');
+
     this.closeCallback = closeCallback;
 
-    this.closeBtn = el('.SCDialogCloseWrapper', ['Related Articles', el('i.fad.fa-stream')]);
-    this.closeBtn.onclick = (e: PointerEvent) => {
+    this.title = el('.SCSettingsViewTitle', [this.titleText, this.titleIcon]);
+    this.title.onclick = (e: PointerEvent) => {
       const target = e.target as HTMLElement;
 
       if (target.classList.contains('fad'))
@@ -41,7 +45,7 @@ export default class PopupDialog extends Dialog {
     this.dialogBody = el('.SCDialogBody', el('span.SCLoader'));
     this.el = el(`.SCDialogWrapper.${this.agent}`,
       [
-        this.closeBtn,
+        this.title,
         this.dialogBody
       ]);
 

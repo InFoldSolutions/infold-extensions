@@ -77,6 +77,20 @@ export default class RedditAgent extends Agent {
       this.startContentObserver();
   }
 
+  async stop() {
+    logger.log('RedditAgent: stop');
+
+    this.bodyObserver.disconnect();
+    this.pageObserver.disconnect();
+
+    if (this.contentWrapperObserver)
+      this.stopContentWrapperObserver();
+    if (this.contentObserver)
+      this.stopContentObserver();
+
+    super.stop();
+  }
+
   onPageChange(records: MutationRecord[]) {
     logger.log('RedditAgent: onPageChange');
 

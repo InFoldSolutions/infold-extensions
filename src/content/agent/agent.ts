@@ -25,10 +25,12 @@ export default class Agent {
 
   async start() {
     logger.log('Agent: start');
+  }
 
-    /*if (typeof chrome !== 'undefined') { // detect chrome (is global)
-      chrome.runtime.onMessage.addListener(this.onExtensionMessage.bind(this));
-    }*/
+  async stop() {
+    logger.log('Agent: stop');
+
+    this.clearActiveLinks();
   }
 
   async onDomChange(records?: MutationRecord[], delay?: boolean) {
@@ -64,7 +66,7 @@ export default class Agent {
       const link = newPending[i];
 
       link.setStatus('processing');
-      
+
       if (this.pendingProcesses.length < 20)
         this.pendingProcesses.push(link);
       else
@@ -113,7 +115,13 @@ export default class Agent {
   clearActiveLinks() {
     logger.log('Agent: clearActiveLinks');
 
+    this.pendingProcesses.forEach((link: Link) => link.destroy());
+    this.pendingProcesses = [];
+    this.currentProcesses.forEach((link: Link) => link.destroy());
+    this.currentProcesses = [];
+    this.activeLinks.forEach((link: Link) => link.destroy());
     this.activeLinks = [];
+
     this.processing = false;
   }
 

@@ -19,13 +19,14 @@ export default class Dialog {
   parent: HTMLElement
   article: HTMLElement
   btnWrapper: HTMLElement
+  titleText?: HTMLElement
+  titleIcon?: HTMLElement
   linkElement: HTMLElement
 
   dialogBody: HTMLElement
   dialogContent: HTMLElement
 
   slideshow: Slideshow
-  topHeadlines: TopHeadlines
 
   headlines: boolean
   agent: string
@@ -88,7 +89,9 @@ export default class Dialog {
       unmount(this.dialogBody, this.dialogContent);
 
     this.dialogBody.innerHTML = '';
-    
+
+    this.updateTitle('Submit Article');
+
     this.dialogContent = el('.SCDialogContent', new SubmitView());
 
     mount(this.dialogBody, this.dialogContent);
@@ -100,11 +103,13 @@ export default class Dialog {
 
     if (this.dialogContent)
       unmount(this.dialogBody, this.dialogContent);
-    
+
     this.dialogBody.innerHTML = '';
 
+    this.updateTitle('Site Status');
+
     this.dialogContent = el('.SCDialogContent', new SettingsView());
-    
+
     mount(this.dialogBody, this.dialogContent);
   }
 
@@ -125,13 +130,14 @@ export default class Dialog {
     this.data = data;
     this.totalCount = totalCount;
 
+    this.updateTitle('Related Articles');
+
     const groups: ISourceGroup[] = Groups.mapToSourceGroups(data);
 
     this.slideshow = new Slideshow(groups, totalCount);
 
     if (this.headlines) {
-      this.topHeadlines = new TopHeadlines(groups);
-      this.dialogContent = el('.SCDialogContent', [this.slideshow, this.topHeadlines])
+      this.dialogContent = el('.SCDialogContent', [this.slideshow, new TopHeadlines(groups)])
     } else {
       this.dialogContent = el('.SCDialogContent', this.slideshow);
     }
@@ -151,5 +157,14 @@ export default class Dialog {
 
     if (this.slideshow)
       this.slideshow.destroy();
+  }
+
+  updateTitle(text: string, icon?: string) {
+    logger.log('Dialog: updateTitleText');
+
+    if (this.titleText)
+      this.titleText.innerText = text;
+    if (this.titleIcon && icon)
+      this.titleIcon.className = icon;
   }
 }

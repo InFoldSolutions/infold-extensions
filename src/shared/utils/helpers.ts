@@ -106,10 +106,42 @@ export function isHttpValid(url: string) {
   } catch (err) {
     return false;
   }
- }
+}
 
 export function timeDelay(time: number): Promise<any> {
   return new Promise(resolve => setTimeout(resolve, time));
+}
+
+export async function getActiveTab(): Promise<any> {
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+
+  if (!tab?.id)
+    return null;
+
+  return tab;
+}
+
+export function getAgentFromUrl(url: string): string {
+  const newURL = new URL(url);
+  console.log(newURL.hostname);
+
+  if (/^www.reddit\.com/.test(newURL.hostname))
+    return 'reddit';
+  if (/^twitter\.com/.test(newURL.hostname))
+    return 'twitter';
+
+  return 'default';
+}
+
+export async function sendMessageToActiveTab(type: string) {
+  const tab = await getActiveTab();
+
+  if (tab) 
+    await chrome.tabs.sendMessage(tab.id, { type: type });
+}
+
+export function capitalizeFirstLetter(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array

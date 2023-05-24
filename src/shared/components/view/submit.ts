@@ -80,7 +80,7 @@ export default class SubmitView {
     ]);
 
     this.viewContent = el('.SCSubmitViewContent', [
-      el('span.SCSubmitViewTitle', 'Submit a new article'),
+      //el('span.SCSubmitViewTitle', 'Submit a new article'),
       el('span.SCSubmitViewBodyText', 'Attach a new article that other users might find relevant:'),
       this.inputForm,
       new LoginBox(),

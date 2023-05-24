@@ -2,9 +2,13 @@ import { el, mount } from 'redom';
 
 import logger from '../../utils/logger';
 
-import { isHttpValid } from '../../utils/helpers';
+import { isHttpValid, getActiveTab } from '../../utils/helpers';
+
 import LoginBox from '../login';
+import StatusBar from '../status';
 import CircleIcon from '../svgs/circle';
+
+import settings from '../../services/settings';
 
 export default class SettingsView {
 
@@ -14,7 +18,7 @@ export default class SettingsView {
   inputForm: HTMLFormElement
   input: HTMLInputElement
   inputAlwaysRunPermission: HTMLInputElement
-  labelAlwaysRunPermission: HTMLElement
+  status: HTMLElement
   inputSubmit: HTMLButtonElement
   inputMsg: HTMLElement
   infoBox: HTMLElement
@@ -23,18 +27,6 @@ export default class SettingsView {
     logger.log('SettingsView: constructor');
 
     this.input = el('input.SCSubmitViewInput', { type: 'text', placeholder: 'https://.. eg. "www.google.com"' }) as HTMLInputElement;
-
-    this.inputAlwaysRunPermission = el('input.SCSlider', { type: 'checkbox', checked: true }) as HTMLInputElement;
-
-    this.inputAlwaysRunPermission.onchange = () => {
-      console.log('inputAlwaysRunPermission', this.inputAlwaysRunPermission.checked);
-    }
-
-    this.labelAlwaysRunPermission = el('label.SCSettingsViewLabel.SCSwitch', [
-      this.inputAlwaysRunPermission,
-      el('span.SCSlider')
-    ]);
-
     this.inputSubmit = el('button.SCSubmitViewSubmitBtn', 'Submit', { type: 'submit' }) as HTMLButtonElement;
     this.inputMsg = el('span.SCSubmitViewMsg', '*Please enter a valid URL, hit Enter or press Submit');
 
@@ -77,11 +69,7 @@ export default class SettingsView {
     }
 
     this.viewContent = el('.SCSubmitViewContent', [
-      el('span.SCSettingsViewTitle', 'Site Status'),
-      el('.SCFormRow', [
-        el('span.SCSettingsViewBodyText', [new CircleIcon(), 'Active on Reddit: Running']),
-        this.labelAlwaysRunPermission,
-      ]),
+      new StatusBar(),
       new LoginBox(),
       el('hr.SCViewHr'),
       el('span.SCSubmitViewTitle', 'Debug Settings'),

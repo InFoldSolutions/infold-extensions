@@ -379,7 +379,7 @@
   cursor: pointer;
   position: absolute;
   right: 12px;
-  top: 20px;
+  top: 18px;
   z-index: 9;
 }
 
@@ -699,7 +699,7 @@
 .SCGroupsWrapper .SCAddNewBtn {
   display: flex;
   align-items: baseline;
-  border-left: 1px dashed rgba(113, 118, 123, 0.8);
+  border-left: 1px solid rgba(113, 118, 123, 0.8);
   margin: 0px 12px 12px 0px;
   padding-left: 5px;
   cursor: pointer;
@@ -880,7 +880,7 @@
   font-size: 14px;
   margin-bottom: 10px;
   line-height: 20px;
-  color: rgb(113, 118, 123);
+  color: rgb(231, 233, 234);
 }
 
 .SCSubmitViewForm {
@@ -970,7 +970,7 @@
 .SCViewInfoBoxText {
   font-size: 14px;
   line-height: 18px;
-  color: rgb(113, 118, 123);
+  color: rgb(231, 233, 234);
 }
 
 .SCSubmitViewTwitter {
@@ -999,7 +999,7 @@
 }
 
 .SCRelatedViewBtn {
-  color: rgba(113, 118, 123, 0.65);
+  color: rgba(113, 118, 123, 0.85);
   position: absolute;
   bottom: 31px;
   right: 18px;
@@ -1009,11 +1009,12 @@
   display: flex;
   align-items: center;
   transition: all 0.2s linear;
-  opacity: 0.7;
+  opacity: 0.8;
 }
 
 .SCRelatedViewBtn:hover {
-  opacity: 0.95;
+  color: rgba(113, 118, 123, 1);
+  opacity: 1;
 }
 
 .SCRelatedViewBtn i {
@@ -1035,8 +1036,6 @@
 **/
 
 .SCSettingsViewWrapper {
-  width: 430px;
-  padding: 23px 16px 25px;
   font-size: 15px;
   background-color: transparent;
   font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -1051,15 +1050,14 @@
   border-radius: 0;
   left: -25px;
   right: -10px;
-  top: -18px;
   min-height: 35px;
   justify-content: left;
-  padding-left: 55px;
+  padding: 5px 5px 5px 70px;
   line-height: 20px;
   font-weight: 700;
   align-items: center;
   display: flex;
-  line-height: 20px;
+  line-height: 25px;
 }
 
 .SCSettingsViewTitle::before {
@@ -1069,7 +1067,15 @@
   position: absolute;
   height: 25px;
   width: 25px;
-  left: 20px;
+  left: 35px;
+}
+
+.SCSettingsViewTitle i {
+  position: absolute;
+  right: 85px;
+  color: rgba(113, 118, 123, 0.8);
+  cursor: pointer;
+  font-size: 1.2em;
 }
 
 .SCViewHr {
@@ -1088,18 +1094,26 @@
 }
 
 .SCSettingsViewBodyText svg {
-  fill: #46d160;
+  fill: rgb(113, 118, 123);
   width: 18px;
 }
 
-.SCFormRow {
+.SCSettingsViewBodyText.SCStatusActive svg {
+  fill: #46d160;
+}
+
+.SCStatusBarContent {
   flex-flow: row;
   display: flex;
   align-items: center;
   gap: 15px;
 }
 
-.SCFormRow:last-child {
+.SCStatus {
+  font-weight: bold;
+}
+
+.SCStatusBarContent:last-child {
   margin-left: auto;
 }
 
@@ -1222,10 +1236,10 @@
 
 .SCDialogWrapper.popup .SCDialogCloseWrapper i {
   position: absolute;
-  right: 55px;
+  right: 60px;
   color: rgba(113, 118, 123, 0.8);
   cursor: pointer;
-  font-size: 1.1em;
+  font-size: 1.2em;
 }
 
 .SCDialogWrapper.popup .SCDialogCloseWrapper::before {
@@ -1324,6 +1338,18 @@
   .SCPostBodyWrapper.twitter .SCSlideshow {
     width: calc(100% - 8px);
   }
+
+  .SCSettingsViewTitle {
+    color: rgb(0, 0, 0);
+  }
+
+  .SCSubmitViewTitle {
+    color: rgb(0, 0, 0);
+  }
+
+  .SCSettingsViewBodyText {
+    color: rgb(0, 0, 0);
+  }
 }
 
 /** Dark mode **/
@@ -1384,8 +1410,8 @@
 }
 
 .SCDialogWrapper.reddit .SCDialogCloseWrapper {
-  right: 26px;
-  top: 21px;
+  right: 20px;
+  top: 19px;
 }
 
 .SCDialogWrapper.reddit .SCDialogCloseWrapper:hover {

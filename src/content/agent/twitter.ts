@@ -30,9 +30,19 @@ export default class TwitterAgent extends Agent {
     this.mainObserver = new Observer('main > div', document.body, this.mainBodyChange.bind(this));
     await this.mainObserver.start();
 
-    //console.log('this.mainObserver', this.mainObserver)
     logger.log('Main Observer started');
     this.mainBodyChange();
+  }
+
+  async stop() {
+    logger.log('TwitterAgent: stop');
+    
+    this.mainObserver.disconnect();
+    
+    if (this.contentObserver)
+      this.stopContentObserver();
+    
+    super.stop();
   }
 
   async mainBodyChange() {
@@ -44,7 +54,6 @@ export default class TwitterAgent extends Agent {
     this.contentObserver = new Observer(`div[data-testid="primaryColumn"]`, this.mainObserver.element, this.onDomChange.bind(this), true);
     await this.contentObserver.start();
 
-    //console.log('this.contentObserver', this.contentObserver);
     logger.log('Content Observer started');
     this.onDomChange();
   }
@@ -54,8 +63,6 @@ export default class TwitterAgent extends Agent {
 
     this.contentObserver.disconnect();
     this.contentObserver = null;
-
-    this.clearActiveLinks();
   }
 
   async findLinks(records?: MutationRecord[], delay?: boolean) {
