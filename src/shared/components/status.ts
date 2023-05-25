@@ -37,14 +37,12 @@ export default class StatusBar {
     this.agent = getAgentFromUrl(currentTab.url);
 
     const settingName = `${this.agent}Agent`;
-    console.log('settingName', settingName);
 
     if (settingName === 'defaultAgent') {
       this.status = el('span.SCStatus', this.meta?.status);
       this.statusText = el('span.SCSettingsViewBodyText', [new CircleIcon(), `Status for ${url.hostname}:`, this.status]);
 
       if (this.meta?.status) {
-        console.log('this.meta?.status', this.meta?.status)
         switch (this.meta.status) {
           case 'analyzed':
             this.statusText.classList.add('SCStatusActive');
