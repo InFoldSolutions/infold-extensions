@@ -2,81 +2,118 @@ import { el, mount } from 'redom';
 
 import logger from '../../utils/logger';
 
-import { isHttpValid, getActiveTab } from '../../utils/helpers';
+import { isHttpValid, sendMessageToActiveTab } from '../../utils/helpers';
 
 import LoginBox from '../login';
 import StatusBar from '../status';
-import CircleIcon from '../svgs/circle';
 
 import settings from '../../services/settings';
-
+import { IDataItem } from '../../types';
 export default class SettingsView {
 
   el: HTMLElement
-  backBtn: HTMLElement
   viewContent: HTMLElement
-  inputForm: HTMLFormElement
-  input: HTMLInputElement
-  inputAlwaysRunPermission: HTMLInputElement
   status: HTMLElement
-  inputSubmit: HTMLButtonElement
-  inputMsg: HTMLElement
-  infoBox: HTMLElement
 
-  constructor() {
+  // API setting
+  apiInput: HTMLInputElement
+  apiInputRow: HTMLElement
+
+  // Search type setting
+  searchTypeInput: HTMLSelectElement
+  searchTypeRow: HTMLElement
+
+  // API setting
+  similarityInput: HTMLInputElement
+  similarityInputRow: HTMLElement
+
+  // Limit setting
+  limitInput: HTMLInputElement
+  limitInputRow: HTMLElement
+
+  // Restart button
+  restartInput: HTMLButtonElement
+
+  constructor(meta?: any) {
     logger.log('SettingsView: constructor');
 
-    this.input = el('input.SCSubmitViewInput', { type: 'text', placeholder: 'https://.. eg. "www.google.com"' }) as HTMLInputElement;
-    this.inputSubmit = el('button.SCSubmitViewSubmitBtn', 'Submit', { type: 'submit' }) as HTMLButtonElement;
-    this.inputMsg = el('span.SCSubmitViewMsg', '*Please enter a valid URL, hit Enter or press Submit');
+    this.apiInput = el('input.SCSubmitViewInput.SCWidthAuto.SCMinWidth', { type: 'text', value: 'https://api.infold.ai' }) as HTMLInputElement;
+    this.apiInput.onchange = async (e) => {
+      const target = e.target as HTMLInputElement;
 
-    this.inputForm = el('form.SCSubmitViewForm', [
-      this.input,
-      this.inputSubmit,
-      this.inputMsg
-    ]) as HTMLFormElement
+      if (isHttpValid(target.value))
+        await settings.set('apiUrl', target.value);
+    };
 
-    this.inputForm.oninput = () => {
-      this.inputMsg.classList.remove('SCSubmitViewMsgError');
-    }
+    this.apiInputRow = el('.SCSettingsViewRow', [
+      el('span.SCSettingsViewLabel', 'API endpoint:'),
+      this.apiInput,
+    ]);
 
-    this.inputForm.onsubmit = async (e) => {
-      e.preventDefault();
+    this.searchTypeInput = el('select.SCSubmitViewInput.SCWidthAuto', [
+      el('option', { value: 'similarity' }, 'Similarity'),
+      el('option', { value: 'source' }, 'Source')
+    ]) as HTMLSelectElement;
 
-      if (!isHttpValid(this.input.value)) {
-        this.inputMsg.classList.add('SCSubmitViewMsgError');
-        return;
-      }
+    this.searchTypeInput.onchange = async (e) => {
+      const target = e.target as HTMLSelectElement;
+      await settings.set('searchType', target.value);
+    };
 
-      try {
-        this.inputSubmit.innerHTML = '';
-        mount(this.inputSubmit, el('span.SCLoader'));
+    this.searchTypeRow = el('.SCSettingsViewRow', [
+      el('span.SCSettingsViewLabel', 'Search Type:'),
+      this.searchTypeInput,
+    ]);
 
-        await chrome.runtime.sendMessage({ type: "getInfo", href: this.input.value });
+    this.similarityInput = el('input.SCSubmitViewInput.SCInputWidthSmall', { type: 'number', step: 0.01, min: 0.1, max: 1.0, value: 0.81 }) as HTMLInputElement;
+    this.similarityInputRow = el('.SCSettingsViewRow', [
+      el('span.SCSettingsViewLabel', 'Similarity Threshold:'),
+      this.similarityInput,
+    ]);
 
-        this.inputSubmit.innerHTML = 'Success!';
-        this.inputSubmit.classList.add('SCSubmitViewSubmitBtnSuccess');
-        this.inputSubmit.disabled = true;
+    this.similarityInput.onchange = async (e) => {
+      const target = e.target as HTMLInputElement;
+      await settings.set('similarityScore', target.value);
+    };
 
-        this.inputMsg.innerHTML = 'Your submission was received and is being processed.';
+    this.limitInput = el('input.SCSubmitViewInput.SCInputWidthSmall', { type: 'number', step: 1, min: 1, max: 50, value: 15 }) as HTMLInputElement;
+    this.limitInputRow = el('.SCSettingsViewRow', [
+      el('span.SCSettingsViewLabel', 'Result Limit:'),
+      this.limitInput,
+    ]);
 
-        this.input.value = 'Thank you for your submission!';
-        this.input.disabled = true;
-      } catch (error) {
-        this.inputSubmit.innerHTML = 'Error!';
-        this.inputMsg.classList.add('SCSubmitViewMsgError');
-      }
-    }
+    this.limitInput.onchange = async (e) => {
+      const target = e.target as HTMLInputElement;
+      await settings.set('articleCount', target.value);
+    };
+
+    this.restartInput = el('button.SCSubmitViewSubmitBtn.SCRestartAgentBtn', 'Restart Agent') as HTMLButtonElement;
+    this.restartInput.onclick = async (e) => {
+      await sendMessageToActiveTab('restartAgent');
+    };
 
     this.viewContent = el('.SCSubmitViewContent', [
-      new StatusBar(),
+      new StatusBar(meta),
       new LoginBox(),
       el('hr.SCViewHr'),
       el('span.SCSubmitViewTitle', 'Debug Settings'),
-      this.inputForm,
-      this.backBtn
+      this.apiInputRow,
+      this.searchTypeRow,
+      this.similarityInputRow,
+      this.limitInputRow,
+      this.restartInput
     ]);
 
     this.el = el('.SCSettingsViewWrapper', this.viewContent);
+
+    this.loadFromSettings();
+  }
+
+  async loadFromSettings() {
+    logger.log('SettingsView: loadFromSettings');
+    this.apiInput.value = await settings.get('apiUrl');
+    this.searchTypeInput.value = await settings.get('searchType');
+    this.similarityInput.value = await settings.get('similarityScore');
+    this.limitInput.value = await settings.get('articleCount');
   }
 }

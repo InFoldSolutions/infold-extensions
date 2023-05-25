@@ -123,7 +123,6 @@ export async function getActiveTab(): Promise<any> {
 
 export function getAgentFromUrl(url: string): string {
   const newURL = new URL(url);
-  console.log(newURL.hostname);
 
   if (/^www.reddit\.com/.test(newURL.hostname))
     return 'reddit';
@@ -136,13 +135,44 @@ export function getAgentFromUrl(url: string): string {
 export async function sendMessageToActiveTab(type: string) {
   const tab = await getActiveTab();
 
-  if (tab) 
+  if (tab)
     await chrome.tabs.sendMessage(tab.id, { type: type });
 }
 
 export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+export function setBadgeColor(bg: string, text: string) {
+  chrome.action.setBadgeBackgroundColor(
+    { color: bg }
+  );
+
+  // @ts-ignore
+  chrome.action.setBadgeTextColor(
+    { color: text }
+  )
+}
+
+export function setBadgeText(tabId: any, text: string) {
+  chrome.action.setBadgeText(
+    {
+      text: text,
+      tabId: tabId,
+    }
+  );
+}
+
+/*function tabExists(tabId: any) {
+  chrome.tabs.query({}, function (tabs) {
+    for (let i = 0; i < tabs.length; i++) {
+      if (tabs[i].id === tabId)
+        return true;
+    }
+  });
+
+  return false;
+}*/
 
 // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 export function shuffleArray(array: any) {

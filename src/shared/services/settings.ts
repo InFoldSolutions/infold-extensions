@@ -51,6 +51,8 @@ class Settings {
       logger.log(`${this.storageKey} key is set to ${this.localSettings}`);
     });
 
+    await chrome.runtime.sendMessage({ type: "settingsUpdated" });
+    
     this.synced = true;
   }
 

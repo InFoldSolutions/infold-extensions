@@ -1,5 +1,4 @@
 import { el, unmount } from 'redom';
-//import retry from 'async-retry';
 
 import { IDataItem, IPotentialLink } from '../types';
 import config from '../utils/config';
@@ -38,6 +37,7 @@ export default class Link {
   post: Post
 
   data: IDataItem[]
+  meta: any
 
   onClickHandler: EventListener
 
@@ -68,6 +68,8 @@ export default class Link {
 
       if (!data || !data.meta || data.meta.success === false)
         throw new Error('No data');
+
+      this.meta = data.meta;
 
       if (config.defaults.failedStatus.includes(data.meta.status))
         throw new Error('Failed status');
@@ -107,6 +109,7 @@ export default class Link {
     if (!response || !response.data || response.data.length === 0)
       throw new Error('No data');
 
+    this.meta = response.meta;
     this.data = response.data
       .filter((item: any) => item.source.logo) // filter out sources that don't have a parser
       .map((item: any) => {
@@ -223,7 +226,7 @@ export default class Link {
 
     try {
       await this.getData(20);
-      this.post.update(this.data, this.relatedCount);
+      this.post.update(this.data, this.meta);
     } catch (error) {
       logger.error(`Failed to update post view ${error}`);
       this.post.close();
@@ -263,7 +266,7 @@ export default class Link {
 
     try {
       await this.getData();
-      this.dialog.update(this.data, this.relatedCount);
+      this.dialog.update(this.data, this.meta);
     } catch (error) {
       logger.warn(`Failed to update dialog ${error}`);
 

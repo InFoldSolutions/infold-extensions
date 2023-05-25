@@ -22,8 +22,10 @@ import events from '../shared/services/events';
 
       const response = await chrome.runtime.sendMessage({ type: "getData", href: url.href });
 
-      if (!response || !response.data || response.data.length === 0)
+      if (!response || !response.data || response.data.length === 0) {
+        popupDialog.meta = response.meta; // nasty
         throw new Error('No data');
+      }
 
       const data: IDataItem[] = response.data
         .filter((item: any) => item.source.logo) // filter out sources that don't have a parser
@@ -34,7 +36,7 @@ import events from '../shared/services/events';
           }
         });
 
-      popupDialog.update(data, response.meta.total_results);
+      popupDialog.update(data, response.meta);
     } catch {
       logger.log('Falling back to settings view');
       events.emit('openSettingsView');

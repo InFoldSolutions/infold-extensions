@@ -71,6 +71,10 @@ class Application {
             case 'startAgent':
               this.startAgent();
               break;
+            case 'restartAgent':
+              this.stopAgent();
+              this.startAgent();
+              break;
             default:
               logger.warn(`Unknown message type ${request.type}`);
               break;

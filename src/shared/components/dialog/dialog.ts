@@ -23,6 +23,7 @@ export default class Dialog {
   titleIcon?: HTMLElement
   linkElement: HTMLElement
 
+  title?: HTMLElement
   dialogBody: HTMLElement
   dialogContent: HTMLElement
 
@@ -35,6 +36,7 @@ export default class Dialog {
   closeCallback: Function
 
   data: IDataItem[]
+  meta: any
 
   openSubmitViewBind: EventListener
   openSettingsViewBind: EventListener
@@ -90,7 +92,7 @@ export default class Dialog {
 
     this.dialogBody.innerHTML = '';
 
-    this.updateTitle('Submit Article');
+    this.updateTitle('Submit Article', 'fa-arrow-alt-circle-right');
 
     this.dialogContent = el('.SCDialogContent', new SubmitView());
 
@@ -106,41 +108,44 @@ export default class Dialog {
 
     this.dialogBody.innerHTML = '';
 
-    this.updateTitle('Site Status');
+    this.updateTitle('Site Status', 'fa-arrow-alt-circle-right');
 
-    this.dialogContent = el('.SCDialogContent', new SettingsView());
+    this.dialogContent = el('.SCDialogContent', new SettingsView(this.meta));
 
     mount(this.dialogBody, this.dialogContent);
   }
 
-  update(data?: IDataItem[], totalCount?: number) {
+  update(data?: IDataItem[], meta?: any) {
     logger
       .log('Dialog: update');
+
+    let totalCount: number = meta?.total_results || 0;
 
     if (this.dialogContent)
       unmount(this.dialogBody, this.dialogContent);
 
     this.dialogBody.innerHTML = '';
 
-    // fallback to this.data
+    // fallback to this
+    meta = meta || this.meta;
     data = data || this.data;
     totalCount = totalCount || this.totalCount;
 
     // reset in case new data was passed
+    this.meta = meta;
     this.data = data;
     this.totalCount = totalCount;
 
-    this.updateTitle('Related Articles');
+    this.updateTitle('Related Articles', 'fa-stream');
 
     const groups: ISourceGroup[] = Groups.mapToSourceGroups(data);
 
     this.slideshow = new Slideshow(groups, totalCount);
 
-    if (this.headlines) {
+    if (this.headlines) 
       this.dialogContent = el('.SCDialogContent', [this.slideshow, new TopHeadlines(groups)])
-    } else {
+    else 
       this.dialogContent = el('.SCDialogContent', this.slideshow);
-    }
 
     mount(this.dialogBody, this.dialogContent);
   }
@@ -159,12 +164,24 @@ export default class Dialog {
       this.slideshow.destroy();
   }
 
-  updateTitle(text: string, icon?: string) {
+  updateTitle(text: string, icon: string) {
     logger.log('Dialog: updateTitleText');
 
     if (this.titleText)
       this.titleText.innerText = text;
-    if (this.titleIcon && icon)
-      this.titleIcon.className = icon;
+
+    if (icon === 'fa-stream' && this.data && this.data.length > 0) {
+      if (this.titleIcon) {
+        this.titleIcon.classList.remove('fa-arrow-alt-circle-right');
+        this.titleIcon.classList.add(icon);
+      }
+    } else if (icon === 'fa-arrow-alt-circle-right' && this.data && this.data.length > 0) {
+      if (this.titleIcon) {
+        this.titleIcon.classList.remove('fa-stream');
+        this.titleIcon.classList.add(icon);
+      }
+    } else if (this.titleIcon) {
+      this.titleIcon.remove();
+    }
   }
 }

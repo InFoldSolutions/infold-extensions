@@ -5,6 +5,8 @@ import config from '../shared/utils/config';
 import logger from '../shared/utils/logger';
 
 import { getInfo, getData } from '../shared/utils/api';
+import { setBadgeText, setBadgeColor } from '../shared/utils/helpers';
+import settings from '../shared/services/settings';
 
 /** 
  * Message listener 
@@ -20,6 +22,9 @@ chrome.runtime.onMessage.addListener(
         case 'getData':
           getData(request.href, sendResponse, request.maxArticleCount);
           return true;
+        case 'settingsUpdated':  // refresh settings
+          settings.synced = false;
+          break;
         default:
           logger.warn(`Unknown message type ${request.type}`);
       }
@@ -34,7 +39,7 @@ chrome.runtime.onMessage.addListener(
 // We'll need this
 // https://stackoverflow.com/questions/69598656/prevent-popup-if-current-tab-url-is-not-permitted-in-manifest-v3
 
-chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   if (changeInfo.status == 'complete') {
     const url: URL = new URL(tab.url);
     const extension: string = path.extname(url.pathname);
@@ -48,58 +53,13 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     if (config.defaults.notAllowedExtensions.includes(extension))
       return setBadgeText(tabId, '');
 
-    setBadge(tabId, tab); // need to rename, it's async
-  }
-});
-
-/**
- * Local helpers - utils?
- **/
-
-async function setBadge(tabId: any, tab: any) {
-  try {
     const data = await getInfo(tab.url, null);
 
     if (data?.meta?.success && data.meta?.total_results > 0) {
-      chrome.action.setBadgeBackgroundColor(
-        { color: '#1d9bf0' }
-      );
-
-      // @ts-ignore
-      chrome.action.setBadgeTextColor(
-        { color: '#FFFFFF' }
-      )
-
+      setBadgeColor('#1d9bf0', '#FFFFFF')
       setBadgeText(tabId, String(data.meta.total_results))
     } else {
       setBadgeText(tabId, '');
     }
-  } catch (error) {
-    logger.warn(`Failed to set badge ${error}`);
   }
-}
-
-function setBadgeText(tabId: any, text: string) {
-  try {
-    chrome.action.setBadgeText(
-      {
-        text: text,
-        tabId: tabId,
-      }
-    );
-
-  } catch (error) {
-    logger.warn(`Failed to set badge text ${error}`);
-  }
-}
-
-/*function tabExists(tabId: any) {
-  chrome.tabs.query({}, function (tabs) {
-    for (let i = 0; i < tabs.length; i++) {
-      if (tabs[i].id === tabId)
-        return true;
-    }
-  });
-
-  return false;
-}*/
+});

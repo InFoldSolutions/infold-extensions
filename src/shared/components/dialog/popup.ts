@@ -38,8 +38,10 @@ export default class PopupDialog extends Dialog {
     this.title.onclick = (e: PointerEvent) => {
       const target = e.target as HTMLElement;
 
-      if (target.classList.contains('fad'))
+      if (target.classList.contains('fa-stream'))
         events.emit('openSettingsView');
+      else if (target.classList.contains('fa-arrow-alt-circle-right'))
+        events.emit('updateDialog', this.data, this.meta);
     }
 
     this.dialogBody = el('.SCDialogBody', el('span.SCLoader'));

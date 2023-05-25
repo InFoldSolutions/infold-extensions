@@ -934,6 +934,12 @@
   cursor: default;
 }
 
+.SCSubmitViewSubmitBtn.SCRestartAgentBtn {
+  min-height: 25px;
+  padding: 10px;
+  margin-top: 5px;
+}
+
 .SCViewInfoBox {
   display: flex;
   margin: 0px 0px 0px;
@@ -1102,6 +1108,15 @@
   fill: #46d160;
 }
 
+.SCSettingsViewBodyText.SCStatusProcessing svg {
+  fill: rgba(29, 155, 240, 0.8);
+}
+
+.SCSettingsViewBodyText.SCStatusError svg {
+  fill: #ff3860;
+  opacity: 0.9;
+}
+
 .SCStatusBarContent {
   flex-flow: row;
   display: flex;
@@ -1113,11 +1128,34 @@
   font-weight: bold;
 }
 
-.SCStatusBarContent:last-child {
+.SCMarginLeftAuto {
   margin-left: auto;
 }
 
+.SCWidthAuto {
+  width: auto;
+}
+
+.SCMinWidth {
+  min-width: 55%;
+}
+
 .SCSettingsViewLabel {
+  color: rgb(215, 218, 220);
+  margin-right: auto;
+}
+
+.SCInputWidthSmall {
+  width: 55px;
+}
+
+.SCSettingsViewRow {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(113, 118, 123, 0.1);
+}
+
+.SCStatusBarContent:last-child {
   margin-left: auto;
 }
 
@@ -1348,6 +1386,18 @@
   }
 
   .SCSettingsViewBodyText {
+    color: rgb(0, 0, 0);
+  }
+
+  .SCSettingsViewLabel {
+    color: rgb(0, 0, 0);
+  }
+
+  .SCViewInfoBoxText {
+    color: rgb(0, 0, 0);
+  }
+
+  .SCSubmitViewBodyText {
     color: rgb(0, 0, 0);
   }
 }

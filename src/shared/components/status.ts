@@ -17,41 +17,73 @@ export default class StatusBar {
   status: HTMLElement
 
   agent: string
+  meta: any
 
-  constructor() {
+  constructor(meta?: any) {
     logger.log('StatusBar: constructor');
 
+    this.meta = meta;
     this.el = el('.SCStatusBar.SCFormRow');
 
     this.setup()
   }
 
   async setup() {
+    logger.log('StatusBar: setup')
+
     const currentTab = await getActiveTab();
-    
+    const url = new URL(currentTab.url);
+
     this.agent = getAgentFromUrl(currentTab.url);
 
     const settingName = `${this.agent}Agent`;
-    const agentSetting = await settings.get(settingName);
+    console.log('settingName', settingName);
 
-    this.sliderInput = el('input.SCSlider', { type: 'checkbox', checked: agentSetting }) as HTMLInputElement;
-    this.sliderInput.onchange = this.setSliderState.bind(this);
+    if (settingName === 'defaultAgent') {
+      this.status = el('span.SCStatus', this.meta?.status);
+      this.statusText = el('span.SCSettingsViewBodyText', [new CircleIcon(), `Status for ${url.hostname}:`, this.status]);
 
-    this.labelInput = el('label.SCSettingsViewLabel.SCSwitch', [
-      this.sliderInput,
-      el('span.SCSlider')
-    ]);
+      if (this.meta?.status) {
+        console.log('this.meta?.status', this.meta?.status)
+        switch (this.meta.status) {
+          case 'analyzed':
+            this.statusText.classList.add('SCStatusActive');
+            break;
+          case 'processing':
+          case 'analyzing':
+            this.statusText.classList.add('SCStatusProcessing');
+            break;
+          case 'error':
+            this.statusText.classList.add('SCStatusError');
+            break;
+          default:
+            break;
+        }
+      }
 
-    this.status = el('span.SCStatus', (agentSetting) ? 'Running' : 'Disabled');
-    this.statusText = el('span.SCSettingsViewBodyText', [new CircleIcon(), `Active on ${capitalizeFirstLetter(this.agent)}:`, this.status]);
+      this.statusContent = el('.SCStatusBarContent', this.statusText);
+    } else {
+      const agentSetting = await settings.get(settingName);
 
-    if (agentSetting) 
-      this.statusText.classList.add('SCStatusActive');
+      this.sliderInput = el('input.SCSlider', { type: 'checkbox', checked: agentSetting }) as HTMLInputElement;
+      this.sliderInput.onchange = this.setSliderState.bind(this);
 
-    this.statusContent = el('.SCStatusBarContent', [
-      this.statusText,
-      this.labelInput
-    ]);
+      this.labelInput = el('label.SCMarginLeftAuto.SCSwitch', [
+        this.sliderInput,
+        el('span.SCSlider')
+      ]);
+
+      this.status = el('span.SCStatus', (agentSetting) ? 'Running' : 'Disabled');
+      this.statusText = el('span.SCSettingsViewBodyText', [new CircleIcon(), `Active on ${capitalizeFirstLetter(this.agent)}:`, this.status]);
+
+      if (agentSetting)
+        this.statusText.classList.add('SCStatusActive');
+
+      this.statusContent = el('.SCStatusBarContent', [
+        this.statusText,
+        this.labelInput
+      ]);
+    }
 
     mount(this.el, this.statusContent);
   }
