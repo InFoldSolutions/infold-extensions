@@ -1,14 +1,13 @@
-import { el, mount } from 'redom';
+import { el } from 'redom';
 
 import logger from '../../utils/logger';
 
-import { isHttpValid, sendMessageToActiveTab } from '../../utils/helpers';
+import { isHttpValid, sendMessageToActiveTab, getActiveTab, getAgentFromUrl } from '../../utils/helpers';
 
 import LoginBox from '../login';
 import StatusBar from '../status';
 
 import settings from '../../services/settings';
-import { IDataItem } from '../../types';
 export default class SettingsView {
 
   el: HTMLElement
@@ -89,7 +88,13 @@ export default class SettingsView {
 
     this.restartInput = el('button.SCSubmitViewSubmitBtn.SCRestartAgentBtn', 'Restart Agent') as HTMLButtonElement;
     this.restartInput.onclick = async (e) => {
-      await sendMessageToActiveTab('restartAgent');
+      const currentTab = await getActiveTab();
+      const agent = getAgentFromUrl(currentTab.url);
+
+      if (agent === 'default')
+        window.location.reload();
+      else
+        await sendMessageToActiveTab('restartAgent');
     };
 
     this.viewContent = el('.SCSubmitViewContent', [

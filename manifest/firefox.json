@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "InFold",
-  "description": "Take a deeper dive into any topic without changing your workflow. We read and compare thounds of source, so you don't have to.",
+  "description": "We read and compare thousands of sources, so you don't have to.",
   "version": "$VERSION",
   "icons": {
     "64": "images/icons/icon_64.png",
