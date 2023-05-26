@@ -1,12 +1,13 @@
 {
   "name": "infold-extensions",
-  "version": "0.9.91",
+  "version": "0.9.95",
   "description": "Infold Solutions browser extensions",
   "main": "index.js",
   "scripts": {
     "build": "webpack --mode=development --env browser=chrome",
     "build-firefox": "webpack --mode=development --env browser=firefox",
-    "prod": "webpack --mode=production",
+    "prod": "webpack --mode=production --env browser=chrome",
+    "prod-firefox": "webpack --mode=production --env browser=firefox",
     "dev": "webpack-dev-server"
   },
   "author": "Jernej",

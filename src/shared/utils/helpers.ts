@@ -112,15 +112,6 @@ export function timeDelay(time: number): Promise<any> {
   return new Promise(resolve => setTimeout(resolve, time));
 }
 
-export async function getActiveTab(): Promise<any> {
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-
-  if (!tab?.id)
-    return null;
-
-  return tab;
-}
-
 export function getAgentFromUrl(url: string): string {
   const newURL = new URL(url);
 
@@ -132,6 +123,26 @@ export function getAgentFromUrl(url: string): string {
   return 'default';
 }
 
+export function getDomainForAgent(agent: string): string {
+  switch (agent) {
+    case 'reddit':
+      return 'www.reddit.com';
+    case 'twitter':
+      return 'twitter.com';
+    default:
+      return '';
+  }
+}
+
+export async function getActiveTab(): Promise<any> {
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+
+  if (!tab?.id)
+    return null;
+
+  return tab;
+}
+
 export async function sendMessageToActiveTab(type: string) {
   const tab = await getActiveTab();
 
@@ -139,27 +150,34 @@ export async function sendMessageToActiveTab(type: string) {
     await chrome.tabs.sendMessage(tab.id, { type: type });
 }
 
+export async function sendMessageToDomainTabs(type: string, domain: string) {
+  const tabs = await chrome.tabs.query({
+    url: `*://${domain}/*`
+  });
+
+  for (const tab of tabs) {
+    await chrome.tabs.sendMessage(tab.id, { type: type });
+  }
+}
+
 export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-export function setBadgeColor(bg: string, text: string) {
+export function setBadgeColor(tabId: any, bg: string, text: string) {
   chrome.action.setBadgeBackgroundColor(
-    { color: bg }
+    { color: bg, tabId: tabId }
   );
 
   // @ts-ignore
   chrome.action.setBadgeTextColor(
-    { color: text }
+    { color: text, tabId: tabId }
   )
 }
 
 export function setBadgeText(tabId: any, text: string) {
   chrome.action.setBadgeText(
-    {
-      text: text,
-      tabId: tabId,
-    }
+    { text: text, tabId: tabId, }
   );
 }
 

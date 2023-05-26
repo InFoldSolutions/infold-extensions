@@ -23,7 +23,5 @@ class Logger {
   }
 }
 
-const logger = new Logger();
-
-// exports and instance of the class --singelton
+const logger = new Logger(); // --singelton
 export default logger;

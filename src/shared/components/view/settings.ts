@@ -2,7 +2,7 @@ import { el } from 'redom';
 
 import logger from '../../utils/logger';
 
-import { isHttpValid, sendMessageToActiveTab, getActiveTab, getAgentFromUrl } from '../../utils/helpers';
+import { isHttpValid, sendMessageToActiveTab, getActiveTab, getAgentFromUrl, sendMessageToDomainTabs, getDomainForAgent } from '../../utils/helpers';
 
 import LoginBox from '../login';
 import StatusBar from '../status';
@@ -93,8 +93,10 @@ export default class SettingsView {
 
       if (agent === 'default')
         window.location.reload();
-      else
-        await sendMessageToActiveTab('restartAgent');
+      else {
+        const domain = getDomainForAgent(agent);
+        await sendMessageToDomainTabs('restartAgent', domain);
+      }
     };
 
     this.viewContent = el('.SCSubmitViewContent', [

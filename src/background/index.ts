@@ -42,11 +42,12 @@ chrome.runtime.onMessage.addListener(
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   if (changeInfo.status == 'complete') {
     const url: URL = new URL(tab.url);
+    const host = url.host.replace('www.', '');
     const extension: string = path.extname(url.pathname);
 
-    if (!config.defaults.supportedProtocols.includes(url.protocol))
+    if (!config.sourcesBackgroundWhiteList.includes(host))
       return setBadgeText(tabId, '');
-    if (config.defaults.blacklistedDomains.includes(url.host))
+    if (!config.defaults.supportedProtocols.includes(url.protocol))
       return setBadgeText(tabId, '');
     if (!url.pathname || url.pathname === '/')
       return setBadgeText(tabId, '');
@@ -55,9 +56,15 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 
     const data = await getInfo(tab.url, null);
 
-    if (data?.meta?.success && data.meta?.total_results > 0) {
-      setBadgeColor('#1d9bf0', '#FFFFFF')
-      setBadgeText(tabId, String(data.meta.total_results))
+    if (data?.meta?.success) {
+      if (data.meta.total_results > 0) {
+        setBadgeColor(tabId, '#46d160', '#FFFFFF')
+        setBadgeText(tabId, String(data.meta.total_results))
+      } else if (data.meta.status === 'processing' || data.meta.status === 'analyzing') {
+        setBadgeColor(tabId, '#1d9bf0', '#FFFFFF')
+        setBadgeText(tabId, '...')
+      } else
+        setBadgeText(tabId, '');
     } else {
       setBadgeText(tabId, '');
     }

@@ -17,7 +17,7 @@ import events from '../shared/services/events';
     try {
       const url = new URL(tab.url);
 
-      if (config.defaults.blacklistedDomains.includes(url.host))
+      if (config.defaults.blacklistedDomains.includes(url.hostname.replace('www.', '')))
         throw new Error('Blacklisted domain');
 
       const response = await chrome.runtime.sendMessage({ type: "getData", href: url.href });

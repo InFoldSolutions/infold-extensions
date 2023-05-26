@@ -1,7 +1,7 @@
 import { el, mount } from 'redom';
 
 import logger from '../utils/logger';
-import { getActiveTab, getAgentFromUrl, sendMessageToActiveTab, capitalizeFirstLetter } from '../utils/helpers';
+import { getActiveTab, getAgentFromUrl, sendMessageToActiveTab, capitalizeFirstLetter, sendMessageToDomainTabs, getDomainForAgent } from '../utils/helpers';
 
 import CircleIcon from './svgs/circle';
 
@@ -39,8 +39,10 @@ export default class StatusBar {
     const settingName = `${this.agent}Agent`;
 
     if (settingName === 'defaultAgent') {
-      this.status = el('span.SCStatus', this.meta?.status);
-      this.statusText = el('span.SCSettingsViewBodyText', [new CircleIcon(), `Status for ${url.hostname}:`, this.status]);
+      this.status = el('span.SCStatus', capitalizeFirstLetter(this.meta?.status));
+
+      const hostname = url.hostname.replace('www.', '');
+      this.statusText = el('span.SCSettingsViewBodyText', [new CircleIcon(), `Status for ${hostname}:`, this.status]);
 
       if (this.meta?.status) {
         switch (this.meta.status) {
@@ -88,16 +90,17 @@ export default class StatusBar {
 
   async setSliderState() {
     const settingName = `${this.agent}Agent`;
+    const domain = getDomainForAgent(this.agent);
 
     if (this.sliderInput.checked) {
       await settings.set(settingName, true);
-      await sendMessageToActiveTab("startAgent");
+      await sendMessageToDomainTabs("startAgent", domain);
 
       this.statusText.classList.add('SCStatusActive');
       this.status.innerText = 'Running';
     } else {
       await settings.set(settingName, false);
-      await sendMessageToActiveTab("stopAgent");
+      await sendMessageToDomainTabs("stopAgent", domain);
 
       this.statusText.classList.remove('SCStatusActive');
       this.status.innerText = 'Disabled';
