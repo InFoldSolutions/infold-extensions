@@ -1,7 +1,7 @@
 import { el, mount } from 'redom';
 
 import logger from '../utils/logger';
-import { getActiveTab, getAgentFromUrl, sendMessageToActiveTab, capitalizeFirstLetter, sendMessageToDomainTabs, getDomainForAgent } from '../utils/helpers';
+import { getActiveTab, getAgentFromUrl, capitalizeFirstLetter, sendMessageToDomainTabs, getDomainForAgent } from '../utils/helpers';
 
 import CircleIcon from './svgs/circle';
 
@@ -39,7 +39,8 @@ export default class StatusBar {
     const settingName = `${this.agent}Agent`;
 
     if (settingName === 'defaultAgent') {
-      this.status = el('span.SCStatus', capitalizeFirstLetter(this.meta?.status));
+      const status = (this.meta?.status) ? capitalizeFirstLetter(this.meta?.status) : 'Unsupported';
+      this.status = el('span.SCStatus', status);
 
       const hostname = url.hostname.replace('www.', '');
       this.statusText = el('span.SCSettingsViewBodyText', [new CircleIcon(), `Status for ${hostname}:`, this.status]);

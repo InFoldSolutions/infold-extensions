@@ -103,7 +103,7 @@ export default class SettingsView {
       new StatusBar(meta),
       new LoginBox(),
       el('hr.SCViewHr'),
-      el('span.SCSubmitViewTitle', 'Debug Settings'),
+      el('span.SCSubmitViewTitle', ['Advanced Settings', el('i.fad.fa-arrow-alt-circle-down')]),
       this.apiInputRow,
       this.searchTypeRow,
       this.similarityInputRow,

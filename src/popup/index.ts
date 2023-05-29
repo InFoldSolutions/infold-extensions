@@ -19,6 +19,8 @@ import events from '../shared/services/events';
 
       if (config.defaults.blacklistedDomains.includes(url.hostname.replace('www.', '')))
         throw new Error('Blacklisted domain');
+      if (!url.pathname || url.pathname === '/')
+        throw new Error('No path');
 
       const response = await chrome.runtime.sendMessage({ type: "getData", href: url.href });
 

@@ -138,6 +138,8 @@ export default class RedditAgent extends Agent {
     this.contentWrapperObserver.disconnect();
     this.contentWrapperObserver = null;
     this.contentWrapper = null;
+
+    this.clearActiveLinks();
   }
 
   async startContentWrapperObserver() {
@@ -160,8 +162,6 @@ export default class RedditAgent extends Agent {
     this.contentObserver.disconnect();
     this.contentObserver = null;
     this.contentBody = null;
-
-    //this.clearActiveLinks();
   }
 
   async startContentObserver() {
@@ -252,19 +252,29 @@ export default class RedditAgent extends Agent {
 
       const elements: HTMLElement[] = Array.from(post.querySelectorAll('a[target="_blank"], a[data-testid="outbound-link"]'));
 
-      if (elements.length === 0)
+      if (elements.length === 0) {
+        potentials.push({
+          href: null,
+          wrapperNode,
+          article: post
+        });
         continue;
+      }
 
       for (let i = 0; i < elements.length; i++) {
         const element = elements[i] as HTMLAnchorElement;
         const url: URL = new URL(element.href);
         const extension: string = path.extname(url.pathname);
 
-        if (config.defaults.blacklistedDomains.includes(url.host))
+        if (config.defaults.blacklistedDomains.includes(url.host) ||
+          config.defaults.notAllowedExtensions.includes(extension)) {
+          potentials.push({
+            href: null,
+            wrapperNode,
+            article: post
+          });
           continue;
-
-        if (config.defaults.notAllowedExtensions.includes(extension))
-          continue;
+        }
 
         potentials.push({
           href: element.href,

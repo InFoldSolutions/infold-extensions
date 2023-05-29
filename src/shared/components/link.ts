@@ -176,18 +176,21 @@ export default class Link {
     logger.log('Link: setNoneResults');
 
     this.setStatus('none');
-    this.el.classList.add('SCNoResults');
 
-    const textWrapper = this.el.querySelector('.SCTextWrapper');
+    if (this.el) {
+      this.el.classList.add('SCNoResults');
 
-    if (textWrapper)
-      unmount(textWrapper, this.countEl);
+      const textWrapper = this.el.querySelector('.SCTextWrapper');
 
-    const iconWrapper = this.el.querySelector('.SCIconWrapper');
+      if (textWrapper)
+        unmount(textWrapper, this.countEl);
 
-    if (iconWrapper) {
-      iconWrapper.querySelector('i').classList.remove('fa-lightbulb-on');
-      iconWrapper.querySelector('i').classList.add('fa-lightbulb-slash');
+      const iconWrapper = this.el.querySelector('.SCIconWrapper');
+
+      if (iconWrapper) {
+        iconWrapper.querySelector('i').classList.remove('fa-lightbulb-on');
+        iconWrapper.querySelector('i').classList.add('fa-lightbulb-slash');
+      }
     }
   }
 

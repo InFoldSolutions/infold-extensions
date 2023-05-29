@@ -874,6 +874,13 @@
   font-size: 16px;
   font-weight: 700;
   margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.SCSubmitViewTitle i.fa-arrow-alt-circle-down {
+  margin-left: auto;
+  color: rgba(0, 0, 0, 0.45);
 }
 
 .SCSubmitViewBodyText {
@@ -1306,6 +1313,10 @@
   margin-top: 15px;
 }
 
+.SCDialogWrapper.popup .SCSubmitViewTitle {
+  cursor: pointer;
+}
+
 /** Light mode **/
 
 @media (prefers-color-scheme: light) {
@@ -1429,6 +1440,10 @@
   }
 
   .SCSubmitViewTitle {
+    color: rgb(215, 218, 220);
+  }
+  
+  .SCSubmitViewTitle i.fa-arrow-alt-circle-down {
     color: rgb(215, 218, 220);
   }
 
