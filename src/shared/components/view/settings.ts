@@ -2,7 +2,7 @@ import { el } from 'redom';
 
 import logger from '../../utils/logger';
 
-import { isHttpValid, sendMessageToActiveTab, getActiveTab, getAgentFromUrl, sendMessageToDomainTabs, getDomainForAgent } from '../../utils/helpers';
+import { isHttpValid, sendMessageToActiveTab, getActiveTab, getAgentFromUrl, sendMessageToDomainTabs, getDomainForAgent, findParentByCls } from '../../utils/helpers';
 
 import LoginBox from '../login';
 import StatusBar from '../status';
@@ -13,6 +13,9 @@ export default class SettingsView {
   el: HTMLElement
   viewContent: HTMLElement
   status: HTMLElement
+  settingsTitle: HTMLElement
+  settingsWrapper: HTMLElement
+  socialWrapper: HTMLElement
 
   // API setting
   apiInput: HTMLInputElement
@@ -99,11 +102,28 @@ export default class SettingsView {
       }
     };
 
-    this.viewContent = el('.SCSubmitViewContent', [
-      new StatusBar(meta),
-      new LoginBox(),
-      el('hr.SCViewHr'),
-      el('span.SCSubmitViewTitle', ['Advanced Settings', el('i.fad.fa-arrow-alt-circle-down')]),
+    this.settingsTitle = el('span.SCSubmitViewTitle', ['Advanced Settings', el('i.fad.fa-arrow-alt-circle-up')]);
+    this.settingsTitle.onclick = async (e) => {
+      let target = e.target as HTMLElement;
+
+      if (!target.classList.contains('SCSubmitViewTitle'))
+        target = findParentByCls(target, 'SCSubmitViewTitle');
+
+      const icon = target.querySelector('i') as HTMLElement;
+      const wrapper = target.nextElementSibling as HTMLElement;
+
+      if (wrapper.classList.contains('SCActive')) {
+        wrapper.classList.remove('SCActive');
+        icon.classList.remove('fa-arrow-alt-circle-down');
+        icon.classList.add('fa-arrow-alt-circle-up');
+      } else {
+        wrapper.classList.add('SCActive');
+        icon.classList.remove('fa-arrow-alt-circle-up');
+        icon.classList.add('fa-arrow-alt-circle-down');
+      }
+    };
+
+    this.settingsWrapper = el('.SCAdvancedSettingsWrapper', [
       this.apiInputRow,
       this.searchTypeRow,
       this.similarityInputRow,
@@ -111,13 +131,38 @@ export default class SettingsView {
       this.restartInput
     ]);
 
-    this.el = el('.SCSettingsViewWrapper', this.viewContent);
+    this.socialWrapper = el('.SCSocialWrapper', [
+      el('a.SCSubmitViewSocialLink', { href: 'https://twitter.com/infoldai', target: '_blank' }, [
+        el('span', 'Website')
+      ]),
+      el('a.SCSubmitViewSocialLink', { href: 'https://twitter.com/infoldai', target: '_blank' }, [
+        el('span', 'Twitter')
+      ]),
+      el('a.SCSubmitViewSocialLink', { href: 'https://www.reddit.com/r/infoldai', target: '_blank' }, [
+        el('span', 'Privacy')
+      ]),
+      el('a.SCSubmitViewSocialLink', { href: 'https://www.facebook.com/infoldai', target: '_blank' }, [
+        el('span', 'Donate')
+      ])
+    ]);
 
+    this.viewContent = el('.SCSubmitViewContent', [
+      new StatusBar(meta),
+      new LoginBox(),
+      el('hr.SCViewHr'),
+      this.settingsTitle,
+      this.settingsWrapper,
+      el('hr.SCViewHr.SCMarginBottomZero.SCMarginTopMin'),
+      this.socialWrapper
+    ]);
+
+    this.el = el('.SCSettingsViewWrapper', this.viewContent);
     this.loadFromSettings();
   }
 
   async loadFromSettings() {
     logger.log('SettingsView: loadFromSettings');
+
     this.apiInput.value = await settings.get('apiUrl');
     this.searchTypeInput.value = await settings.get('searchType');
     this.similarityInput.value = await settings.get('similarityScore');
