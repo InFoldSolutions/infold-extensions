@@ -39,7 +39,7 @@
 
 .SCbuttonWrapper .SCcount {
   display: flex;
-  min-width: calc(1em + 7px);
+  min-width: calc(1em + 2px);
   justify-content: center;
   line-height: 20px;
 }
@@ -112,7 +112,7 @@
 
 .SCbuttonWrapper.twitter.SCPost .SCcount {
   color: rgb(231, 233, 234);
-  margin-right: 2px;
+  margin-right: 4px;
   font-weight: 700;
 }
 
@@ -202,7 +202,7 @@
 /* Post */
 
 .SCPostBodyWrapper {
-  min-height: 220px;
+  min-height: 190px;
   position: relative;
   color: rgb(231, 233, 234);
 }
