@@ -132,16 +132,16 @@ export default class SettingsView {
     ]);
 
     this.socialWrapper = el('.SCSocialWrapper', [
-      el('a.SCSubmitViewSocialLink', { href: 'https://twitter.com/infoldai', target: '_blank' }, [
+      el('a.SCSubmitViewSocialLink', { href: 'https://infold.ai', target: '_blank' }, [
         el('span', 'Website')
       ]),
       el('a.SCSubmitViewSocialLink', { href: 'https://twitter.com/infoldai', target: '_blank' }, [
         el('span', 'Twitter')
       ]),
-      el('a.SCSubmitViewSocialLink', { href: 'https://www.reddit.com/r/infoldai', target: '_blank' }, [
+      el('a.SCSubmitViewSocialLink', { href: '#', target: '_blank' }, [
         el('span', 'Privacy')
       ]),
-      el('a.SCSubmitViewSocialLink', { href: 'https://www.facebook.com/infoldai', target: '_blank' }, [
+      el('a.SCSubmitViewSocialLink', { href: '#', target: '_blank' }, [
         el('span', 'Donate')
       ])
     ]);

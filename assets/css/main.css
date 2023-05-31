@@ -112,7 +112,7 @@
 
 .SCbuttonWrapper.twitter.SCPost .SCcount {
   color: rgb(231, 233, 234);
-  margin-right: 4px;
+  margin-right: 2px;
   font-weight: 700;
 }
 
@@ -1195,7 +1195,7 @@
 }
 
 .SCMinWidth {
-  min-width: 55%;
+  min-width: 60%;
 }
 
 .SCSettingsViewLabel {
