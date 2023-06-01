@@ -102,7 +102,7 @@ export default class SettingsView {
       }
     };
 
-    this.settingsTitle = el('span.SCSubmitViewTitle', ['Advanced Settings', el('i.fad.fa-arrow-alt-circle-down')]);
+    this.settingsTitle = el('span.SCSubmitViewTitle', ['Advanced Settings', el('i.fad.fa-arrow-alt-circle-up')]);
     this.settingsTitle.onclick = async (e) => {
       let target = e.target as HTMLElement;
 
@@ -123,7 +123,7 @@ export default class SettingsView {
       }
     };
 
-    this.settingsWrapper = el('.SCAdvancedSettingsWrapper.SCActive', [
+    this.settingsWrapper = el('.SCAdvancedSettingsWrapper', [
       this.apiInputRow,
       this.searchTypeRow,
       this.similarityInputRow,
@@ -141,7 +141,7 @@ export default class SettingsView {
       el('a.SCSubmitViewSocialLink', { href: '#', target: '_blank' }, [
         el('span', 'Privacy')
       ]),
-      el('a.SCSubmitViewSocialLink', { href: '#', target: '_blank' }, [
+      el('a.SCSubmitViewSocialLink.SCActive', { href: 'https://patreon.com/infold', target: '_blank' }, [
         el('span', 'Donate')
       ])
     ]);

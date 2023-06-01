@@ -1104,13 +1104,26 @@
   color: rgba(29, 155, 240, 0.7);
   border: 1px solid rgba(29, 155, 240, 0.7);
   flex-grow: 1;
-  padding: 5px;
+  padding: 4px;
   text-align: center;
   text-decoration: none;
 }
 
+.SCSubmitViewSocialLink.SCActive {
+  color: rgb(255, 255, 255);
+  border: 1px solid rgba(29, 155, 240, 0.7);
+  background: rgba(29, 155, 240, 0.7);
+  font-weight: 700;
+}
+
 .SCSubmitViewSocialLink:hover {
-  background: rgba(29, 155, 240, 0.05);
+  color: rgba(29, 155, 240, 0.9);
+  box-shadow: 0 0 0.45rem rgba(29, 155, 240, 0.4);
+}
+
+.SCSubmitViewSocialLink.SCActive:hover {
+  background: rgba(29, 155, 240, 0.7);
+  color: rgb(255, 255, 255);
 }
 
 .SCSubmitViewSocialLink i {
@@ -1351,7 +1364,7 @@
   margin-top: 0px;
   background-color: #18181b;
   width: auto;
-  min-width: 460px;
+  min-width: 430px;
 }
 
 .SCDialogWrapper.popup .SCSlideshowWrapper,
