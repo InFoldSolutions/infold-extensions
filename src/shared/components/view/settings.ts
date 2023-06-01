@@ -102,7 +102,7 @@ export default class SettingsView {
       }
     };
 
-    this.settingsTitle = el('span.SCSubmitViewTitle', ['Advanced Settings', el('i.fad.fa-arrow-alt-circle-up')]);
+    this.settingsTitle = el('span.SCSubmitViewTitle', ['Advanced Settings', el('i.fad.fa-arrow-alt-circle-down')]);
     this.settingsTitle.onclick = async (e) => {
       let target = e.target as HTMLElement;
 
@@ -123,7 +123,7 @@ export default class SettingsView {
       }
     };
 
-    this.settingsWrapper = el('.SCAdvancedSettingsWrapper', [
+    this.settingsWrapper = el('.SCAdvancedSettingsWrapper.SCActive', [
       this.apiInputRow,
       this.searchTypeRow,
       this.similarityInputRow,

@@ -198,3 +198,16 @@ export function shuffleArray(array: any) {
     .sort((a: any, b: any) => a.sort - b.sort)
     .map((item: any) => item.value);
 }
+
+// https://stackoverflow.com/questions/46946380/fetch-api-request-timeout
+// @ts-ignore
+export async function fetchTimeout(url: string, ms: number, { signal, ...options }: any = {}) {
+  const controller = new AbortController();
+  const promise = fetch(url, { signal: controller.signal, ...options });
+
+  if (signal)
+    signal.addEventListener("abort", () => controller.abort());
+
+  const timeout = setTimeout(() => controller.abort(), ms);
+  return promise.finally(() => clearTimeout(timeout));
+};

@@ -3,12 +3,16 @@ import config from './config';
 
 import settings from "../services/settings";
 
+import { fetchTimeout } from "./helpers";
+
+const requestTimeout = 3000;
+
 export async function getInfo(href: string, sendResponse: Function) {
   try {
     const url = await settings.get('apiUrl');
     const similarity = await settings.get('similarityScore');
 
-    const info = await fetch(`${url}/meta`, {
+    const info = await fetchTimeout(`${url}/meta`, requestTimeout, {
       method: 'POST',
       headers: config.api.headers,
       body: JSON.stringify({
@@ -34,14 +38,14 @@ export async function getInfo(href: string, sendResponse: Function) {
   }
 }
 
-export async function getData(href: string, sendResponse: Function, maxRelatedArticles: number = config.api.maxArticleCount) {
+export async function getData(href: string, sendResponse: Function, maxRelatedArticles: number) {
   try {
     const url = await settings.get('apiUrl');
     const similarity = await settings.get('similarityScore');
     const search = await settings.get('searchType');
-    const maxArticleCount = await settings.get('articleCount');
+    const maxArticleCount = maxRelatedArticles || await settings.get('articleCount');
 
-    const info = await fetch(`${url}?limit=${maxArticleCount}`, {
+    const info = await fetchTimeout(`${url}?limit=${maxArticleCount}`, requestTimeout, {
       method: 'POST',
       headers: config.api.headers,
       body: JSON.stringify({

@@ -1096,23 +1096,21 @@
 .SCSocialWrapper {
   display: flex;
   flex-direction: row;
-  margin-top: 5px;
+  margin-top: 10px;
   gap: 10px;
 }
 
 .SCSubmitViewSocialLink {
-  color: rgb(215, 218, 220);
-  border: 1px solid rgb(215, 218, 220);
+  color: rgba(29, 155, 240, 0.7);
+  border: 1px solid rgba(29, 155, 240, 0.7);
   flex-grow: 1;
   padding: 5px;
   text-align: center;
   text-decoration: none;
-  opacity: 0.35;
 }
 
 .SCSubmitViewSocialLink:hover {
-  opacity: 1;
-  background: rgba(255,255,255,0.2);
+  background: rgba(29, 155, 240, 0.05);
 }
 
 .SCSubmitViewSocialLink i {
@@ -1469,6 +1467,18 @@
   .SCSubmitViewBodyText {
     color: rgb(0, 0, 0);
   }
+
+  /*.SCSubmitViewSocialLink {
+    color: rgb(0, 0, 0);
+    border-color: rgba(0, 0, 0, 0.5);
+    opacity: 0.95;
+  }
+
+  .SCSubmitViewSocialLink:hover {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.05);
+  }*/
+
 }
 
 /** Dark mode **/
