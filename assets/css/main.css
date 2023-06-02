@@ -864,6 +864,10 @@
 * Submit Article View
 **/
 
+.SCSubmitViewWrapper {
+  width: 470px;
+}
+
 .SCSubmitViewContent {
   display: flex;
   flex-flow: column;
@@ -1055,6 +1059,7 @@
   background-color: transparent;
   font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   color: rgb(231, 233, 234);
+  width: 440px;
 }
 
 .SCSettingsViewTitle {
@@ -1363,8 +1368,8 @@
   box-shadow: none;
   margin-top: 0px;
   background-color: #18181b;
+  min-width: 440px;
   width: auto;
-  min-width: 430px;
 }
 
 .SCDialogWrapper.popup .SCSlideshowWrapper,
