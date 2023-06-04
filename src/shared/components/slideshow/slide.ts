@@ -19,6 +19,7 @@ const timeAgo = new TimeAgo('en-US');
 export default class Slide {
 
   el: HTMLElement
+  keywords: HTMLElement
   summaryBody: HTMLElement
   summaryInfo: Array<HTMLElement>
 
@@ -75,11 +76,16 @@ export default class Slide {
       }
     }
 
+    this.keywords = el('.SCKeywordsWrapper', new Keywords(data.keywords))
+
+    if (!data.keywords || data.keywords.length === 0)
+      this.keywords.classList.add('SCEmpty');
+
     this.summaryBody = el('.SCSummaryBody', [
       el('.SCSummaryTitle', { title: data.title }, data.title),
       el('.SCSummaryInfo', this.summaryInfo),
       el('.SCSummaryContent', data.description),
-      el('.SCKeywordsWrapper', new Keywords(data.keywords))
+      this.keywords
     ]);
 
     mount(this.el, this.summaryBody);

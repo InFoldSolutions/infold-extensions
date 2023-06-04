@@ -17,6 +17,7 @@ export default class TopHeadlines {
   constructor(groups: Array<ISourceGroup>) {
     logger.log('TopHeadlines: constructor');
 
+    const maxArticles = 3;
     const headlines: IHeadline[] = groups.reduce((acc: IHeadline[], group: ISourceGroup, gindex: number) => {
       const firstArticle: IArticle = (gindex === 0 && group.elements.length > 1) ? group.elements[1].articles[0] : group.elements[0].articles[0];
       const source: ISource = (gindex === 0 && group.elements.length > 1) ? group.elements[1].source : group.elements[0].source;

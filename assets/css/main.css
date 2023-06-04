@@ -478,6 +478,16 @@
   padding: 0 30px;
 }
 
+.SCKeywordsWrapper.SCEmpty {
+  padding: 3px 0px 0px;
+  overflow: visible;
+}
+
+.SCKeywordsWrapper.SCEmpty .SCKeywordsContent {
+  overflow: visible;
+  cursor: default;
+}
+
 .SCKeywordsContent {
   display: flex;
   flex-wrap: nowrap;
@@ -864,9 +874,9 @@
 * Submit Article View
 **/
 
-.SCSubmitViewWrapper {
+/*.SCSubmitViewWrapper {
   width: 470px;
-}
+}*/
 
 .SCSubmitViewContent {
   display: flex;
@@ -1059,7 +1069,7 @@
   background-color: transparent;
   font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   color: rgb(231, 233, 234);
-  width: 440px;
+  /*width: 440px;*/
 }
 
 .SCSettingsViewTitle {
@@ -1321,7 +1331,7 @@
 }
 
 .SCTopHeadlines .SClink {
-  max-width: 200px;
+  max-width: 180px;
 }
 
 .SCTopHeadlines .SCdate svg {
@@ -1368,14 +1378,13 @@
   box-shadow: none;
   margin-top: 0px;
   background-color: #18181b;
-  min-width: 440px;
-  width: auto;
+  width: 500px;
 }
 
-.SCDialogWrapper.popup .SCSlideshowWrapper,
+/*.SCDialogWrapper.popup .SCSlideshowWrapper,
 .SCDialogWrapper.popup .SCTopHeadingsWrapper {
   width: 490px;
-}
+}*/
 
 .SCDialogWrapper.popup .SCSummaryContent {
   font-size: 15px;

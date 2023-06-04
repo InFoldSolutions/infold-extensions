@@ -29,11 +29,10 @@ export default class Keywords {
     this.mx = 0;
 
     if (!keywords || keywords.length === 0) {
-      this.el = el('.SCKeywordsContent', '-- No keywords identified --');
+      this.el = el('.SCKeywordsContent', '--- No keywords identified ---');
       return;
     }
       
-
     this.el = el('.SCKeywordsContent', this.renderKeywords(keywords));
 
     this.prevButton = el('.SCArrow.SCLeft', el('i.fa.fa-angle-left'));

@@ -6,6 +6,7 @@ import { isHttpValid, sendMessageToActiveTab, getActiveTab, getAgentFromUrl, sen
 
 import LoginBox from '../login';
 import StatusBar from '../status';
+import Social from '../social';
 
 import settings from '../../services/settings';
 export default class SettingsView {
@@ -15,7 +16,6 @@ export default class SettingsView {
   status: HTMLElement
   settingsTitle: HTMLElement
   settingsWrapper: HTMLElement
-  socialWrapper: HTMLElement
 
   // API setting
   apiInput: HTMLInputElement
@@ -131,21 +131,6 @@ export default class SettingsView {
       this.restartInput
     ]);
 
-    this.socialWrapper = el('.SCSocialWrapper', [
-      el('a.SCSubmitViewSocialLink', { href: 'https://infold.ai', target: '_blank' }, [
-        el('span', 'Website')
-      ]),
-      el('a.SCSubmitViewSocialLink', { href: 'https://twitter.com/infoldai', target: '_blank' }, [
-        el('span', 'Twitter')
-      ]),
-      el('a.SCSubmitViewSocialLink', { href: '#', target: '_blank' }, [
-        el('span', 'Privacy')
-      ]),
-      el('a.SCSubmitViewSocialLink.SCActive', { href: 'https://patreon.com/infold', target: '_blank' }, [
-        el('span', 'Donate')
-      ])
-    ]);
-
     this.viewContent = el('.SCSubmitViewContent', [
       new StatusBar(meta),
       new LoginBox(),
@@ -153,7 +138,7 @@ export default class SettingsView {
       this.settingsTitle,
       this.settingsWrapper,
       el('hr.SCViewHr.SCMarginBottomZero.SCMarginTopMin'),
-      this.socialWrapper
+      new Social()
     ]);
 
     this.el = el('.SCSettingsViewWrapper', this.viewContent);

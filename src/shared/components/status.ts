@@ -75,7 +75,7 @@ export default class StatusBar {
       ]);
 
       this.status = el('span.SCStatus', (agentSetting) ? 'Running' : 'Disabled');
-      this.statusText = el('span.SCSettingsViewBodyText', [new CircleIcon(), `Active on ${capitalizeFirstLetter(this.agent)}:`, this.status]);
+      this.statusText = el('span.SCSettingsViewBodyText', [new CircleIcon(), `${capitalizeFirstLetter(this.agent)} Agent status:`, this.status]);
 
       if (agentSetting)
         this.statusText.classList.add('SCStatusActive');
