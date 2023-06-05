@@ -1,6 +1,6 @@
 import { el } from 'redom';
 
-import { IArticle, IHeadline, ISource, ISourceGroup } from '../types';
+import { IArticle, IDataItem, IHeadline, ISource, ISourceGroup } from '../types';
 
 import logger from '../utils/logger';
 
@@ -18,36 +18,37 @@ export default class TopHeadlines {
     logger.log('TopHeadlines: constructor');
 
     const maxArticles = 3;
-    const headlines: IHeadline[] = groups.reduce((acc: IHeadline[], group: ISourceGroup, gindex: number) => {
-      const firstArticle: IArticle = (gindex === 0 && group.elements.length > 1) ? group.elements[1].articles[0] : group.elements[0].articles[0];
-      const source: ISource = (gindex === 0 && group.elements.length > 1) ? group.elements[1].source : group.elements[0].source;
+    const headlines: IHeadline[] = []
 
-      if (groups.length < 4 && group.elements.length > 2) {
-        const secondArticle: IArticle = (gindex === 0 && group.elements.length > 1) ? group.elements[2].articles[0] : group.elements[0].articles[0];
-        const secondSource: ISource = (gindex === 0 && group.elements.length > 1) ? group.elements[2].source : group.elements[0].source;
+    for (let g = 0; g < groups.length; g++) {
 
-        acc.push({
-          title: secondArticle.title,
-          timestamp: secondArticle.timestamp,
-          link: secondArticle.link,
-          score: secondArticle.score,
-          groupLabel: group.label,
-          sourceName: secondSource.name,
-          handle: secondSource.handle
-        });
-      } else if (acc.length < 4) {
-        acc.push({
-          title: firstArticle.title,
-          timestamp: firstArticle.timestamp,
-          link: firstArticle.link,
-          score: firstArticle.score,
-          groupLabel: group.label,
-          sourceName: source.name
-        });
-      }
+      if (headlines.length >= maxArticles)
+        break;
 
-      return acc;
-    }, []);
+      const group: ISourceGroup = groups[g];
+      const elements: IDataItem[] = group.elements; // group has multiple data items (sources and data)
+      const item: IDataItem = elements[0]; // first data item from the group is chosen as top headline
+      const articles: IArticle[] = item.articles;
+      const source: ISource = item.source;
+
+      let articleIndex = 0; // use the first article from the chosen data item
+
+      if (g === 0 && articles.length > 1)
+        articleIndex = 1;
+      else if (g === 0 && articles.length === 1)
+        continue;
+
+      const article = articles[articleIndex];
+
+      headlines.push({
+        title: article.title,
+        timestamp: article.timestamp,
+        link: article.link,
+        score: article.score,
+        groupLabel: group.label,
+        sourceName: source.name
+      });
+    }
 
     this.el = el('.SCTopHeadingsWrapper', [el('h3', 'Top Headlines'), el('.SCTopHeadlines', headlines.map((headline: IHeadline) => {
       const score: number = headline.score ? Math.round(headline.score * 100) : 0;

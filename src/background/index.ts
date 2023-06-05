@@ -58,7 +58,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 
     if (data?.meta?.success) {
       if (data.meta.total_results > 0) {
-        setBadgeColor(tabId, '#46d160', '#FFFFFF')
+        setBadgeColor(tabId, '#1d9bf0', '#FFFFFF')
         setBadgeText(tabId, String(data.meta.total_results))
       } else if (data.meta.status === 'processing' || data.meta.status === 'analyzing') {
         setBadgeColor(tabId, '#1d9bf0', '#FFFFFF')

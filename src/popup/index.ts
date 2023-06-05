@@ -3,6 +3,7 @@ import transformArticle from '../shared/transformers/article';
 
 import logger from '../shared/utils/logger';
 import config from '../shared/utils/config';
+import { setBadgeText, setBadgeColor } from '../shared/utils/helpers';
 
 import PopupDialog from '../shared/components/dialog/popup';
 
@@ -37,6 +38,10 @@ import events from '../shared/services/events';
             articles: item.articles.map((article: any) => transformArticle(article))
           }
         });
+
+      // Update badge info
+      setBadgeColor(tab.id, '#1d9bf0', '#FFFFFF')
+      setBadgeText(tab.id, String(response.meta.total_results))
 
       popupDialog.update(data, response.meta);
     } catch {

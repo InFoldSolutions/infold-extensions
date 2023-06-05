@@ -239,12 +239,12 @@ export default class Link {
   async openDialog() {
     logger.log('Link: openDialog');
 
-    events.emit('clearOpenDialogs');
-
     if (this.dialog) {
       this.dialog.close();
       return;
     }
+
+    events.emit('clearOpenDialogs');
 
     let Dialog;
 
