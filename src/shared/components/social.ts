@@ -16,7 +16,7 @@ export default class Şocial {
       el('a.SCSubmitViewSocialLink', { href: 'https://twitter.com/infoldai', target: '_blank' }, [
         el('span', 'Twitter')
       ]),
-      el('a.SCSubmitViewSocialLink', { href: '#', target: '_blank' }, [
+      el('a.SCSubmitViewSocialLink', { href: 'https://infold.ai/privacy', target: '_blank' }, [
         el('span', 'Privacy')
       ]),
       el('a.SCSubmitViewSocialLink.SCActive', { href: 'https://patreon.com/infold', target: '_blank' }, [
