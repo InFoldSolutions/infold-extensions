@@ -1124,11 +1124,19 @@
   text-decoration: none;
 }
 
+.SCSubmitViewSocialLink span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+}
+
 .SCSubmitViewSocialLink.SCActive {
   color: rgb(255, 255, 255);
   border: 1px solid rgba(29, 155, 240, 0.7);
   background: rgba(29, 155, 240, 0.7);
   font-weight: 700;
+  opacity: 0.6;
 }
 
 .SCSubmitViewSocialLink:hover {
@@ -1139,6 +1147,20 @@
 .SCSubmitViewSocialLink.SCActive:hover {
   background: rgba(29, 155, 240, 0.7);
   color: rgb(255, 255, 255);
+  opacity: 1;
+}
+
+.SCSubmitViewSocialLink.SCBlack {
+  background-color: #000;
+  color: white;
+  display: flex;
+  align-items: center;
+}
+
+.SCSubmitViewSocialLink img.patreon {
+  margin-right: 5px;
+  width: 19px;
+  height: 19px;
 }
 
 .SCSubmitViewSocialLink i {

@@ -1,7 +1,7 @@
 const config = {
   'api': {
     'url': 'https://api.infold.ai/articles/related',
-    'similarity': 0.7,
+    'similarity': 0.72,
     'maxArticleCount': 15,
     'lookupConcurrency': 6,
     'headers': {
@@ -18,6 +18,7 @@ const config = {
     'supportedProtocols': ['http:', 'https:'],
     'minTextLenght': 100,
     'maxTopHeadlines': 4,
+    'installRedirectUrl': 'https://infold.ai/welcome.html',
   },
   'agents': {
     'reddit': {

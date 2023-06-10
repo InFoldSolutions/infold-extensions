@@ -14,20 +14,21 @@ import settings from '../shared/services/settings';
 
 chrome.runtime.onMessage.addListener(
   function (request, sender, sendResponse) {
-    if (request.type) {
-      switch (request.type) {
-        case 'getInfo':
-          getInfo(request.href, sendResponse);
-          return true;
-        case 'getData':
-          getData(request.href, sendResponse, request.maxArticleCount);
-          return true;
-        case 'settingsUpdated':  // refresh settings
-          settings.synced = false;
-          break;
-        default:
-          logger.warn(`Unknown message type ${request.type}`);
-      }
+    if (!request.type)
+      return;
+
+    switch (request.type) {
+      case 'getInfo':
+        getInfo(request.href, sendResponse);
+        return true;
+      case 'getData':
+        getData(request.href, sendResponse, request.maxArticleCount);
+        return true;
+      case 'settingsUpdated':  // refresh settings
+        settings.synced = false;
+        break;
+      default:
+        logger.warn(`Unknown message type ${request.type}`);
     }
   }
 );
@@ -40,33 +41,46 @@ chrome.runtime.onMessage.addListener(
 // https://stackoverflow.com/questions/69598656/prevent-popup-if-current-tab-url-is-not-permitted-in-manifest-v3
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-  if (changeInfo.status == 'complete') {
-    const url: URL = new URL(tab.url);
-    const host = url.host.replace('www.', '');
-    const extension: string = path.extname(url.pathname);
+  if (changeInfo.status !== 'complete')
+    return;
 
-    if (!config.sourcesBackgroundWhiteList.includes(host))
-      return setBadgeText(tabId, '');
-    if (!config.defaults.supportedProtocols.includes(url.protocol))
-      return setBadgeText(tabId, '');
-    if (!url.pathname || url.pathname === '/')
-      return setBadgeText(tabId, '');
-    if (config.defaults.notAllowedExtensions.includes(extension))
-      return setBadgeText(tabId, '');
+  const url: URL = new URL(tab.url);
+  const host = url.host.replace('www.', '');
+  const extension: string = path.extname(url.pathname);
 
-    const data = await getInfo(tab.url, null);
+  if (!config.sourcesBackgroundWhiteList.includes(host))
+    return setBadgeText(tabId, '');
+  if (!config.defaults.supportedProtocols.includes(url.protocol))
+    return setBadgeText(tabId, '');
+  if (!url.pathname || url.pathname === '/')
+    return setBadgeText(tabId, '');
+  if (config.defaults.notAllowedExtensions.includes(extension))
+    return setBadgeText(tabId, '');
 
-    if (data?.meta?.success) {
-      if (data.meta.total_results > 0) {
-        setBadgeColor(tabId, '#1d9bf0', '#FFFFFF')
-        setBadgeText(tabId, String(data.meta.total_results))
-      } else if (data.meta.status === 'processing' || data.meta.status === 'analyzing') {
-        setBadgeColor(tabId, '#1d9bf0', '#FFFFFF')
-        setBadgeText(tabId, '...')
-      } else
-        setBadgeText(tabId, '');
-    } else {
+  const data = await getInfo(tab.url, null);
+
+  if (data?.meta?.success) {
+    if (data.meta.total_results > 0) {
+      setBadgeColor(tabId, '#1d9bf0', '#FFFFFF')
+      setBadgeText(tabId, String(data.meta.total_results))
+    } else if (data.meta.status === 'processing' || data.meta.status === 'analyzing') {
+      setBadgeColor(tabId, '#1d9bf0', '#FFFFFF')
+      setBadgeText(tabId, '...')
+    } else
       setBadgeText(tabId, '');
-    }
+  } else {
+    setBadgeText(tabId, '');
   }
 });
+
+// On install redirect to URL
+
+chrome.runtime.onInstalled.addListener(function (details) {
+  if (details.reason !== 'install')
+    return;
+
+  chrome.tabs.create({
+    url: config.defaults.installRedirectUrl
+  });
+}
+);
