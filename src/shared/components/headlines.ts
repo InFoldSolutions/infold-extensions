@@ -3,9 +3,9 @@ import { el } from 'redom';
 import { IArticle, IDataItem, IHeadline, ISource, ISourceGroup } from '../types';
 
 import logger from '../utils/logger';
+import config from '../utils/config';
 
 import TimeAgo from 'javascript-time-ago';
-import CalendarIcon from './svgs/calendarIcon';
 
 const timeAgo = new TimeAgo('en-US');
 
@@ -17,7 +17,7 @@ export default class TopHeadlines {
   constructor(groups: Array<ISourceGroup>) {
     logger.log('TopHeadlines: constructor');
 
-    const maxArticles = 3;
+    const maxArticles = config.defaults.maxTopHeadlines;
     const headlines: IHeadline[] = []
 
     for (let g = 0; g < groups.length; g++) {

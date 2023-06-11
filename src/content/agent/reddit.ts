@@ -100,15 +100,28 @@ export default class RedditAgent extends Agent {
 
   onContentWrapperChange(records: MutationRecord[]) {
     logger.log('RedditAgent: onContentWrapperChange');
+    let started: boolean = false;
 
     records.forEach((record: MutationRecord) => {
       if (record.type === 'attributes') {
         this.startContentObserver();
+        started = true;
       } else if (record.type === 'childList') {
         record.addedNodes.forEach((addedNode: Element) => {
-          if (addedNode.classList.contains(this.contentBodyClass) || addedNode.querySelector(`.${this.contentBodyClass}`))
+          if (addedNode.classList.contains(this.contentBodyClass) || addedNode.querySelector(`.${this.contentBodyClass}`)) {
             this.startContentObserver();
+            started = true;
+          }
         });
+
+        if (!started) { //could be "nextSibling" scenario
+          const nextSibling: Element = record.nextSibling as Element;
+
+          if (nextSibling && nextSibling.classList && nextSibling.classList.contains(this.contentBodyClass)) {
+            this.startContentObserver();
+            started = true;
+          }
+        }
       }
     });
   }
@@ -182,7 +195,7 @@ export default class RedditAgent extends Agent {
     logger.log('RedditAgent: findLinks');
 
     if (delay || !records)
-      await timeDelay(500);
+      await timeDelay(200);
 
     const links: Link[] = [];
 
