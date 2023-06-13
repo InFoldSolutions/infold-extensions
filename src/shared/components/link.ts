@@ -1,3 +1,4 @@
+import * as path from 'path';
 import { el, unmount } from 'redom';
 
 import { IDataItem, IPotentialLink } from '../types';
@@ -19,6 +20,7 @@ export default class Link {
 
   status: string
   href: string
+  linkText: string
   providerType: string
 
   relatedCount: number
@@ -47,6 +49,7 @@ export default class Link {
     this.providerType = providerType;
     this.article = potentialLInk.article;
     this.href = potentialLInk.href;
+    this.linkText = potentialLInk.linkText;
     this.wrapper = potentialLInk.wrapperNode;
     this.parent = this.wrapper; // Could be overwritten down the line
 
@@ -60,6 +63,21 @@ export default class Link {
     try {
       if (!this.href)
         throw new Error('No href');
+
+      const url: URL = new URL(this.href);
+      const host = url.host.replace('www.', '');
+      const extension: string = path.extname(url.pathname);
+
+      let linkText = this.linkText.replace('www.', '')
+      linkText = linkText.replace('https://', '')
+      linkText = linkText.replace('http://', '')
+
+      if (!config.defaults.supportedProtocols.includes(url.protocol))
+        throw new Error('Unsupported protocol');
+      if (config.defaults.notAllowedExtensions.includes(extension))
+        throw new Error('Not allowed extension');
+      if (config.defaults.blacklistedDomains.includes(host) || config.defaults.blacklistedDomains.includes(linkText))
+        throw new Error('Blacklisted domain');
 
       const data = await chrome.runtime.sendMessage({ type: "getInfo", href: this.href });
 

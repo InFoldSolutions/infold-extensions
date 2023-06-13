@@ -1,6 +1,6 @@
 import { mount } from 'redom';
 
-import { IPotentialLink } from '../../shared/types';
+import { IPotentialLink, ILinkElement } from '../../shared/types';
 
 import Agent from './agent';
 import Observer from '../observer';
@@ -63,7 +63,7 @@ export default class TwitterAgent extends Agent {
 
     this.contentObserver.disconnect();
     this.contentObserver = null;
-    
+
     this.clearActiveLinks();
   }
 
@@ -121,16 +121,23 @@ export default class TwitterAgent extends Agent {
       if (article.classList.contains(config.defaults.processedClass))
         continue;
 
-      const elements: string[] = [];
+      const elements: ILinkElement[] = [];
       const cardLink: HTMLAnchorElement = article.querySelector('[data-testid="card.wrapper"] a[target="_blank"]');
 
-      if (cardLink)
-        elements.push(cardLink.href)
-      else {
+      if (cardLink) {
+        elements.push({
+          href: cardLink.href,
+          text: cardLink.innerText
+        })
+      } else {
         const notesLink: HTMLAnchorElement = article.querySelector('[data-testid="birdwatch-pivot"] a[target="_blank"]');
 
-        if (notesLink)
-          elements.push(notesLink.href)
+        if (notesLink) {
+          elements.push({
+            href: notesLink.href,
+            text: notesLink.innerText
+          })
+        }
       }
 
       if (elements.length === 0) {
@@ -142,8 +149,12 @@ export default class TwitterAgent extends Agent {
             const nestedElement: HTMLElement = nestedElements[n] as HTMLElement;
             const textLink: HTMLAnchorElement = nestedElement.querySelector('a[target="_blank"]');
 
-            if (textLink)
-              elements.push(textLink.href);
+            if (textLink) {
+              elements.push({
+                href: textLink.href,
+                text: textLink.innerText
+              });
+            }
 
             if (elements.length === 0) {
               const nestedLinks: HTMLElement[] = Array.from(nestedElement.querySelectorAll('[dir="ltr"]'));
@@ -158,7 +169,9 @@ export default class TwitterAgent extends Agent {
 
                   if (firstChild.textContent === 'http://' || firstChild.textContent === 'https://') {
                     const linkText: string = nestedLink.textContent;
-                    elements.push(linkText.replace('…', ''));
+                    elements.push({
+                      href: linkText.replace('…', '')
+                    });
                     break;
                   }
                 }
@@ -188,30 +201,12 @@ export default class TwitterAgent extends Agent {
       }
 
       for (let i = 0; i < elements.length; i++) {
-        const href: string = elements[i];
+        const item: ILinkElement = elements[i];
 
-        if (!/http|https/.test(href)) {
-          potentials.push({
-            href: null,
-            wrapperNode,
-            article
-          });
-          continue;
-        }
-
-        const url: URL = new URL(href);
-
-        if (config.defaults.blacklistedDomains.includes(url.host)) {
-          potentials.push({
-            href: null,
-            wrapperNode,
-            article
-          });
-          continue;
-        }
-
+        // ts-ignore
         potentials.push({
-          href,
+          href: item.href,
+          linkText: item.text,
           wrapperNode,
           article
         });

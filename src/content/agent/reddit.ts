@@ -1,4 +1,3 @@
-import * as path from 'path';
 import { mount } from 'redom';
 
 import { IPotentialLink } from '../../shared/types';
@@ -11,13 +10,14 @@ import Link from "../../shared/components/link";
 import logger from '../../shared/utils/logger';
 import config from '../../shared/utils/config';
 
-import { findParentByAttribute, timeDelay } from '../../shared/utils/helpers';
+import { timeDelay } from '../../shared/utils/helpers';
 import { isPostPage } from '../../shared/utils/helpers';
 
 export default class RedditAgent extends Agent {
 
   bodyObserver: Observer
   pageObserver: Observer
+  postObserver: Observer
   contentWrapperObserver: Observer
   contentObserver: Observer
 
@@ -68,12 +68,13 @@ export default class RedditAgent extends Agent {
 
     await this.startContentWrapperObserver();
 
-    const postBody: HTMLElement = document.querySelector(`.${this.postWrapperClass}`);
+    if (isPostPage()) {
+      this.postObserver = new Observer(`.${this.postWrapperClass}`, document.body, this.onDomChange.bind(this));
+      await this.postObserver.start();
 
-    if (postBody) {
-      this.postBody = postBody;
       this.onDomChange();
-    } else
+    }
+    else
       this.startContentObserver();
   }
 
@@ -100,6 +101,7 @@ export default class RedditAgent extends Agent {
 
   onContentWrapperChange(records: MutationRecord[]) {
     logger.log('RedditAgent: onContentWrapperChange');
+
     let started: boolean = false;
 
     records.forEach((record: MutationRecord) => {
@@ -126,11 +128,19 @@ export default class RedditAgent extends Agent {
     });
   }
 
-  onBodyChange(records: MutationRecord[]) {
+  async onBodyChange() {
     logger.log('RedditAgent: onBodyChange');
 
     if (isPostPage()) {
-      super.onDomChange(records, true);
+      this.postObserver = new Observer(`.${this.postWrapperClass}`, document.body, this.onDomChange.bind(this));
+      await this.postObserver.start();
+
+      this.onDomChange();
+    } else {
+      if (this.postObserver) {
+        this.postObserver.disconnect();
+        this.postObserver = null;
+      }
     }
   }
 
@@ -215,8 +225,8 @@ export default class RedditAgent extends Agent {
       if (this.contentObserver && !isPostPage())
         potentialLinks = this.getPotentialLinksFromElement(this.contentObserver.element);
 
-      if (this.postBody && isPostPage())
-        potentialLinks = this.getPotentialLinksFromElement(this.postBody);
+      if (this.postObserver && isPostPage())
+        potentialLinks = this.getPotentialLinksFromElement(this.postObserver.element);
     }
 
     potentialLinks.forEach((potentialLink: IPotentialLink) => {
@@ -276,21 +286,10 @@ export default class RedditAgent extends Agent {
 
       for (let i = 0; i < elements.length; i++) {
         const element = elements[i] as HTMLAnchorElement;
-        const url: URL = new URL(element.href);
-        const extension: string = path.extname(url.pathname);
-
-        if (config.defaults.blacklistedDomains.includes(url.host) ||
-          config.defaults.notAllowedExtensions.includes(extension)) {
-          potentials.push({
-            href: null,
-            wrapperNode,
-            article: post
-          });
-          continue;
-        }
 
         potentials.push({
           href: element.href,
+          linkText: element.innerText,
           wrapperNode,
           article: post
         });

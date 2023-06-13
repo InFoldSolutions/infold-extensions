@@ -75,6 +75,12 @@ export type IDateGroup = {
 
 export type IPotentialLink = {
   href?: string,
+  linkText?: string,
   wrapperNode: HTMLElement,
   article: HTMLElement
+}
+
+export type ILinkElement = {
+  href: string,
+  text?: string
 }

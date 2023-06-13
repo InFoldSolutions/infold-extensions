@@ -14,7 +14,7 @@ const config = {
     'notAllowedExtensions': ['.jpg', '.jpeg', '.png', '.gif', '.gifv', '.mp4', '.webm'],
     'retryStatus': ['processing', 'analyzing'],
     'failedStatus': ['invalid', 'error'],
-    'blacklistedDomains': ['github.com', 'infold.ai', 'facebook.com', 'twitch.com', 'google.com', 'twitter.com', 'mozilla.org', 'instagram.com', 'reddit.com', 'youtube.com', 'imgur.com', 'redd.it', 'youtu.be', 'gfycat.com', 'i.redd.it', 'alb.reddit.com', 'preview.redd.it', 'help.twitter.com'],
+    'blacklistedDomains': ['open.spotify.com', 'spotify.com', 'github.com', 'infold.ai', 'facebook.com', 'twitch.com', 'google.com', 'twitter.com', 'mozilla.org', 'instagram.com', 'reddit.com', 'youtube.com', 'imgur.com', 'redd.it', 'youtu.be', 'gfycat.com', 'i.redd.it', 'alb.reddit.com', 'preview.redd.it', 'help.twitter.com'],
     'supportedProtocols': ['http:', 'https:'],
     'minTextLenght': 100,
     'maxTopHeadlines': 3,
