@@ -1,7 +1,7 @@
 {
   "name": "infold-extensions",
-  "version": "1.0.2",
-  "description": "Infold Solutions browser extensions",
+  "version": "1.0.3",
+  "description": "Infold.ai - browser extension",
   "main": "index.js",
   "scripts": {
     "build": "webpack --mode=development --env browser=chrome",
@@ -10,7 +10,7 @@
     "prod-firefox": "webpack --mode=production --env browser=firefox",
     "dev": "webpack-dev-server"
   },
-  "author": "Jernej",
+  "author": "Jernej jernej@infold.ai https://infold.ai",
   "license": "ISC",
   "devDependencies": {
     "@types/async-retry": "^1.4.5",

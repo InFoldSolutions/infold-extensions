@@ -2,6 +2,7 @@ import RedditAgent from './agent/reddit';
 import TwitterAgent from './agent/twitter';
 
 import logger from '../shared/utils/logger';
+import { timeDelay } from '../shared/utils/helpers';
 
 import settings from '../shared/services/settings';
 
@@ -40,7 +41,7 @@ class Application {
 
       ActiveAgent = TwitterAgent;
     }
-    
+
     if (ActiveAgent) {
       this.agent = new ActiveAgent();
       this.agent.start();
@@ -83,9 +84,18 @@ class Application {
       }
     )
 
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const _self = this;
+
+    mediaQuery.addEventListener('change', async (e) => {
+      await timeDelay(500);
+
+      _self.stopAgent();
+      _self.startAgent();
+    });
+
     this.listening = true;
   }
-
 }
 
 // init
