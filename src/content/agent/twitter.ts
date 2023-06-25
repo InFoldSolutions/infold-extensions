@@ -141,9 +141,9 @@ export default class TwitterAgent extends Agent {
       }
 
       if (elements.length === 0) {
-        const nestedElements = Array.from(article.querySelectorAll('[data-testid="tweetText"]'));
+        const nestedElements = Array.from(article.querySelectorAll('[data-testid="tweetText"], [role="link"]'));
         let textLength: number = 0;
-
+        
         if (nestedElements.length > 0) {
           for (let n = 0; n < nestedElements.length; n++) {
             const nestedElement: HTMLElement = nestedElements[n] as HTMLElement;
@@ -170,7 +170,8 @@ export default class TwitterAgent extends Agent {
                   if (firstChild.textContent === 'http://' || firstChild.textContent === 'https://') {
                     const linkText: string = nestedLink.textContent;
                     elements.push({
-                      href: linkText.replace('…', '')
+                      href: linkText.replace('…', ''),
+                      text: linkText.replace('…', '')
                     });
                     break;
                   }
