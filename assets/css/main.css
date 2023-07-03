@@ -1335,6 +1335,13 @@
   z-index: 1;
 }
 
+/** Topic **/
+
+.SCTopicWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
 /** Top Headings **/
 
 .SCTopHeadingsWrapper h3 {

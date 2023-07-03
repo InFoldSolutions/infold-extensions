@@ -285,7 +285,9 @@ export default class Link {
 
     this.toggleActiveState();
 
-    try {
+    this.dialog.openTopicView();
+    
+    /*try {
       await this.getData();
       this.dialog.update(this.data, this.meta);
     } catch (error) {
@@ -293,7 +295,7 @@ export default class Link {
 
       if (this.dialog)
         this.dialog.close();
-    }
+    }*/
   }
 
   closePost() {

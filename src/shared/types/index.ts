@@ -20,6 +20,21 @@ export type IHeadline = {
   groupLabel: string
 }
 
+export type ITopicMeta = {
+  version: string
+}
+
+export type ITopic = {
+  meta?: ITopicMeta
+  title: string
+  summary: string
+  shortSummary: string
+  firstSeen: Date
+  keyPoints: Array<string>
+  keywords: Array<IKeyword>
+  sources: Array<ISource>
+}
+
 export type ISource = {
   name: string
   url?: string

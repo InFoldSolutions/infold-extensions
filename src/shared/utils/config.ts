@@ -85,6 +85,43 @@ const config = {
     'label': '1year'
   }],
 
+  'mockData': {
+    'topic': {
+      'title': "The Wagner Group: Russia's Private Military Company and Its Controversial Activities in Ukraine and Africa",
+      'keyPoints': [
+        //"The Wagner Group is a private military company composed of mercenaries.",
+        "The group has been a key piece of Russia's strategy in Ukraine and has been active in Africa.",
+        "Western countries and United Nations experts have accused Wagner Group mercenaries of committing numerous human rights abuses throughout Africa."
+      ],
+      'firstSeen': new Date(),
+      'summary': "The Wagner Group is a private military company composed of mercenaries and has been described as a de facto private army of Russian President Vladimir Putin's former close ally Yevgeny Prigozhin[1]. The group has been a key piece of Russia's strategy in Ukraine, with Wagner forces being used to hold cities like Bakhmut[2]. The group has also been active in Africa, where some nations are turning to Wagner to fill security gaps or prop up dictatorial regimes[2]. Wagner fighters allegedly provide security for national leaders or warlords in exchange for lucrative payments, often including a share of gold or other natural resources[3]. However, Western countries and United Nations experts have accused Wagner Group mercenaries of committing numerous human rights abuses throughout Africa, including in Central African Republic, Libya, and Mali[4]. In 2022, the private army became a major part of Russia's invasion, even recruiting fighters from Russian prisons[2]. Putin recently condemned an uprising by the head of the Wagner Group against his Defense Ministry as a \"stab in the back\" that risked undermining Russia's war effort in Ukraine",
+      'shortSummary': "The Wagner Group is a private military company composed of mercenaries that has been a key piece of Russia's strategy in Ukraine and has been active in Africa. Wagner fighters allegedly provide security for national leaders or warlords in exchange for lucrative payments, often including a share of gold or other natural resources. However, Western countries and United Nations experts have accused Wagner Group mercenaries of committing numerous human rights abuses throughout Africa.",
+      'keywords': [{
+        'word': 'Wagner Group',
+        'url': 'https://en.wikipedia.org/wiki/Wagner_Group',
+        'icon': 'https://en.wikipedia.org/static/favicon/wikipedia.ico'
+      }, {
+        'word': 'Russia',
+        'url': 'https://en.wikipedia.org/wiki/Russia',
+        'icon': 'https://en.wikipedia.org/static/favicon/wikipedia.ico'
+      }, {
+        'word': 'Ukraine',
+        'url': 'https://en.wikipedia.org/wiki/Ukraine',
+        'icon': 'https://en.wikipedia.org/static/favicon/wikipedia.ico'
+      }, {
+        'word': 'Africa',
+        'url': 'https://en.wikipedia.org/wiki/Africa',
+        'icon': 'https://en.wikipedia.org/static/favicon/wikipedia.ico'
+      }],
+      'sources': [{
+        'name': 'Source name',
+        'url': 'https://www.source.com',
+        'icon': 'https://www.source.com/icon.png',
+        'handle': '@sourcehandle'
+      }]
+    }
+  },
+
   // temp keyword blacklist
   // lowercase
   'keywordsBlacklist': ['left', 'right', 'the associated press', 'defense', 'business insider', 'breaking news', 'the washington post', 'the united states', 'ont.', '” orr', 'sun', 'ky.', 'abc', 'r-fla.', 'this week', 'del.', 'ap', 'cbs', 'north', 'south', 'east', 'fl', 'west', 'u.s', 'juice', 'n.y.', 'cbs', 'msnbc', 'guardian', 'ocu', 'state', 'hill', 'insider', 'berlin', 'mass', 'americas', 'moody', 'asia', 'berlin', 'indiana', 'paris', 'dmn', 'ocean waves', 't.s', 'new delhi', 'leopard', 'moon', 'united nations', 'albania', 'malta', 'britain', 'european state', 'indonesia', 'columbia', 'fox news', 'mich.', 'north korea', 'new york city', 'u.k.', 'south korea', 'boston', 'vegas', 'east river', 'milwaukee', 'fla.', 'soviet union', 'variety', 'italy', 'sky news', 'npr', 'New Delhi', 'u.n.', 'singapore', 'nbc', 'tesla', 'austin', 'fremont', 'london', 'google', 'germany', 'spa', 'japan', 'brazil', 'australia', 'netherlands', 'france', 'noordwijk', 'marinka', 'bds', 'bbc', 'associated press', 'nbc news', 'florida', 'politico', 'new york state', 'florida', 'north america', 'kremlin', 'alliance', 'rome', 'koco', 'un', 'eu', 'stockholm', 'estonia', 'brussels', 'mideast', 'hungary', 'sweden', 'middle east', 'jerusalem', 'pentagon', 'finland', 'd.c.', 'moscow', 'turkey', 'linkedin', 'saudi arabia', 'iran', 'beijing', 'nato', 'washington', 'pakista', 'india', 'canada', 'michigan', 'tenn.', 'new york', 'congress', 'trump', 'america', 'legislature', 'kan.', 'georgia', 'crow', 'facebook', 'capitol', 'knoxville', 'n.c.', 'raleigh', 'north carolina', 'tennessee', 'house', 'atlanta', 'cnn', 'manhattan', 'gop', 'reuters', 'memphis', 'white house', 'nashville', 'democratic', 'twitter', 'california', 'minnesota', 'europe', 'siberia', 'spain', 'peru', 'maine', 'colorado', 'university of sydney', 'africa', 'utc', 'princeton university', 'israel', 'washington university', 'england', 'earth', 'us', 'u.s.', 'russia', 'china', 'nasa', 'west', 'east', 'bard college', 'mars', 'iceland', 'veritas', 'texas', 'ukraine', 'uk', 'united kingdom', 'united states', 'united states of america'],

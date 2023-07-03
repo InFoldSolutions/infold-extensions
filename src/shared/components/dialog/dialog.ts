@@ -1,6 +1,7 @@
 import { el, unmount, mount } from 'redom';
 
 import logger from '../../utils/logger';
+import config from '../../utils/config';
 
 import events from '../../services/events';
 
@@ -12,6 +13,7 @@ import SubmitView from '../view/submit';
 import SettingsView from '../view/settings';
 
 import { IDataItem, ISourceGroup } from '../../types';
+import Topic from '../view/topic';
 
 export default class Dialog {
 
@@ -111,6 +113,22 @@ export default class Dialog {
     this.updateTitle('Site Status', 'fa-arrow-alt-circle-right');
 
     this.dialogContent = el('.SCDialogContent', new SettingsView(this.meta));
+
+    mount(this.dialogBody, this.dialogContent);
+  }
+
+  openTopicView() {
+    logger
+      .log('Dialog: openTopicView');
+
+    if (this.dialogContent)
+      unmount(this.dialogBody, this.dialogContent);
+
+    this.dialogBody.innerHTML = '';
+
+    this.updateTitle('Topic', 'fa-arrow-alt-circle-right');
+
+    this.dialogContent = el('.SCDialogContent', new Topic(config.mockData.topic));
 
     mount(this.dialogBody, this.dialogContent);
   }

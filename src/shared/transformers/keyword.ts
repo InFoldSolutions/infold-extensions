@@ -20,7 +20,12 @@ import { IKeyword } from "../types";
 export default function transformKeyword(data: any): IKeyword {
   const analyzed = data.analyzed[0];
 
-  let icon = "fab.fa-wikipedia-w";
+  let icon;
+  if (analyzed && analyzed.source === "investopedia") 
+    icon = "investopedia";
+  else
+    icon = "fab.fa-wikipedia-w";
+
   let url = analyzed ? analyzed.url : null;
 
   if (!url) {

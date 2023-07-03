@@ -1,6 +1,6 @@
 {
   "name": "infold-extensions",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Infold.ai - browser extension",
   "main": "index.js",
   "scripts": {
