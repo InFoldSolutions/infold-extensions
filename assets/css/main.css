@@ -1340,6 +1340,34 @@
 .SCTopicWrapper {
   display: flex;
   flex-direction: column;
+  color: rgb(215, 218, 220);
+  font-family: "Noto Sans", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.SCTopicTitle {
+  font-weight: 600;
+  font-size: 16px;
+  color: rgb(215, 218, 220);
+  margin-bottom: 0.5em;
+}
+
+.SCLabel {
+  color: rgb(79, 188, 255);
+  display: inline-flex;
+  padding: 5px 0;
+  margin-right: 5px;
+}
+
+.SCKeyPoints ul {
+  padding-left: 1.625em;
+  list-style-type: disc;
+}
+
+.SCKeyPoints li {
+  padding-left: 0.375em;
+  margin-bottom: 0.5em;
 }
 
 /** Top Headings **/
