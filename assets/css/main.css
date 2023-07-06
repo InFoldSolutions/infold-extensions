@@ -326,7 +326,7 @@
 
 .SCDialogWrapper.twitter {
   position: absolute;
-  left: 68px;
+  left: 54px;
   bottom: -204px;
   min-height: 247.2px;
 }
@@ -348,7 +348,7 @@
   position: absolute;
   border-radius: 16px;
   min-height: 160px;
-  width: 514px;
+  width: 540px;
   position: relative;
   background-color: rgb(0, 0, 0);
   box-shadow: rgb(255 255 255 / 20%) 0px 0px 15px, rgb(255 255 255 / 15%) 0px 0px 3px 1px;
@@ -498,18 +498,11 @@
   cursor: grab;
 }
 
-.SCKeywordsContent .SCArrow {
-  background: rgba(255, 255, 255, 0.1);
-  opacity: 0.8;
-  padding: 0 2px;
-  height: auto;
-}
-
-.SCKeywordsContent .SCArrow:hover {
+.SCArrow:hover {
   opacity: 1;
 }
 
-.SCKeywordsContent .SCArrow.SCLeft {
+.SCArrow.SCLeft {
   position: absolute;
   left: 0;
   top: 0;
@@ -517,7 +510,7 @@
   margin: 0;
 }
 
-.SCKeywordsContent .SCArrow.SCRight {
+.SCArrow.SCRight {
   position: absolute;
   right: 0;
   top: 0;
@@ -836,7 +829,8 @@
 }
 
 .SCArrow {
-  height: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0 2px;
   width: 20px;
   display: flex;
   align-items: center;
@@ -1350,7 +1344,12 @@
   font-weight: 600;
   font-size: 16px;
   color: rgb(215, 218, 220);
-  margin-bottom: 0.5em;
+  margin-bottom: 4px;
+  width: calc(100% - 25px);
+}
+
+.SCTopicWrapper .SCHandle {
+  margin-right: 0px;
 }
 
 .SCLabel {
@@ -1360,14 +1359,77 @@
   margin-right: 5px;
 }
 
+.SCKeyPoints {
+  font-size: 14px;
+}
+
 .SCKeyPoints ul {
   padding-left: 1.625em;
   list-style-type: disc;
+  margin: 0;
 }
 
 .SCKeyPoints li {
   padding-left: 0.375em;
   margin-bottom: 0.5em;
+}
+
+.SCKeyPoints .SCReadMore {
+  color: rgb(79, 188, 255);
+  cursor: pointer;
+  margin-left: 4px;
+}
+
+.SCKeyPoints .SCReadMore:hover {
+  text-decoration: underline;
+}
+
+.SCSources {
+  margin: 10px 0px -3px 0px;
+  position: relative;
+  padding: 0 30px;
+}
+
+.SCSources ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  max-width: 1500px;
+  overflow-x: hidden;
+  gap: 5px;
+  cursor: grab;
+}
+
+.SCSources li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 6px;
+  width: auto;
+  border-radius: 15px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.SCSources .SCHandle {
+  margin: 0 3px;
+}
+
+.SCSources img {
+  border-radius: 9999px;
+  width: 18px;
+  height: 18px;
+}
+
+.SCTopicWrapper .SCSummaryInfo {
+  margin-bottom: 10px;
+}
+
+.SCTopicWrapper .SCdate {
+  margin: 0 0 0 3px;
 }
 
 /** Top Headings **/
@@ -1492,7 +1554,7 @@
     color: rgb(15, 20, 25);
   }
 
-  .SCKeywordsContent .SCArrow {
+  .SCArrow {
     background-color: rgba(0, 0, 0, 0.1);
   }
 
@@ -1550,6 +1612,15 @@
 
   .SCSubmitViewBodyText {
     color: rgb(0, 0, 0);
+  }
+
+  .SCTopicWrapper,
+  .SCTopicTitle {
+    color: rgb(0, 0, 0);
+  }
+
+  .SCSources li {
+    border-color: rgba(0, 0, 0, 0.15);
   }
 
   /*.SCSubmitViewSocialLink {
@@ -1628,7 +1699,7 @@
 }
 
 .SCDialogWrapper.reddit .SCDialogCloseWrapper {
-  right: 20px;
+  right: 5px;
   top: 19px;
 }
 
@@ -1729,11 +1800,17 @@
 .theme-light .SCPostBodyWrapper.reddit .SCSummaryTitle,
 .theme-light .SCPostBodyWrapper.reddit .SCSubmitViewTitle,
 .theme-light .SCDialogWrapper.reddit .SCSummaryTitle,
-.theme-light .SCDialogWrapper.reddit .SCSubmitViewTitle {
+.theme-light .SCDialogWrapper.reddit .SCSubmitViewTitle,
+.theme-light .SCTopicWrapper,
+.theme-light .SCTopicTitle {
   color: rgb(26, 26, 27);
 }
 
-.theme-light .SCKeywordsContent .SCArrow {
+.theme-light .SCSources li {
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+.theme-light .SCArrow {
   background-color: rgba(0, 0, 0, 0.1);
 }
 

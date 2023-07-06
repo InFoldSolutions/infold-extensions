@@ -29,7 +29,7 @@ export type ITopic = {
   title: string
   summary: string
   shortSummary: string
-  firstSeen: Date
+  firstSeen: number
   keyPoints: Array<string>
   keywords: Array<IKeyword>
   sources: Array<ISource>

@@ -1,3 +1,6 @@
+// First seen mock date
+const firstSeenMock = new Date().setHours(new Date().getHours() - 8)
+
 const config = {
   'api': {
     'url': 'https://api.infold.ai/articles/related',
@@ -93,7 +96,7 @@ const config = {
         "The group has been a key piece of Russia's strategy in Ukraine and has been active in Africa.",
         "Western countries and United Nations experts have accused Wagner Group mercenaries of committing numerous human rights abuses throughout Africa."
       ],
-      'firstSeen': new Date(),
+      'firstSeen': firstSeenMock,
       'summary': "The Wagner Group is a private military company composed of mercenaries and has been described as a de facto private army of Russian President Vladimir Putin's former close ally Yevgeny Prigozhin[1]. The group has been a key piece of Russia's strategy in Ukraine, with Wagner forces being used to hold cities like Bakhmut[2]. The group has also been active in Africa, where some nations are turning to Wagner to fill security gaps or prop up dictatorial regimes[2]. Wagner fighters allegedly provide security for national leaders or warlords in exchange for lucrative payments, often including a share of gold or other natural resources[3]. However, Western countries and United Nations experts have accused Wagner Group mercenaries of committing numerous human rights abuses throughout Africa, including in Central African Republic, Libya, and Mali[4]. In 2022, the private army became a major part of Russia's invasion, even recruiting fighters from Russian prisons[2]. Putin recently condemned an uprising by the head of the Wagner Group against his Defense Ministry as a \"stab in the back\" that risked undermining Russia's war effort in Ukraine",
       'shortSummary': "The Wagner Group is a private military company composed of mercenaries that has been a key piece of Russia's strategy in Ukraine and has been active in Africa. Wagner fighters allegedly provide security for national leaders or warlords in exchange for lucrative payments, often including a share of gold or other natural resources. However, Western countries and United Nations experts have accused Wagner Group mercenaries of committing numerous human rights abuses throughout Africa.",
       'keywords': [{
@@ -114,10 +117,35 @@ const config = {
         'icon': 'https://en.wikipedia.org/static/favicon/wikipedia.ico'
       }],
       'sources': [{
-        'name': 'Source name',
+        'name': 'Time',
         'url': 'https://www.source.com',
-        'icon': 'https://www.source.com/icon.png',
-        'handle': '@sourcehandle'
+        'icon': 'https://pbs.twimg.com/profile_images/1367496192662331402/7ye6OsYx_400x400.jpg',
+        'handle': '@time'
+      }, {
+        'name': 'AP News',
+        'url': 'https://www.source.com',
+        'icon': 'https://pbs.twimg.com/profile_images/461964160838803457/8z9FImcv_400x400.png',
+        'handle': '@time'
+      }, {
+        'name': 'Science News',
+        'url': 'https://www.source.com',
+        'icon': 'https://pbs.twimg.com/profile_images/1210648820541018113/j4qqEa6F_400x400.png',
+        'handle': '@time'
+      }, {
+        'name': 'Nature',
+        'url': 'https://www.source.com',
+        'icon': 'https://pbs.twimg.com/profile_images/1393206230152327170/QnzohDIu_400x400.jpg',
+        'handle': '@time'
+      }, {
+        'name': 'Phys.org',
+        'url': 'https://www.source.com',
+        'icon': 'https://pbs.twimg.com/profile_images/555400719478444032/ky9g4wh6_400x400.png',
+        'handle': '@time'
+      }, {
+        'name': 'Smithsonian Magazine',
+        'url': 'https://www.source.com',
+        'icon': 'https://pbs.twimg.com/profile_images/1552654587949039617/4McRgP8W_400x400.jpg',
+        'handle': '@time'
       }]
     }
   },
