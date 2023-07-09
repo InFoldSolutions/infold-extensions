@@ -4,7 +4,7 @@ import path from 'path';
 import config from '../shared/utils/config';
 import logger from '../shared/utils/logger';
 
-import { getInfo, getData } from '../shared/utils/api';
+import { getInfo, getData, getTopic } from '../shared/utils/api';
 import { setBadgeText, setBadgeColor } from '../shared/utils/helpers';
 import settings from '../shared/services/settings';
 
@@ -20,6 +20,9 @@ chrome.runtime.onMessage.addListener(
     switch (request.type) {
       case 'getInfo':
         getInfo(request.href, sendResponse);
+        return true;
+      case 'getTopic':
+        getTopic(request.href, sendResponse);
         return true;
       case 'getData':
         getData(request.href, sendResponse, request.maxArticleCount);

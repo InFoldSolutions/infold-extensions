@@ -205,7 +205,7 @@ export default class RedditAgent extends Agent {
     logger.log('RedditAgent: findLinks');
 
     if (delay || !records)
-      await timeDelay(200);
+      await timeDelay(500);
 
     const links: Link[] = [];
 

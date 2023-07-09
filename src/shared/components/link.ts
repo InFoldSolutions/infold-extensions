@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { el, unmount } from 'redom';
 
-import { IDataItem, IPotentialLink } from '../types';
+import { IDataItem, IPotentialLink, ITopic } from '../types';
 import config from '../utils/config';
 
 import { isPostPage } from '../utils/helpers';
@@ -13,6 +13,7 @@ import TwitterDialog from './dialog/twitter';
 import Post from './view/post';
 import transformSource from '../transformers/source';
 import transformArticle from '../transformers/article';
+import transformTopic from '../transformers/topic';
 
 import events from '../services/events';
 
@@ -38,6 +39,7 @@ export default class Link {
   dialog: RedditDialog | TwitterDialog
   post: Post
 
+  topic: ITopic
   data: IDataItem[]
   meta: any
 
@@ -84,7 +86,7 @@ export default class Link {
       if (this.destroyed)
         throw new Error('Destroyed');
 
-      if (!data || !data.meta || data.meta.success === false)
+      if (data?.meta?.success === false)
         throw new Error('No data');
 
       this.meta = data.meta;
@@ -136,6 +138,18 @@ export default class Link {
           articles: item.articles.map((article: any) => transformArticle(article))
         }
       });
+  }
+
+  async getTopic() {
+    logger.log('Link: getTopic');
+
+    const response = await chrome.runtime.sendMessage({ type: "getTopic", href: this.href });
+
+    if (!response || !response.topic)
+      throw new Error('No data');
+
+    this.meta = response.meta;
+    this.topic = transformTopic(response.topic);
   }
 
   preparetBaseHTML() {
@@ -285,17 +299,15 @@ export default class Link {
 
     this.toggleActiveState();
 
-    this.dialog.openTopicView();
-    
-    /*try {
-      await this.getData();
-      this.dialog.update(this.data, this.meta);
+    try {
+      await this.getTopic();
+      this.dialog.openTopicView(this.topic);
     } catch (error) {
-      logger.warn(`Failed to update dialog ${error}`);
+      logger.error(`Failed to openTopicView dialog ${error}`);
 
       if (this.dialog)
         this.dialog.close();
-    }*/
+    }
   }
 
   closePost() {
@@ -346,6 +358,10 @@ export default class Link {
       this.el.removeEventListener('click', this.onClickHandler);
       unmount(this.parent, this.el);
     }
+
+    this.data = null;
+    this.relatedCount = 0;
+    this.meta = null;
   }
 
   get isDialog(): boolean {

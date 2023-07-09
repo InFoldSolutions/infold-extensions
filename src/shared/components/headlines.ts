@@ -55,7 +55,7 @@ export default class TopHeadlines {
       const linkText: string = headline.link.replace(/https\:\/\/|http\:\/\/|www\./gi, '');
       const summaryInfo = [
         el('span.SCHandle', `${headline.sourceName}`),
-        el('span.SCdate.SCIcon', { title: `Publish date` }, ['-', timeAgo.format(headline.timestamp, 'mini'), ` ago`, '-']),
+        el('span.SCDate.SCIcon', { title: `Publish date` }, ['-', timeAgo.format(headline.timestamp, 'mini'), ` ago`, '-']),
         el('span.SCIcon', { title: `Relevance` }, [el('span.SCScore', `${score}%`)]),
         el('a.SClink.SCMarginRight', linkText, { title: headline.link, href: headline.link, target: '_blank' }),
         el('a.SClink', el('i.fad.fa-external-link'), { title: headline.link, href: headline.link, target: '_blank' })

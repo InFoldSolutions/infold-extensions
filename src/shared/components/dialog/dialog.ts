@@ -12,7 +12,7 @@ import TopHeadlines from '../headlines';
 import SubmitView from '../view/submit';
 import SettingsView from '../view/settings';
 
-import { IDataItem, ISourceGroup } from '../../types';
+import { IDataItem, ISourceGroup, ITopic } from '../../types';
 import Topic from '../view/topic';
 
 export default class Dialog {
@@ -117,7 +117,7 @@ export default class Dialog {
     mount(this.dialogBody, this.dialogContent);
   }
 
-  openTopicView() {
+  openTopicView(topic: ITopic) {
     logger
       .log('Dialog: openTopicView');
 
@@ -128,7 +128,7 @@ export default class Dialog {
 
     this.updateTitle('Topic', 'fa-arrow-alt-circle-right');
 
-    this.dialogContent = el('.SCDialogContent', new Topic(config.mockData.topic));
+    this.dialogContent = el('.SCDialogContent', new Topic(topic));
 
     mount(this.dialogBody, this.dialogContent);
   }

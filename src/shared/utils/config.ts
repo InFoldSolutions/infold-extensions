@@ -3,7 +3,7 @@ const firstSeenMock = new Date().setHours(new Date().getHours() - 8)
 
 const config = {
   'api': {
-    'url': 'https://api.infold.ai/articles/related',
+    'url': 'https://api.infold.ai',
     'similarity': 0.72,
     'maxArticleCount': 15,
     'lookupConcurrency': 6,

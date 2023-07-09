@@ -34,7 +34,7 @@ export default class TwitterDialog extends Dialog {
     }
 
     this.dialogBody = el('.SCDialogBody', el('span.SCLoader'));
-    this.el = el(`.SCDialogWrapper.${agent}`, { style: { bottom: `-${this.offsetTop}px` } },
+    this.el = el(`.SCDialogWrapper.${agent}`, { style: { top: `${this.offsetTop}px` } },
       [
         this.closeBtn,
         this.dialogBody
@@ -51,7 +51,7 @@ export default class TwitterDialog extends Dialog {
   }
 
   get offsetTop(): number {
-    let offsetTop: number = 234;
+    let offsetTop: number = this.article.clientHeight - ((this.btnWrapper.clientHeight - 2) * 2);
 
     // compensate for "Show this thread" btn
     const showThreadElements: HTMLElement[] = findChildrenByText(this.article, 'span', 'Show this thread');

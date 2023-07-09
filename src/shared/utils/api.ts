@@ -3,16 +3,14 @@ import config from './config';
 
 import settings from '../services/settings';
 
-import { fetchTimeout } from './helpers';
-
-const requestTimeout = 3000;
-
 export async function getInfo(href: string, sendResponse: Function) {
+  logger.log('API: getInfo');
+
   try {
     const url = await settings.get('apiUrl');
     const similarity = await settings.get('similarityScore');
 
-    const info = await fetch(`${url}/meta`, {
+    const info = await fetch(`${url}/articles/related/meta`, {
       method: 'POST',
       headers: config.api.headers,
       body: JSON.stringify({
@@ -39,19 +37,51 @@ export async function getInfo(href: string, sendResponse: Function) {
 }
 
 export async function getData(href: string, sendResponse: Function, maxRelatedArticles: number) {
+  logger.log('API: getData');
+
   try {
     const url = await settings.get('apiUrl');
     const similarity = await settings.get('similarityScore');
     const search = await settings.get('searchType');
     const maxArticleCount = maxRelatedArticles || await settings.get('articleCount');
 
-    const info = await fetch(`${url}?limit=${maxArticleCount}`, {
+    const info = await fetch(`${url}/articles/related?limit=${maxArticleCount}`, {
       method: 'POST',
       headers: config.api.headers,
       body: JSON.stringify({
         url: href,
         similarity,
         search
+      })
+    });
+
+    if (!info.ok)
+      throw new Error('Request failed');
+
+    const data = await info.json();
+
+    if (sendResponse)
+      sendResponse(data);
+    else
+      return data;
+  } catch (error) {
+    logger.warn(error);
+
+    if (sendResponse)
+      sendResponse({ meta: { success: false } });
+  }
+}
+
+export async function getTopic(href: string, sendResponse: Function) {
+  logger.log('API: getTopic');
+  
+  try {
+    const url = await settings.get('apiUrl');
+    const info = await fetch(`${url}/topics/related`, {
+      method: 'POST',
+      headers: config.api.headers,
+      body: JSON.stringify({
+        url: href
       })
     });
 

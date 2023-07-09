@@ -58,7 +58,7 @@ export default class Slide {
     
     this.summaryInfo = [
       el('a.SCHandle.SClink', data.handle, { title: `${data.handle} on Twitter`, href: twitterHandleLink, target: '_blank' }),
-      el('span.SCdate.SCIcon', { title: `Publish date` }, [el('i.fad.fa-calendar-alt'), el('span', timeAgo.format(data.timestamp, 'mini'), ' ago')]),
+      el('span.SCDate.SCIcon', { title: `Publish date` }, [el('i.fad.fa-calendar-alt'), el('span', timeAgo.format(data.timestamp, 'mini'), ' ago')]),
       el('span.SCIcon', { title: `Relevance` }, [el('i.fad.fa-link'), el('span.SCScore', `${score}%`)]),
       el('a.SClink', linkText, { title: data.link, href: data.link, target: '_blank' }),
       el('a.SClink', el('i.fad.fa-external-link'), { title: data.link, href: data.link, target: '_blank' })
