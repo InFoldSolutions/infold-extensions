@@ -42,7 +42,7 @@ export default class Dialog {
 
   openSubmitViewBind: EventListener
   openSettingsViewBind: EventListener
-  updateBind: EventListener
+  openSlideshowViewBind: EventListener
 
   constructor(agent?: string, article?: HTMLElement, btnWrapper?: HTMLElement, linkElement?: HTMLElement, closeCallback?: Function) {
     logger.log('Dialog: constructor');
@@ -65,11 +65,11 @@ export default class Dialog {
 
     this.openSubmitViewBind = this.openSubmitView.bind(this);
     this.openSettingsViewBind = this.openSettingsView.bind(this);
-    this.updateBind = this.update.bind(this);
+    this.openSlideshowViewBind = this.openSlideshowView.bind(this);
 
     events.on('openSubmitView', this.openSubmitViewBind);
     events.on('openSettingsView', this.openSettingsViewBind);
-    events.on('updateDialog', this.updateBind); // default slideshow view, should probably be renamed
+    events.on('openSlideshowView', this.openSlideshowViewBind); // default slideshow view, should probably be renamed
   }
 
   offEvents() {
@@ -77,7 +77,7 @@ export default class Dialog {
 
     events.off('openSubmitView', this.openSubmitViewBind);
     events.off('openSettingsView', this.openSettingsViewBind);
-    events.off('updateDialog', this.updateBind);
+    events.off('openSlideshowView', this.openSlideshowViewBind);
   }
 
   open() {
@@ -133,9 +133,9 @@ export default class Dialog {
     mount(this.dialogBody, this.dialogContent);
   }
 
-  update(data?: IDataItem[], meta?: any) {
+  openSlideshowView(data?: IDataItem[], meta?: any) {
     logger
-      .log('Dialog: update');
+      .log('Dialog: openSlideshowView');
 
     let totalCount: number = meta?.total_results || 0;
 
@@ -156,7 +156,7 @@ export default class Dialog {
 
     this.updateTitle('Related Articles', 'fa-stream');
 
-    const groups: ISourceGroup[] = Groups.mapToSourceGroups(data);
+    const groups: ISourceGroup[] = Groups.mapTimelineGroups(data);
 
     this.slideshow = new Slideshow(groups, totalCount);
 

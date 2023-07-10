@@ -41,7 +41,7 @@ export default class PopupDialog extends Dialog {
       if (target.classList.contains('fa-stream'))
         events.emit('openSettingsView');
       else if (target.classList.contains('fa-arrow-alt-circle-right'))
-        events.emit('updateDialog', this.data, this.meta);
+        events.emit('openSlideshowView', this.data, this.meta);
     }
 
     this.dialogBody = el('.SCDialogBody', el('span.SCLoader'));

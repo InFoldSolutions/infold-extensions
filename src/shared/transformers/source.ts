@@ -36,14 +36,16 @@
  * */
 
 import { ISource } from "../types/index";
+import transformArticle from "./article";
 
-export default function transformSource(data: any): ISource {
+export default function transformSource(data: any, articles?: any): ISource {
   const { name, url, logo, social } = data;
 
   return {
     name,
     url,
     icon: logo,
+    articles: articles.map((article: any) => transformArticle(article)) || [],
     handle: (social && social.length > 0) ? social[0].handle : name
   };
 }

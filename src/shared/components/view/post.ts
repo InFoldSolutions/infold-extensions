@@ -31,7 +31,7 @@ export default class Post {
   closeCallback: Function
 
   openSubmitViewBind: EventListener
-  updateBind: EventListener
+  openSlideshowViewBind: EventListener
 
   constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement, closeCallback: Function) {
     logger.log('Post: constructor');
@@ -63,17 +63,17 @@ export default class Post {
     logger.log('Dialog: onEvents');
 
     this.openSubmitViewBind = this.openSubmitView.bind(this);
-    this.updateBind = this.update.bind(this);
+    this.openSlideshowViewBind = this.openSlideshowView.bind(this);
 
     events.on('openSubmitView', this.openSubmitViewBind);
-    events.on('updateDialog', this.updateBind); // default slideshow view, should probably be renamed
+    events.on('openSlideshowView', this.openSlideshowViewBind); // default slideshow view, should probably be renamed
   }
 
   offEvents() {
     logger.log('Dialog: offEvents');
 
     events.off('openSubmitView', this.openSubmitViewBind);
-    events.off('updateDialog', this.updateBind);
+    events.off('openSlideshowView', this.openSlideshowViewBind);
   }
 
   openSubmitView() {
@@ -91,8 +91,8 @@ export default class Post {
     mount(this.postBody, this.postContent);
   }
 
-  update(data?: IDataItem[], totalCount?: number) {
-    logger.log('Post: update');
+  openSlideshowView(data?: IDataItem[], totalCount?: number) {
+    logger.log('Post: openSlideshowView');
 
     this.postBody.innerHTML = '';
 
@@ -104,7 +104,7 @@ export default class Post {
     this.data = data;
     this.totalCount = totalCount;
 
-    const groups = Groups.mapToSourceGroups(data);
+    const groups = Groups.mapTimelineGroups(data);
 
     this.postContent = el('.SCPostContent', new Slideshow(groups, totalCount));
 

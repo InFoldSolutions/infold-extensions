@@ -152,7 +152,7 @@ export default class Groups {
     return config.dategroups.find(group => article.timestamp >= group.toDate);
   }
 
-  static mapToSourceGroups(dataitems: Array<IDataItem>): Array<ISourceGroup> {
+  static mapTimelineGroups(dataitems: Array<IDataItem>): Array<ISourceGroup> {
     const groups: Map<string, ISourceGroup> = new Map(); // IDateGroup and/or ISourceGroups (could be time or type based 24h/Social/etc.);
 
     dataitems.forEach((dataitem: IDataItem) => {

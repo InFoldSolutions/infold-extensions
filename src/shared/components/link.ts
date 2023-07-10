@@ -261,7 +261,7 @@ export default class Link {
 
     try {
       await this.getData(20);
-      this.post.update(this.data, this.meta);
+      this.post.openSlideshowView(this.data, this.meta);
     } catch (error) {
       logger.error(`Failed to update post view ${error}`);
       this.post.close();

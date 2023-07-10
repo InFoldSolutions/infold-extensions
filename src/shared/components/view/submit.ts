@@ -24,7 +24,7 @@ export default class SubmitView {
     this.backBtn = el('span.SCRelatedViewBtn', ['Back', el('i.fad.fa-arrow-alt-circle-right')]);
 
     this.backBtn.onclick = () => {
-      events.emit('updateDialog');
+      events.emit('openSlideshowView');
     }
 
     this.input = el('input.SCSubmitViewInput', { type: 'text', placeholder: 'https://.. eg. "www.google.com"' }) as HTMLInputElement;

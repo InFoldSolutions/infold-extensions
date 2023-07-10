@@ -43,7 +43,7 @@ import events from '../shared/services/events';
       setBadgeColor(tab.id, '#1d9bf0', '#FFFFFF')
       setBadgeText(tab.id, String(response.meta.total_results))
 
-      popupDialog.update(data, response.meta);
+      popupDialog.openSlideshowView(data, response.meta);
     } catch {
       logger.log('Falling back to settings view');
       events.emit('openSettingsView');

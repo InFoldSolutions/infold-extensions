@@ -42,6 +42,7 @@ export default class Topic {
 
     // topic title
     this.title = el('.SCTopicTitle', [
+      //el('span.SCMarginRight.SCPrimaryBlue', 'Topic:'),
       this.topic.title
     ]);
 
@@ -64,11 +65,13 @@ export default class Topic {
     this.sourcesList = el('ul', this.topic.sources.map((source: ISource) => {
       const sourceName = source.name;
       const sourceIcon = source.icon;
+      const articleLink = (source.articles.length > 0) ? source.articles[0].link : '#';
+      const articleTitle = (source.articles.length > 0) ? source.articles[0].title : 'No article found';
 
-      return el('li', { title: source.name }, [
+      return el('li', { title: source.name }, el('a', { href: articleLink, title: articleTitle, target: '_blank' }, [
         el('img', { src: sourceIcon }),
         el('span.SCHandle', `${sourceName.toLocaleLowerCase().replace(/ /g, '')}`),
-      ]);
+      ]));
     }));
 
     this.sources = el('.SCSources', this.sourcesList);
