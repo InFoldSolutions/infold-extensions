@@ -260,8 +260,8 @@ export default class Link {
     this.toggleActiveState();
 
     try {
-      await this.getData(20);
-      this.post.openSlideshowView(this.data, this.meta);
+      await this.getTopic();
+      this.post.openTopicView(this.topic);
     } catch (error) {
       logger.error(`Failed to update post view ${error}`);
       this.post.close();

@@ -6,10 +6,11 @@ import Groups from '../slideshow/groups';
 import logger from '../../utils/logger';
 import CloseIcon from '../svgs/closeIcon';
 
-import { IDataItem } from '../../types';
+import { IDataItem, ITopic } from '../../types';
 import events from '../../services/events';
 
 import SubmitView from './submit';
+import Topic from './topic';
 
 export default class Post {
 
@@ -107,6 +108,20 @@ export default class Post {
     const groups = Groups.mapTimelineGroups(data);
 
     this.postContent = el('.SCPostContent', new Slideshow(groups, totalCount));
+
+    mount(this.postBody, this.postContent);
+  }
+
+  openTopicView(topic: ITopic) {
+    logger
+      .log('Post: openTopicView');
+
+    if (this.postContent)
+      unmount(this.postBody, this.postContent);
+
+    this.postBody.innerHTML = '';
+
+    this.postContent = el('.SCPostContent', new Topic(topic));
 
     mount(this.postBody, this.postContent);
   }
