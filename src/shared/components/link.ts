@@ -260,10 +260,10 @@ export default class Link {
     this.toggleActiveState();
 
     try {
-      await this.getTopic();
-      this.post.openTopicView(this.topic);
+      await this.getData(20);
+      this.post.openSlideshowView(this.data, this.meta);
     } catch (error) {
-      logger.error(`Failed to update post view ${error}`);
+      logger.error(`Failed openSlideshowView in post ${error}`);
       this.post.close();
     }
   }
@@ -300,10 +300,11 @@ export default class Link {
     this.toggleActiveState();
 
     try {
-      await this.getTopic();
-      this.dialog.openTopicView(this.topic);
+      await this.getData();
+
+      this.dialog.openSlideshowView(this.data, this.meta);
     } catch (error) {
-      logger.error(`Failed to openTopicView dialog ${error}`);
+      logger.error(`Failed to openSlideshowView in dialog ${error}`);
 
       if (this.dialog)
         this.dialog.close();

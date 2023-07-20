@@ -4,10 +4,8 @@ import { IArticle, IDateGroup, IDataItem, ISource, ISourceGroup } from '../../ty
 
 import logger from '../../utils/logger';
 import config from '../../utils/config';
-import { findParentByCls, shuffleArray } from '../../utils/helpers';
+import { findParentByCls } from '../../utils/helpers';
 
-import RightArrowIcon from '../svgs/rightArrowIcon';
-import LeftArrowIcon from '../svgs/leftArrowIcon';
 import StatsIcon from '../svgs/statsIcon';
 import events from '../../services/events';
 
@@ -31,7 +29,7 @@ export default class Groups {
   onArticleNav: Function
 
   constructor(groups: Array<ISourceGroup>, onGroupSelect: Function, onArticleNav: Function, totalCount: number) {
-    logger.log('Sources: constructor');
+    logger.log('Groups: constructor');
 
     this.onGroupSelect = onGroupSelect;
     this.onArticleNav = onArticleNav;
@@ -153,6 +151,8 @@ export default class Groups {
   }
 
   static mapTimelineGroups(dataitems: Array<IDataItem>): Array<ISourceGroup> {
+    logger.log('Groups: mapTimelineGroups');
+
     const groups: Map<string, ISourceGroup> = new Map(); // IDateGroup and/or ISourceGroups (could be time or type based 24h/Social/etc.);
 
     dataitems.forEach((dataitem: IDataItem) => {

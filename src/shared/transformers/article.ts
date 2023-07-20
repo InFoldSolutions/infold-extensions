@@ -63,7 +63,7 @@ export default function transformArticle(data: any): IArticle {
     link: url,
     score: related,
     timestamp: new Date(added_at).getTime(),
-    keywords: data.keywords.filter(filterKeywords).map(transformKeyword)
+    keywords: (data.keywords) ? data.keywords.filter(filterKeywords).map(transformKeyword) : []
   };
 }
 

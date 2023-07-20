@@ -18,7 +18,7 @@
 import { IKeyword } from "../types";
 
 export default function transformKeyword(data: any): IKeyword {
-  const analyzed = data.analyzed[0];
+  const analyzed = (data && data.analyzed) ? data.analyzed[0] : null;
 
   let icon;
   if (analyzed && analyzed.source === "investopedia") 

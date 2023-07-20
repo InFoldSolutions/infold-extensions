@@ -45,7 +45,7 @@ export default function transformSource(data: any, articles?: any): ISource {
     name,
     url,
     icon: logo,
-    articles: articles.map((article: any) => transformArticle(article)) || [],
+    articles: (articles) ? articles.map((article: any) => transformArticle(article)) : [],
     handle: (social && social.length > 0) ? social[0].handle : name
   };
 }
