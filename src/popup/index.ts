@@ -30,6 +30,8 @@ import events from '../shared/services/events';
         throw new Error('No data');
       }
 
+      console.log(response.data);
+
       const data: IDataItem[] = response.data
         .filter((item: any) => item.source.logo) // filter out sources that don't have a parser
         .map((item: any) => {
@@ -44,7 +46,8 @@ import events from '../shared/services/events';
       setBadgeText(tab.id, String(response.meta.total_results))
 
       popupDialog.openSlideshowView(data, response.meta);
-    } catch {
+    } catch(err) {
+      console.error(err);
       logger.log('Falling back to settings view');
       events.emit('openSettingsView');
     }

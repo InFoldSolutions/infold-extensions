@@ -158,7 +158,7 @@ export default class Link {
     const buttonContent: Array<HTMLElement> = [];
     const textContent: Array<HTMLElement> = [];
 
-    let btnWrapperClass: string = (this.isDialog) ? 'SCDialog' : 'SCPost';
+    let btnWrapperClass: string = (this.isDialog) ? 'SCDialog' : 'SCDialog.SCPost';
 
     if (!this.isTextVersion && !this.isTextCompactVersion) {
       buttonContent.push(el(`span.SCIconWrapper`, [
@@ -374,7 +374,7 @@ export default class Link {
       case 'reddit':
         return this.isCompactVersion;
       case 'twitter':
-        return this.isDialog;
+        return true;
     }
   }
 
@@ -383,7 +383,7 @@ export default class Link {
 
     switch (this.providerType) {
       case 'twitter':
-        return !this.isDialog;
+        return false;
     }
 
     return isTextOnly;

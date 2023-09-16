@@ -106,7 +106,7 @@ export default class TwitterAgent extends Agent {
     if (link.isDialog)
       mount(link.wrapper, link, link.wrapper.lastElementChild);
     else
-      mount(link.wrapper, link);
+      mount(link.wrapper, link, link.wrapper.lastElementChild);
   }
 
   getPotentialLinksFromElement(addedNode: Element): IPotentialLink[] {
@@ -143,7 +143,7 @@ export default class TwitterAgent extends Agent {
       if (elements.length === 0) {
         const nestedElements = Array.from(article.querySelectorAll('[data-testid="tweetText"], [role="link"]'));
         let textLength: number = 0;
-        
+
         if (nestedElements.length > 0) {
           for (let n = 0; n < nestedElements.length; n++) {
             const nestedElement: HTMLElement = nestedElements[n] as HTMLElement;
