@@ -62,7 +62,7 @@ export default class Post {
   }
 
   onEvents() {
-    logger.log('Dialog: onEvents');
+    logger.log('Post: onEvents');
 
     this.openSubmitViewBind = this.openSubmitView.bind(this);
     this.openSlideshowViewBind = this.openSlideshowView.bind(this);
@@ -72,7 +72,7 @@ export default class Post {
   }
 
   offEvents() {
-    logger.log('Dialog: offEvents');
+    logger.log('Post: offEvents');
 
     events.off('openSubmitView', this.openSubmitViewBind);
     events.off('openSlideshowView', this.openSlideshowViewBind);
@@ -96,7 +96,7 @@ export default class Post {
 
   openSubmitView() {
     logger
-      .log('Dialog: openSubmitView');
+      .log('Post: openSubmitView');
 
     if (this.postContent)
       unmount(this.postBody, this.postContent);
@@ -145,6 +145,8 @@ export default class Post {
 
   close() {
     unmount(this.article, this.el);
+    
+    this.offEvents();
     this.closeCallback();
   }
 }

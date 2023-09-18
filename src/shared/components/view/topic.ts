@@ -48,7 +48,7 @@ export default class Topic {
 
     // topic title
     this.title = el('a.SCTopicTitle', { href: `${config.host}/topics/${this.topic.slug}`, target: '_blank', title: 'Explore topic on our website' },
-      [this.topic.title, el('i.fad.fa-external-link')]);
+      [el('b', `Topic: ${this.topic.title}`), el('i.fad.fa-external-link')]);
 
     // summary info
     this.summaryInfo = el('.SCSummaryInfo', [
