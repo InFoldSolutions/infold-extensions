@@ -18,7 +18,7 @@ export default class TwitterDialog extends Dialog {
   mainElement: HTMLElement
   sectionElement: HTMLElement
 
-  constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement, closeCallback: Function) {
+  constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement, loadingMsg: string, closeCallback: Function) {
     logger.log('TwitterDialog: constructor');
 
     super(agent, article, btnWrapper, linkElement, closeCallback);
@@ -33,7 +33,7 @@ export default class TwitterDialog extends Dialog {
       this.close();
     }
 
-    this.dialogBody = el('.SCDialogBody', el('span.SCLoader'));
+    this.setLoadingUI();
     this.el = el(`.SCDialogWrapper.${agent}`, { style: { top: `${this.offsetTop}px` } },
       [
         this.closeBtn,

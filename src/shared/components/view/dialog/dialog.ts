@@ -1,7 +1,6 @@
 import { el, unmount, mount } from 'redom';
 
 import logger from '../../../utils/logger';
-import config from '../../../utils/config';
 
 import events from '../../../services/events';
 
@@ -160,12 +159,28 @@ export default class Dialog {
 
     this.slideshow = new Slideshow(groups, totalCount);
 
-    if (this.headlines) 
+    if (this.headlines)
       this.dialogContent = el('.SCDialogContent', [this.slideshow, new TopHeadlines(groups)])
-    else 
+    else
       this.dialogContent = el('.SCDialogContent', this.slideshow);
 
     mount(this.dialogBody, this.dialogContent);
+  }
+
+  setLoadingUI(msg?: string) {
+    const loader = [el('div.SCLoader')]
+
+    /*if (msg)
+      loader.push(el('div.SCLoaderText', msg));*/
+
+    this.dialogBody = el('.SCDialogBody', el('.SCLoaderWrapper', loader));
+  }
+
+  setLoadingMsg(msg: string) {
+    const loaderText = this.dialogBody.querySelector('.SCLoaderText')
+
+    if (this.dialogBody && loaderText)
+      loaderText.innerHTML = msg;
   }
 
   close() {

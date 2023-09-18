@@ -145,7 +145,6 @@ export default class Link {
 
     const response = await chrome.runtime.sendMessage({ type: "getTopic", href: this.href });
 
-    console.log('response', response)
     this.meta = response?.meta;
     this.topic = response?.topic ? transformTopic(response.topic) : null;
   }
@@ -252,6 +251,7 @@ export default class Link {
       this.article,
       this.wrapper,
       this.el,
+      'Loading topic...',
       this.closePost.bind(this)
     );
 
@@ -300,6 +300,7 @@ export default class Link {
       this.article,
       this.wrapper,
       this.el,
+      'Loading topic...',
       this.closeDialog.bind(this)
     );
 
@@ -307,8 +308,6 @@ export default class Link {
 
     try {
       await this.getTopic();
-
-      console.log('this.topic', this.topic)
 
       if (this.topic)
         this.dialog.openTopicView(this.topic);

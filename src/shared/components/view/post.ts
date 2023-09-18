@@ -34,7 +34,7 @@ export default class Post {
   openSubmitViewBind: EventListener
   openSlideshowViewBind: EventListener
 
-  constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement, closeCallback: Function) {
+  constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement, loadingMsg: string, closeCallback: Function) {
     logger.log('Post: constructor');
 
     this.closeCallback = closeCallback;
@@ -44,7 +44,8 @@ export default class Post {
     this.linkElement = linkElement;
 
     this.closeBtn = el('.SCPostCloseWrapper', new CloseIcon);
-    this.postBody = el('.SCPostBody', el('span.SCLoader'));
+
+    this.setLoadingUI();
 
     this.el = el(`.SCPostBodyWrapper.${this.agent}`, [
       this.closeBtn,
@@ -75,6 +76,22 @@ export default class Post {
 
     events.off('openSubmitView', this.openSubmitViewBind);
     events.off('openSlideshowView', this.openSlideshowViewBind);
+  }
+
+  setLoadingUI(msg?: string) {
+    const loader = [el('div.SCLoader')]
+
+    /*if (msg)
+      loader.push(el('div.SCLoaderText', msg));*/
+
+    this.postBody = el('.SCPostBody', el('.SCLoaderWrapper', loader));
+  }
+
+  setLoadingMsg(msg: string) {
+    const loaderText = this.postBody.querySelector('.SCLoaderText')
+
+    if (this.postBody && loaderText)
+      loaderText.innerHTML = msg;
   }
 
   openSubmitView() {

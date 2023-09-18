@@ -1,7 +1,5 @@
-// First seen mock date
-const firstSeenMock = new Date().setHours(new Date().getHours() - 8)
-
 const config = {
+  'host': 'https://feed.infold.ai',
   'api': {
     'url': 'https://api.infold.ai',
     'similarity': 0.72,

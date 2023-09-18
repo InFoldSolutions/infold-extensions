@@ -44,7 +44,7 @@ export default class PopupDialog extends Dialog {
         events.emit('openSlideshowView', this.data, this.meta);
     }
 
-    this.dialogBody = el('.SCDialogBody', el('span.SCLoader'));
+    this.setLoadingUI();
     this.el = el(`.SCDialogWrapper.${this.agent}`,
       [
         this.title,

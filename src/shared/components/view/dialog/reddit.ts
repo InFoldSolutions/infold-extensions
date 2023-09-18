@@ -18,7 +18,7 @@ export default class RedditDialog extends Dialog {
 
   dialogStyle: Object
 
-  constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement, closeCallback: Function) {
+  constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement, loadingMsg: string, closeCallback: Function) {
     logger.log('RedditDialog: constructor');
 
     super(agent, article, btnWrapper, linkElement, closeCallback);
@@ -33,7 +33,7 @@ export default class RedditDialog extends Dialog {
       this.close();
     }
 
-    this.dialogBody = el('.SCDialogBody', el('span.SCLoader'));
+    this.setLoadingUI();
     this.el = el(`.SCDialogWrapper.${agent}`, this.dialogStyle,
       [
         this.closeBtn,

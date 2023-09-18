@@ -46,7 +46,7 @@
 }
 
 .SCiconBackground {
-  margin: -7px;
+  margin: -8px;
   position: absolute;
   top: 0px;
   right: 0px;
@@ -55,10 +55,11 @@
   border-radius: 50%;
   display: inline-flex;
   background-color: rgba(0, 0, 0, 0);
+  transition: 0.1s all linear;
 }
 
 .SCbuttonWrapper:hover .SCiconBackground {
-  background-color: rgba(29, 155, 240, 0.1);
+  background-color: rgba(29, 155, 240, 0.11);
 }
 
 .SCbuttonWrapper.SCNoResults:hover .SCiconBackground {
@@ -95,14 +96,12 @@
 
 /** Twitter Button overwrites **/
 
-.SCbuttonWrapper.twitter.SCPost.active,
-.SCbuttonWrapper.twitter.SCPost:hover {
-  /*border-bottom: 1px solid rgb(231, 233, 234);*/
+.SCbuttonWrapper.twitter.SCPost.active {
   text-decoration: underline;
 }
 
 .SCbuttonWrapper.twitter.SCPost .SCTextWrapper {
-  margin-left: 5px;
+  margin-left: 7px;
 }
 
 .SCbuttonWrapper.twitter.SCNoResults .SCTextWrapper {
@@ -110,7 +109,7 @@
 }
 
 .SCbuttonWrapper.twitter.SCPost .SCIconWrapper i {
-  font-size: 16px;
+  font-size: 17px;
 }
 
 .SCbuttonWrapper.twitter.SCPost .SCcount {
@@ -212,6 +211,10 @@
   width: calc(100% - 25px);
 }
 
+.SCPostBody {
+  min-height: 160px;
+}
+
 .SCPostContent {
   margin: 16px 0px 20px;
   padding: 0px 4px;
@@ -269,9 +272,14 @@
 /* Post display --REDDIT-- */
 
 .SCPostBodyWrapper.reddit {
-  min-height: 207px;
+  min-height: 170px;
   margin: 0px 46px 0 14px;
   border-top: 1px solid #343536;
+}
+
+.SCPostBodyWrapper.reddit .SCPostBody,
+.SCPostBodyWrapper.reddit .SCPostBody .SCLoaderWrapper  {
+  min-height: 170px;
 }
 
 .SCPostBodyWrapper.reddit .SCPostCloseWrapper:hover {
@@ -299,10 +307,6 @@
 
 .SCPostBodyWrapper.reddit .SCKeywordsWrapper {
   margin-top: 13px;
-}
-
-.SCPostBodyWrapper.reddit .SCPostContent {
-  margin-bottom: 30px;
 }
 
 .SCPostBodyWrapper.reddit .SCKeyword {
@@ -1345,6 +1349,17 @@
   color: rgb(215, 218, 220);
   margin-bottom: 4px;
   width: calc(100% - 25px);
+  text-decoration: none;
+}
+
+.SCTopicTitle i {
+  margin-left: 5px;
+  font-size: 13px;
+  color: rgb(79, 188, 255);
+}
+
+a.SCTopicTitle:hover {
+  text-decoration: underline;
 }
 
 .SCTopicWrapper .SCHandle {
@@ -1382,6 +1397,12 @@
 .SCKeyPoints .SCReadMore:hover {
   text-decoration: underline;
 }
+
+.SCKeyPoints .SCReadMore i {
+  margin-left: 5px;
+  font-size: 10px;
+}
+
 
 .SCSources {
   margin: 10px 0px -1px 0px;
@@ -1905,6 +1926,16 @@
   color: rgb(79, 188, 255);
 }
 
+.SCLoaderWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  min-height: 160px;
+}
+
 .SCLoader {
   width: 15px;
   height: 15px;
@@ -1916,6 +1947,12 @@
   animation: SCrotation 1s linear infinite;
 }
 
+.SCLoaderText {
+  font-size: 14px;
+  margin-top: 5px;
+  text-align: center;
+}
+
 .SCHasResults .SCLoader {
   border-color: rgba(29, 155, 240, 0.2);
   border-bottom-color: rgba(29, 155, 240, 0.8);
@@ -1923,20 +1960,12 @@
 
 .SCPostBodyWrapper .SCPostBody .SCLoader,
 .SCDialogWrapper .SCDialogBody .SCLoader {
-  position: relative;
-  left: 50%;
   width: 35px;
-  margin-top: 12%;
-  margin-left: -17.5px;
+  margin: 0px auto;
   height: 35px;
   border-width: 4px;
-
   border-color: rgba(29, 155, 240, 0.2);
   border-bottom-color: rgba(29, 155, 240, 0.8);
-}
-
-.SCPostBodyWrapper .SCPostBody .SCLoader {
-  margin-top: 16%;
 }
 
 .SCSubmitViewSubmitBtn .SCLoader,
@@ -1953,9 +1982,9 @@
   left: auto;
 }
 
-/*.SCPostBodyWrapper.reddit .SCPostBody .SCLoader {
-  margin-top: 13%;
-}*/
+.SCPostBodyWrapper.reddit .SCPostBody .SCLoader {
+  margin-top: 8%;
+}
 
 @keyframes SCrotation {
   0% {
