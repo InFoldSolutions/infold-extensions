@@ -1,10 +1,10 @@
 import { el, mount, unmount, RedomComponent } from 'redom';
 
-import logger from '../../utils/logger';
-import { findChildByText, findChildrenByText, findParentByAttribute } from '../../utils/helpers';
+import logger from '../../../utils/logger';
+import { findChildByText, findChildrenByText, findParentByAttribute } from '../../../utils/helpers';
 
 import Dialog from './dialog';
-import CloseIcon from '../svgs/closeIcon';
+import CloseIcon from '../../svgs/closeIcon';
 
 export default class TwitterDialog extends Dialog {
 

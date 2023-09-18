@@ -1,19 +1,19 @@
 import { el, unmount, mount } from 'redom';
 
-import logger from '../../utils/logger';
-import config from '../../utils/config';
+import logger from '../../../utils/logger';
+import config from '../../../utils/config';
 
-import events from '../../services/events';
+import events from '../../../services/events';
 
-import Slideshow from '../slideshow/slideshow';
-import Groups from '../slideshow/groups';
+import Slideshow from '../../slideshow/slideshow';
+import Groups from '../../slideshow/groups';
 
-import TopHeadlines from '../headlines';
-import SubmitView from '../view/submit';
-import SettingsView from '../view/settings';
+import TopHeadlines from '../../headlines';
+import SubmitView from '../submit';
+import SettingsView from '../settings';
 
-import { IDataItem, ISourceGroup, ITopic } from '../../types';
-import Topic from '../view/topic';
+import { IDataItem, ISourceGroup, ITopic } from '../../../types';
+import Topic from '../topic';
 
 export default class Dialog {
 

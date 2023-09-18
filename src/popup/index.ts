@@ -5,7 +5,7 @@ import logger from '../shared/utils/logger';
 import config from '../shared/utils/config';
 import { setBadgeText, setBadgeColor } from '../shared/utils/helpers';
 
-import PopupDialog from '../shared/components/dialog/popup';
+import PopupDialog from '../shared/components/view/dialog/popup';
 
 import { IDataItem } from '../shared/types';
 import events from '../shared/services/events';
@@ -29,8 +29,6 @@ import events from '../shared/services/events';
         popupDialog.meta = response.meta; // nasty
         throw new Error('No data');
       }
-
-      console.log(response.data);
 
       const data: IDataItem[] = response.data
         .filter((item: any) => item.source.logo) // filter out sources that don't have a parser

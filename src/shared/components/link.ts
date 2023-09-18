@@ -7,8 +7,8 @@ import config from '../utils/config';
 import { isPostPage } from '../utils/helpers';
 import logger from '../utils/logger';
 
-import RedditDialog from './dialog/reddit';
-import TwitterDialog from './dialog/twitter';
+import RedditDialog from './view/dialog/reddit';
+import TwitterDialog from './view/dialog/twitter';
 
 import Post from './view/post';
 import transformSource from '../transformers/source';
@@ -145,11 +145,9 @@ export default class Link {
 
     const response = await chrome.runtime.sendMessage({ type: "getTopic", href: this.href });
 
-    if (!response || !response.topic)
-      throw new Error('No data');
-
-    this.meta = response.meta;
-    this.topic = transformTopic(response.topic);
+    console.log('response', response)
+    this.meta = response?.meta;
+    this.topic = response?.topic ? transformTopic(response.topic) : null;
   }
 
   preparetBaseHTML() {
@@ -260,10 +258,18 @@ export default class Link {
     this.toggleActiveState();
 
     try {
-      await this.getData(20);
-      this.post.openSlideshowView(this.data, this.meta);
+      await this.getTopic();
+
+      if (this.topic)
+        this.post.openTopicView(this.topic);
+      else {
+        await this.getData();
+
+        if (this.data)
+          this.post.openSlideshowView(this.data, this.meta);
+      }
     } catch (error) {
-      logger.error(`Failed openSlideshowView in post ${error}`);
+      logger.error(`Failed openTopicView in post ${error}`);
       this.post.close();
     }
   }
@@ -300,11 +306,20 @@ export default class Link {
     this.toggleActiveState();
 
     try {
-      await this.getData();
+      await this.getTopic();
 
-      this.dialog.openSlideshowView(this.data, this.meta);
+      console.log('this.topic', this.topic)
+
+      if (this.topic)
+        this.dialog.openTopicView(this.topic);
+      else {
+        await this.getData();
+        
+        if (this.data)
+          this.dialog.openSlideshowView(this.data, this.meta);
+      }
     } catch (error) {
-      logger.error(`Failed to openSlideshowView in dialog ${error}`);
+      logger.error(`Failed to openTopicView in dialog ${error}`);
 
       if (this.dialog)
         this.dialog.close();

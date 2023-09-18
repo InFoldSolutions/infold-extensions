@@ -1,8 +1,8 @@
 import { el, mount } from 'redom';
 
-import logger from '../../utils/logger';
+import logger from '../../../utils/logger';
 
-import events from '../../services/events';
+import events from '../../../services/events';
 
 import Dialog from './dialog';
 

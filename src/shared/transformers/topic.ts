@@ -224,11 +224,12 @@ import transformKeyword from "./keyword";
 import transformSource from "./source";
 
 export default function transformTopic(data: any): ITopic {
-    const { title, outline, keywords, sources, added_at } = data;
+    const { title, slug, outline, keywords, sources, added_at } = data;
     const transformedData: ITopic = {
         title,
+        slug,
         keyPoints: outline.map((point: string) => point.replace(/(?:\r\n|\r|\n)/g, '').trim()).filter((point: string) => point && point !== ""),
-        keywords: keywords.map((keyword: any) => transformKeyword(keyword)),
+        keywords: keywords?.data.map((keyword: any) => transformKeyword(keyword)) || [],
         sources: sources.map((source: any) => transformSource(source.source, source.articles)),
         firstSeen: new Date(added_at).getTime()
     };

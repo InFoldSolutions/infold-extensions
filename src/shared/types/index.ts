@@ -27,6 +27,7 @@ export type ITopicMeta = {
 export type ITopic = {
   meta?: ITopicMeta
   title: string
+  slug: string
   summary?: string
   shortSummary?: string
   firstSeen: number

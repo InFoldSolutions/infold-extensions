@@ -129,12 +129,13 @@ export default class Topic {
 
     e.preventDefault();
 
-    this.opened = true;
+    window.open(`https://feed.infold.ai/topics/${this.topic.slug}`, '_blank');
+    /*this.opened = true;
 
     this.readMore.style.display = 'none';
     this.restOfTheKeyPoints.map(this.mapKeyPoints.bind(this)).forEach((keyPoint: HTMLElement) => {
       this.keypointsList.appendChild(keyPoint);
-    });
+    });*/
   }
 
   mapKeyPoints(keyPoint: string, i: number) {
