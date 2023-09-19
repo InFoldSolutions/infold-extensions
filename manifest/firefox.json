@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "InFold",
-  "description": "We read and compare thousands of sources, so you don't have to.",
+  "name": "InFold - Get the full story",
+  "description": "We're here to help you get context, delve deeper, and learn more.",
   "version": "$VERSION",
   "icons": {
     "64": "images/icons/icon_64.png",
