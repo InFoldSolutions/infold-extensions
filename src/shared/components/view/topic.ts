@@ -1,11 +1,16 @@
 import { el, mount } from 'redom';
 
+import ReconnectingWebSocket from 'reconnecting-websocket';
+
+import { getWebsocket, closeWebsocket } from '../../services/websockets';
+
 import { ITopic, ISource } from '../../types';
 
 import logger from '../../utils/logger';
 
 import TimeAgo from 'javascript-time-ago';
 import config from '../../utils/config';
+import CommentIcon from '../svgs/commentIcon';
 
 const timeAgo = new TimeAgo('en-US');
 
@@ -30,31 +35,45 @@ export default class Topic {
   readMore: HTMLElement
   readLess: HTMLElement
 
+  chatBot: HTMLElement
+  chatEntries: HTMLElement
+  chatTextArea: HTMLTextAreaElement
+  chatBtn: HTMLButtonElement
+
   opened: boolean = false
 
   nextClickHandlerBind: any
   prevClickHandlerBind: any
   readMoreClickHandlerBind: any
   readLessClickHandlerBind: any
+  keyDownHandlerBind: any
 
   firstKeyPoint: string[]
   firstTwoKeyPoints: string[]
   restOfTheKeyPoints: string[]
 
-  constructor(topic: ITopic) {
+  webSocket: ReconnectingWebSocket
+
+  constructor(topic: ITopic, includeChatBot: boolean = false) {
     logger.log('Topic: constructor');
+
+    const wrapperContents: HTMLElement[] = []
 
     this.topic = topic;
 
     // topic title
     this.title = el('a.SCTopicTitle', { href: `${config.host}/topics/${this.topic.slug}`, target: '_blank', title: 'Explore topic on our website' },
-      [el('b', `Topic: ${this.topic.title}`), el('i.fad.fa-external-link')]);
+      [`Topic: ${this.topic.title}`, el('i.fad.fa-external-link')]);
+
+    wrapperContents.push(this.title);
 
     // summary info
     this.summaryInfo = el('.SCSummaryInfo', [
       el('span.SCIcon', [el('i.fad.fa-link'), `Summarized from ${this.topic.sources.length} sources`]),
       el('span.SCDate.SCIcon', [el('i.fad.fa-calendar-alt'), `First seen `, timeAgo.format(this.topic.firstSeen, 'mini'), ` ago`]),
     ]);
+
+    wrapperContents.push(this.summaryInfo);
 
     this.readMore = el('span.SCReadMore', 'more ..', { title: 'Show full outline' });
     this.readLess = el('span.SCReadMore', 'less ..', { title: 'Hide part of the outline' });
@@ -72,6 +91,8 @@ export default class Topic {
       this.keypointsList = el('ul', this.firstKeyPoint.map(this.mapKeyPoints.bind(this)));
 
     this.keypoints = el('.SCKeyPoints', this.keypointsList);
+
+    wrapperContents.push(this.keypoints);
 
     // sources
     this.sourcesList = el('ul', this.topic.sources.map((source: ISource) => {
@@ -94,24 +115,65 @@ export default class Topic {
     this.nextButton = el('.SCArrow.SCRight', el('i.fa.fa-angle-right'));
     mount(this.sources, this.nextButton);
 
-    this.el = el('.SCTopicWrapper', [
-      this.title,
-      this.summaryInfo,
-      this.keypoints,
-      this.sources
-    ]);
+    wrapperContents.push(this.sources);
+
+    this.el = el('.SCTopicWrapper', wrapperContents);
 
     // Bind functions
     this.nextClickHandlerBind = this.nextClickHandler.bind(this);
     this.prevClickHandlerBind = this.prevClickHandler.bind(this);
     this.readMoreClickHandlerBind = this.readMoreClickHandler.bind(this);
     this.readLessClickHandlerBind = this.readLessClickHandler.bind(this);
+    this.keyDownHandlerBind = this.keyDownHandler.bind(this);
 
     // Attach click events
     this.nextButton.addEventListener('click', this.nextClickHandlerBind);
     this.prevButton.addEventListener('click', this.prevClickHandlerBind);
     this.readMore.addEventListener('click', this.readMoreClickHandlerBind);
     this.readLess.addEventListener('click', this.readLessClickHandlerBind);
+
+    if (includeChatBot)
+      this.setupChatBot();
+  }
+
+  async setupChatBot() {
+    const socketURL = `${config.ws.chat}/${config.ws.path}/${this.topic.slug}`;
+    this.webSocket = getWebsocket(socketURL);
+
+    if (!this.webSocket)
+      throw new Error('No websocket');
+
+    this.chatEntries = el('.SCChatEntries')
+    this.chatTextArea = el('textarea', { placeholder: 'Ask a question about this topic' });
+    this.chatBtn = el('button', { disabled: true }, new CommentIcon())
+    this.chatBot = el('.SCChatBotWrapper', [
+      this.chatEntries,
+      el('.SCChatBot',
+        [
+          el('.SCChatBotInput', [
+            this.chatTextArea,
+            this.chatBtn
+          ])
+        ]
+      )
+    ]);
+
+    this.webSocket.onmessage = (event: any) => {
+      const lastChildElement = this.chatEntries.lastElementChild;
+
+      if (lastChildElement) {
+        const entryMsg = lastChildElement.querySelector('.SCChatEntryMsg');
+
+        if (entryMsg) {
+          entryMsg.innerHTML = '';
+          entryMsg.appendChild(el('pre', event.data.trim()));
+        }
+      }
+    };
+
+    this.chatTextArea.addEventListener('keydown', this.keyDownHandlerBind);
+
+    mount(this.el, this.chatBot, this.el.lastElementChild);
   }
 
   nextClickHandler(e: MouseEvent) {
@@ -175,6 +237,29 @@ export default class Topic {
     }
   }
 
+  keyDownHandler(e: KeyboardEvent) {
+    logger.log('Topic: keyDownHandler');
+
+    const textValue = this.chatTextArea.value.trim();
+
+    if (textValue.length > 0)
+      this.chatBtn.disabled = false;
+    else
+      this.chatBtn.disabled = true;
+
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+
+      this.webSocket.send(textValue);
+
+      this.addChatEntry({ user: 'me', message: textValue });
+      this.addChatEntry({ user: 'bot', message: '' });
+
+      this.chatTextArea.value = '';
+      this.chatBtn.disabled = true;
+    }
+  }
+
   mapKeyPoints(keyPoint: string, i: number) {
     logger.log('Topic: mapKeyPoints');
 
@@ -186,12 +271,36 @@ export default class Topic {
     return el('li', keyPoint);
   }
 
+  addChatEntry(entry: any) {
+    logger.log('Topic: addChatEntry');
+
+    const entryClass = entry.user === 'me' ? `.SCChatEntry.SCMe` : '.SCChatEntry';
+    const entryIcon = entry.user === 'me' ? `fa-user-alt` : 'fa-robot';
+    const entryMsg = entry.message !== '' ? el('pre', entry.message) : el('span.SCChatEntryLoading', [
+      el('span.SCLoadingDot'),
+      el('span.SCLoadingDot.animation-delay-1'),
+      el('span.SCLoadingDot.animation-delay-2'),
+    ]);
+
+    const chatEntry = el(entryClass, [
+      el('span.SCChatEntryIcon', el(`i.fad.${entryIcon}`)),
+      el('span.SCChatEntryMsg', el('pre', entryMsg)),
+    ]);
+
+    mount(this.chatEntries, chatEntry);
+  }
+
   destroy() {
     logger.log('Topic: destroy');
 
     this.nextButton.removeEventListener('click', this.nextClickHandlerBind);
     this.prevButton.removeEventListener('click', this.prevClickHandlerBind);
-
     this.readMore.removeEventListener('click', this.readMoreClickHandlerBind);
+    this.readLess.removeEventListener('click', this.readLessClickHandlerBind);
+
+    if (this.chatTextArea)
+      this.chatTextArea.removeEventListener('keydown', this.keyDownHandlerBind);
+    if (this.webSocket)
+      closeWebsocket()
   }
 }

@@ -251,7 +251,6 @@ export default class Link {
       this.article,
       this.wrapper,
       this.el,
-      'Loading topic...',
       this.closePost.bind(this)
     );
 
@@ -300,7 +299,6 @@ export default class Link {
       this.article,
       this.wrapper,
       this.el,
-      'Loading topic...',
       this.closeDialog.bind(this)
     );
 

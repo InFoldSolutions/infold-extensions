@@ -38,6 +38,7 @@ export default class Dialog {
 
   data: IDataItem[]
   meta: any
+  topic: Topic
 
   openSubmitViewBind: EventListener
   openSettingsViewBind: EventListener
@@ -127,7 +128,9 @@ export default class Dialog {
 
     this.updateTitle('Topic', 'fa-arrow-alt-circle-right');
 
-    this.dialogContent = el('.SCDialogContent', new Topic(topic));
+    this.topic = new Topic(topic, false);
+
+    this.dialogContent = el('.SCDialogContent', this.topic);
 
     mount(this.dialogBody, this.dialogContent);
   }
@@ -167,11 +170,8 @@ export default class Dialog {
     mount(this.dialogBody, this.dialogContent);
   }
 
-  setLoadingUI(msg?: string) {
+  setLoadingUI() {
     const loader = [el('div.SCLoader')]
-
-    /*if (msg)
-      loader.push(el('div.SCLoaderText', msg));*/
 
     this.dialogBody = el('.SCDialogBody', el('.SCLoaderWrapper', loader));
   }
@@ -195,6 +195,8 @@ export default class Dialog {
 
     if (this.slideshow)
       this.slideshow.destroy();
+    if (this.topic)
+      this.topic.destroy();
   }
 
   updateTitle(text: string, icon: string) {

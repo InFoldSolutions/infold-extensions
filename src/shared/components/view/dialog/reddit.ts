@@ -18,7 +18,7 @@ export default class RedditDialog extends Dialog {
 
   dialogStyle: Object
 
-  constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement, loadingMsg: string, closeCallback: Function) {
+  constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement, closeCallback: Function) {
     logger.log('RedditDialog: constructor');
 
     super(agent, article, btnWrapper, linkElement, closeCallback);

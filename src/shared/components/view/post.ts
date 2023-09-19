@@ -27,14 +27,16 @@ export default class Post {
 
   agent: string
   totalCount: number
+
   data: IDataItem[]
+  topic: Topic
 
   closeCallback: Function
 
   openSubmitViewBind: EventListener
   openSlideshowViewBind: EventListener
 
-  constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement, loadingMsg: string, closeCallback: Function) {
+  constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement, closeCallback: Function) {
     logger.log('Post: constructor');
 
     this.closeCallback = closeCallback;
@@ -138,15 +140,22 @@ export default class Post {
 
     this.postBody.innerHTML = '';
 
-    this.postContent = el('.SCPostContent', new Topic(topic));
+    this.topic = new Topic(topic, true);
+    this.postContent = el('.SCPostContent', this.topic);
 
     mount(this.postBody, this.postContent);
   }
 
   close() {
-    unmount(this.article, this.el);
-    
+    logger
+      .log('Post: close');
+
+    if (this.topic)
+      this.topic.destroy();
+
     this.offEvents();
+
+    unmount(this.article, this.el);
     this.closeCallback();
   }
 }

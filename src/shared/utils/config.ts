@@ -10,6 +10,10 @@ const config = {
       'Content-Type': 'application/json'
     }
   },
+  'ws': {
+    'chat': 'wss://api.infold.ai',
+    'path': 'chat/foldy'
+  },
   'defaults': {
     'processedClass': 'SCprocessed',
     'notAllowedExtensions': ['.jpg', '.jpeg', '.png', '.gif', '.gifv', '.mp4', '.webm'],

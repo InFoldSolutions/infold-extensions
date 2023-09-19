@@ -82,7 +82,7 @@ export default class Slide {
       this.keywords.classList.add('SCEmpty');
 
     this.summaryBody = el('.SCSummaryBody', [
-      el('.SCSummaryTitle', { title: data.title }, data.title),
+      el('.SCSummaryTitle', { title: data.title }, `Article: ${data.title}`),
       el('.SCSummaryInfo', this.summaryInfo),
       el('.SCSummaryContent', data.description),
       this.keywords
