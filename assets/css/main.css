@@ -833,7 +833,7 @@
 }
 
 .SCArrow {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(250, 250, 250, 0.1);
   padding: 0 2px;
   width: 20px;
   display: flex;
@@ -1577,13 +1577,15 @@ a.SCTopicTitle:hover {
   width: 0.45rem;
   height: 0.45rem;
   border-radius: 999rem;
-  margin-right: 0.28rem;
+  margin-right: 0.31rem;
   background-color: rgba(250, 250, 250, 0.8);
   animation: bounce 1s infinite;
 }
 
 @keyframes bounce {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(-25%);
     animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
   }
@@ -1814,7 +1816,7 @@ a.SCTopicTitle:hover {
   }
 
   .SCChatBotInput {
-    background: rgba(0, 0, 0, 0.04);
+    background-color: rgba(0, 0, 0, 0.04);
     color: rgb(0, 0, 0);
   }
 
@@ -1837,7 +1839,7 @@ a.SCTopicTitle:hover {
   }
 
   .SCArrow {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.04);
   }
 
   .SCKeyword {
