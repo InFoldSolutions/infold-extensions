@@ -209,10 +209,8 @@ export default class Link {
     if (this.el) {
       this.el.classList.add('SCNoResults');
 
-      const textWrapper = this.el.querySelector('.SCTextWrapper');
-
-      if (textWrapper)
-        unmount(textWrapper, this.countEl);
+      if (this.countEl)
+        this.countEl.innerHTML = ''
 
       const iconWrapper = this.el.querySelector('.SCIconWrapper');
 
@@ -311,7 +309,7 @@ export default class Link {
         this.dialog.openTopicView(this.topic);
       else {
         await this.getData();
-        
+
         if (this.data)
           this.dialog.openSlideshowView(this.data, this.meta);
       }

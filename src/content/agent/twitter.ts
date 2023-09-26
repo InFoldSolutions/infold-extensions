@@ -103,10 +103,7 @@ export default class TwitterAgent extends Agent {
 
     link.preparetBaseHTML();
 
-    if (link.isDialog)
-      mount(link.wrapper, link, link.wrapper.lastElementChild);
-    else
-      mount(link.wrapper, link, link.wrapper.lastElementChild);
+    mount(link.wrapper, link, link.wrapper.lastElementChild.previousElementSibling);
   }
 
   getPotentialLinksFromElement(addedNode: Element): IPotentialLink[] {
