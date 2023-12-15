@@ -1,9 +1,9 @@
 ## Infold browser extension
 
- ![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/dfmmanoiegndhgdjendeidcakajifnlb?color=1a73e8)
- ![Chrome Web Store](https://img.shields.io/chrome-web-store/rating/dfmmanoiegndhgdjendeidcakajifnlb?color=1a73e8)
- ![Mozilla Add-on Version](https://img.shields.io/amo/v/infold?color=E66000)
- ![Mozilla Add-on Rating](https://img.shields.io/amo/rating/infold?color=E66000)
+ ![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/dfmmanoiegndhgdjendeidcakajifnlb?color=1a73e8&link=https://chromewebstore.google.com/detail/infold-get-the-full-story/dfmmanoiegndhgdjendeidcakajifnlb?hl=en)
+ ![Chrome Web Store](https://img.shields.io/chrome-web-store/rating/dfmmanoiegndhgdjendeidcakajifnlb?color=1a73e8&link=https://chromewebstore.google.com/detail/infold-get-the-full-story/dfmmanoiegndhgdjendeidcakajifnlb?hl=en)
+ ![Mozilla Add-on Version](https://img.shields.io/amo/v/infold?color=E66000&link=https%3A%2F%2Faddons.mozilla.org%2Fen-US%2Ffirefox%2Faddon%2Finfold%2F)
+ ![Mozilla Add-on Rating](https://img.shields.io/amo/rating/infold?color=E66000&link=https%3A%2F%2Faddons.mozilla.org%2Fen-US%2Ffirefox%2Faddon%2Finfold%2F)
 
 Currently supported browsers:
 - Chrome
