@@ -7,8 +7,8 @@ export async function getInfo(href: string, sendResponse: Function) {
   logger.log('API: getInfo');
 
   try {
-    const url = await settings.get('apiUrl');
-    const similarity = await settings.get('similarityScore');
+    const url: string = await settings.get('apiUrl');
+    const similarity: number = await settings.get('similarityScore');
 
     const info = await fetch(`${url}/articles/related/meta`, {
       method: 'POST',

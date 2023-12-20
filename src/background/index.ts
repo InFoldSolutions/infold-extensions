@@ -48,12 +48,16 @@ chrome.runtime.onMessage.addListener(
 // We'll need this
 // https://stackoverflow.com/questions/69598656/prevent-popup-if-current-tab-url-is-not-permitted-in-manifest-v3
 
-chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+chrome.tabs.onUpdated.addListener(async (
+  tabId: number,
+  changeInfo: chrome.tabs.TabChangeInfo,
+  tab: chrome.tabs.Tab
+) => {
   if (changeInfo.status !== 'complete')
     return;
 
   const url: URL = new URL(tab.url);
-  const host = url.host.replace('www.', '');
+  const host: string = url.host.replace('www.', '');
   const extension: string = path.extname(url.pathname);
 
   if (!config.sourcesBackgroundWhiteList.includes(host))
