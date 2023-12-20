@@ -1,5 +1,5 @@
 const config = {
-  'host': 'https://feed.infold.ai',
+  'host': 'https://www.infold.com',
   'api': {
     'url': 'https://api.infold.ai',
     'similarity': 0.72,
