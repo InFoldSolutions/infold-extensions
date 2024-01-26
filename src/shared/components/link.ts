@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { el, unmount } from 'redom';
+import { el, mount, unmount } from 'redom';
 
 import { IDataItem, IPotentialLink, ITopic } from '../types';
 import config from '../utils/config';
@@ -16,6 +16,9 @@ import transformArticle from '../transformers/article';
 import transformTopic from '../transformers/topic';
 
 import events from '../services/events';
+import LightbulbIcon from './svgs/lightbulbIcon';
+import LoaderIcon from './svgs/loaderIcon';
+import LightbulbIconSlash from './svgs/lightbulbIconSlash';
 
 export default class Link {
 
@@ -158,16 +161,15 @@ export default class Link {
     let btnWrapperClass: string = (this.isDialog) ? 'SCDialog' : 'SCDialog.SCPost';
 
     if (!this.isTextVersion && !this.isTextCompactVersion) {
-      buttonContent.push(el(`span.SCIconWrapper`, [
-        el('span.SCiconBackground'),
-        el(`i.fad.fa-lightbulb-on`)
-      ]));
+      buttonContent.push(el(`span.SCIconWrapper.flex.text-16.mr-[var(--rem6)]`, new LightbulbIcon()));
     }
 
     if (this.isTextCompactVersion)
       btnWrapperClass += '.TextCompact';
 
-    this.countEl = el('span.SCcount', el('span.SCLoader'));
+    this.countEl = el('span.SCcount.flex.text-12',
+      new LoaderIcon()
+    );
     textContent.push(this.countEl);
 
     if (!this.isIconVersion) {
@@ -192,13 +194,6 @@ export default class Link {
 
     if (this.textEl)
       this.textEl.innerHTML = 'Related';
-
-    /*const iconWrapper = this.el.querySelector('.SCIconWrapper');
-
-    if (iconWrapper) {
-      //iconWrapper.querySelector('i').classList.remove('fa-lightbulb-on');
-      //iconWrapper.querySelector('i').classList.add('fa-lightbulb');
-    }*/
   }
 
   setNoneResults() {
@@ -215,20 +210,29 @@ export default class Link {
       const iconWrapper = this.el.querySelector('.SCIconWrapper');
 
       if (iconWrapper) {
-        iconWrapper.querySelector('i').classList.remove('fa-lightbulb-on');
-        iconWrapper.querySelector('i').classList.add('fa-lightbulb-slash');
+        iconWrapper.innerHTML = ''
+        mount(iconWrapper, new LightbulbIconSlash())
+        iconWrapper.classList.remove('mr-[var(--rem6)]')
+        this.el.classList.remove('pr-sm')
       }
     }
   }
 
   onClick(evt: MouseEvent) {
     logger.log('Link: onClick');
+    console.log(this.isDialog);
+    console.log(isPostPage());
+    console.log(Number(this.article.getAttribute('tabindex')));
 
     evt.preventDefault();
     evt.stopPropagation();
 
-    if (this.isDialog)
-      this.openDialog();
+    if (this.isDialog) {
+      const linkElement = this.article.querySelector('a[target="_self"]') as HTMLAnchorElement;
+
+      if (linkElement) 
+        linkElement.click();
+    }
     else
       this.togglePostView();
   }
@@ -376,7 +380,7 @@ export default class Link {
   }
 
   get isDialog(): boolean {
-    return !isPostPage() || isPostPage() && Number(this.article.getAttribute('tabindex')) !== -1;
+    return !isPostPage() || (isPostPage() && Number(this.article.getAttribute('tabindex')) !== -1 && this.providerType === 'twitter');
   }
 
   get isIconVersion(): boolean {

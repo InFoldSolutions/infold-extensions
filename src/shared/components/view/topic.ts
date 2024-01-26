@@ -66,13 +66,13 @@ export default class Topic {
     this.topic = topic;
 
     // topic title
-    this.title = el('a.SCTopicTitle', { href: `${config.host}/topics/${this.topic.slug}`, target: '_blank', title: 'Explore topic on our website' },
+    this.title = el('a.SCTopicTitle.text-18.mb-0', { href: `${config.host}/topics/${this.topic.slug}`, target: '_blank', title: 'Explore topic on our website' },
       [`Topic: ${this.topic.title}`, el('i.fad.fa-external-link')]);
 
     wrapperContents.push(this.title);
 
     // summary info
-    this.summaryInfo = el('.SCSummaryInfo', [
+    this.summaryInfo = el('.SCSummaryInfo.text-12', [
       el('span.SCIcon', [el('i.fad.fa-link'), `Summarized from ${this.topic.sources.length} sources`]),
       el('span.SCDate.SCIcon', [el('i.fad.fa-calendar-alt'), `First seen `, timeAgo.format(this.topic.firstSeen, 'mini'), ` ago`]),
     ]);
@@ -94,7 +94,7 @@ export default class Topic {
     else
       this.keypointsList = el('ul', this.firstKeyPoint.map(this.mapKeyPoints.bind(this)));
 
-    this.keypoints = el('.SCKeyPoints', this.keypointsList);
+    this.keypoints = el('.SCKeyPoints.text-14', this.keypointsList);
 
     wrapperContents.push(this.keypoints);
 
@@ -105,7 +105,7 @@ export default class Topic {
       const articleLink = (source.articles.length > 0) ? source.articles[0].link : '#';
       const articleTitle = (source.articles.length > 0) ? source.articles[0].title : 'No article found';
 
-      return el('li', { title: source.name }, el('a', { href: articleLink, title: articleTitle, target: '_blank' }, [
+      return el('li.mt-0.w-auto', { title: source.name }, el('a.w-full', { href: articleLink, title: articleTitle, target: '_blank' }, [
         el('img', { src: sourceIcon }),
         el('span.SCHandle', `${sourceName.toLocaleLowerCase().replace(/ /g, '')}`),
       ]));
@@ -148,7 +148,7 @@ export default class Topic {
       throw new Error('No websocket');
 
     this.chatEntries = el('.SCChatEntries')
-    this.chatTextArea = el('textarea', { placeholder: 'Ask a question about this topic' });
+    this.chatTextArea = el('textarea.m-0.p-0', { placeholder: 'Ask a question about this topic' }) as HTMLTextAreaElement
     this.chatBtn = el('button', { disabled: true }, new CommentIcon())
     this.chatBot = el('.SCChatBotWrapper', [
       this.chatEntries,

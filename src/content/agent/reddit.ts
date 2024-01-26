@@ -86,7 +86,6 @@ export default class RedditAgent extends Agent {
 
   async startContentObserver() {
     logger.log('RedditAgent: startContentObserver');
-    console.log(this.currentRoute)
 
     if (this.contentObserver)
       this.stopContentObserver();
@@ -156,6 +155,8 @@ export default class RedditAgent extends Agent {
     logger.log('RedditAgent: appendLink');
 
     link.preparetBaseHTML();
+
+    link.el.classList.add('button', 'border-md', 'flex', 'flex-row', 'justify-center', 'items-center', 'h-xl', 'font-semibold', 'relative', 'text-12', 'button-secondary', 'inline-flex', 'px-xs', 'pr-sm', 'hover:text-secondary', 'hover:bg-secondary-background-hover', 'hover:border-secondary-background-hover');
 
     // mounting can differ based on agent
     mount(link.wrapper, link, link.wrapper.lastElementChild, true);

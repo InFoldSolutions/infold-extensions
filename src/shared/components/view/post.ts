@@ -11,6 +11,7 @@ import events from '../../services/events';
 
 import SubmitView from './submit';
 import Topic from './topic';
+import LoaderIcon from '../svgs/loaderIcon';
 
 export default class Post {
 
@@ -60,7 +61,10 @@ export default class Post {
 
     this.onEvents();
 
-    mount(this.article, this.el);
+    if (this.agent === 'reddit')
+      mount(this.article.parentElement, this.el, this.article.nextElementSibling);
+    else
+      mount(this.article, this.el);
   }
 
   onEvents() {
@@ -81,12 +85,7 @@ export default class Post {
   }
 
   setLoadingUI(msg?: string) {
-    const loader = [el('div.SCLoader')]
-
-    /*if (msg)
-      loader.push(el('div.SCLoaderText', msg));*/
-
-    this.postBody = el('.SCPostBody', el('.SCLoaderWrapper', loader));
+    this.postBody = el('.SCPostBody', el('.SCLoaderWrapper', new LoaderIcon()));
   }
 
   setLoadingMsg(msg: string) {
