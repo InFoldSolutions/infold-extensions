@@ -15,27 +15,14 @@ import { isPostPage } from '../../shared/utils/helpers';
 
 export default class RedditAgent extends Agent {
 
-  bodyObserver: Observer
-  pageObserver: Observer
-  postObserver: Observer
-  contentWrapperObserver: Observer
+  appObserver: Observer
   contentObserver: Observer
 
-  contentBodyClassSelector: string
-  contentBodyClass: string
-  contentWrapperClass: string
-  outboundLinkClass: string
-  postWrapperClass: string
-  groupWrapperClasses: string[]
-
-  bodyWrapperID: string
-  pageWrapperID: string
-
-  pageWrapper: HTMLElement
-  bodyWrapper: HTMLElement
-  contentWrapper: HTMLElement
-  contentBody: HTMLElement
-  postBody: HTMLElement
+  contentBodySelector: string
+  appBodySelector: string
+  feedBodySelector: string
+  postItemTag: string
+  currentRoute: string
 
   contentInterval: NodeJS.Timeout
 
@@ -46,13 +33,10 @@ export default class RedditAgent extends Agent {
 
     this.providerType = config.agents.reddit.providerType;
 
-    this.outboundLinkClass = 'styled-outbound-link';
-    this.contentWrapperClass = '_1OVBBWLtHoSPfGCRaPzpTf';
-    this.contentBodyClass = 'rpBJOHq2PR60pnwJlUyP0';
-    this.bodyWrapperID = 'SHORTCUT_FOCUSABLE_DIV';
-    this.pageWrapperID = 'AppRouter-main-content';
-    this.postWrapperClass = 'uI_hDmU5GSiudtABRz_37';
-    this.groupWrapperClasses = ['_3-miAEojrCvx_4FQ8x3P-s', '_2IpBiHtzKzIxk2fKI4UOv1', '_3jwri54NGT-SRatPIZYiMo'];
+    this.postItemTag = 'shreddit-post';
+    this.contentBodySelector = 'main > div:last-child'
+    this.appBodySelector = 'shreddit-app';
+    this.feedBodySelector = 'shreddit-feed';
   }
 
   async start() {
@@ -60,123 +44,71 @@ export default class RedditAgent extends Agent {
 
     super.start();
 
-    this.bodyObserver = new Observer(`#${this.bodyWrapperID}`, document.body, this.onBodyChange.bind(this));
-    await this.bodyObserver.start();
-
-    this.pageObserver = new Observer(`#${this.pageWrapperID}`, document.body, this.onPageChange.bind(this));
-    await this.pageObserver.start();
-
-    await this.startContentWrapperObserver();
-
-    if (isPostPage()) {
-      this.postObserver = new Observer(`.${this.postWrapperClass}`, document.body, this.onDomChange.bind(this));
-      await this.postObserver.start();
-
-      this.onDomChange();
-    }
-    else
-      this.startContentObserver();
+    await this.startAppObserver();
+    this.startContentObserver();
   }
 
   async stop() {
     logger.log('RedditAgent: stop');
 
-    this.bodyObserver.disconnect();
-    this.pageObserver.disconnect();
+    this.appObserver.disconnect();
 
-    if (this.contentWrapperObserver)
-      this.stopContentWrapperObserver();
     if (this.contentObserver)
       this.stopContentObserver();
 
     super.stop();
   }
 
-  onPageChange(records: MutationRecord[]) {
-    logger.log('RedditAgent: onPageChange');
+  async startAppObserver() {
+    logger.log('RedditAgent: startAppObserver');
 
-    this.startContentWrapperObserver();
-    //this.startContentObserver();
+    const appElements: HTMLCollectionOf<Element> = document.body.getElementsByTagName(this.appBodySelector);
+
+    this.appObserver = new Observer(appElements[0] as HTMLElement, document.body, this.onAppChange.bind(this), false, true);
+
+    await this.appObserver.start();
+
+    this.currentRoute = this.appObserver.element.getAttribute('routename');
   }
 
-  onContentWrapperChange(records: MutationRecord[]) {
-    logger.log('RedditAgent: onContentWrapperChange');
+  async stopAppObserver() {
+    logger.log('RedditAgent: stopAppObserver');
 
-    let started: boolean = false;
-
-    records.forEach((record: MutationRecord) => {
-      if (record.type === 'attributes') {
-        this.startContentObserver();
-        started = true;
-      } else if (record.type === 'childList') {
-        record.addedNodes.forEach((addedNode: Element) => {
-          if (addedNode.classList.contains(this.contentBodyClass) || addedNode.querySelector(`.${this.contentBodyClass}`)) {
-            this.startContentObserver();
-            started = true;
-          }
-        });
-
-        if (!started) { //could be "nextSibling" scenario
-          const nextSibling: Element = record.nextSibling as Element;
-
-          if (nextSibling && nextSibling.classList && nextSibling.classList.contains(this.contentBodyClass)) {
-            this.startContentObserver();
-            started = true;
-          }
-        }
-      }
-    });
+    this.appObserver.disconnect();
   }
 
-  async onBodyChange() {
-    logger.log('RedditAgent: onBodyChange');
+  async onAppChange() {
+    logger.log('RedditAgent: onAppChange');
 
-    if (isPostPage()) {
-      this.postObserver = new Observer(`.${this.postWrapperClass}`, document.body, this.onDomChange.bind(this));
-      await this.postObserver.start();
+    this.currentRoute = this.appObserver.element.getAttribute('routename');
+    this.startContentObserver();
+  }
 
+  async startContentObserver() {
+    logger.log('RedditAgent: startContentObserver');
+    console.log(this.currentRoute)
+
+    if (this.contentObserver)
+      this.stopContentObserver();
+
+    switch (this.currentRoute) {
+      case 'frontpage':
+        this.contentBodySelector = this.feedBodySelector;
+        break;
+      case 'post_page':
+        this.contentBodySelector = 'main';
+        break;
+      default:
+        this.contentBodySelector = 'main > div:last-child';
+        break;
+    }
+
+    this.contentObserver = new Observer(this.contentBodySelector, document.body, this.onDomChange.bind(this));
+
+    await this.contentObserver.start();
+
+    if (this.contentObserver.element)
       this.onDomChange();
-    } else {
-      if (this.postObserver) {
-        this.postObserver.disconnect();
-        this.postObserver = null;
-      }
-    }
-  }
-
-  getContentBodyClassSelector(): string {
-    logger.log('RedditAgent: getContentBody');
-
-    let contentBody: HTMLElement = this.pageObserver.element.querySelector(`[data-testid="posts-list"]`);
-
-    if (contentBody)
-      return `[data-testid="posts-list"]`;
-
-    return `.${this.contentBodyClass}`;
-  }
-
-  stopContentWrapperObserver() {
-    logger.log('RedditAgent: stopContentWrapperObserver');
-
-    this.contentWrapperObserver.disconnect();
-    this.contentWrapperObserver = null;
-    this.contentWrapper = null;
-
-    this.clearActiveLinks();
-  }
-
-  async startContentWrapperObserver() {
-    logger.log('RedditAgent: startContentWrapperObserver');
-
-    if (this.contentWrapperObserver)
-      this.stopContentWrapperObserver();
-
-    const contentWrapper: HTMLElement = this.pageObserver.element.querySelector(`.${this.contentWrapperClass}`);
-
-    if (contentWrapper) {
-      this.contentWrapperObserver = new Observer(contentWrapper, this.pageObserver.element, this.onContentWrapperChange.bind(this), false, true);
-      await this.contentWrapperObserver.start();
-    }
   }
 
   stopContentObserver() {
@@ -184,21 +116,6 @@ export default class RedditAgent extends Agent {
 
     this.contentObserver.disconnect();
     this.contentObserver = null;
-    this.contentBody = null;
-  }
-
-  async startContentObserver() {
-    logger.log('RedditAgent: startContentObserver');
-
-    if (this.contentObserver)
-      this.stopContentObserver();
-
-    this.contentBodyClassSelector = this.getContentBodyClassSelector();
-
-    this.contentObserver = new Observer(this.contentBodyClassSelector, this.pageObserver.element, this.onDomChange.bind(this));
-    await this.contentObserver.start();
-
-    this.onDomChange();
   }
 
   async findLinks(records?: MutationRecord[], delay?: boolean) {
@@ -214,19 +131,15 @@ export default class RedditAgent extends Agent {
     if (records) {
       records.forEach((record: MutationRecord) => {
         record.addedNodes.forEach((addedNode: Element) => {
-          if (addedNode.querySelector && typeof addedNode.querySelector === 'function') {  // all addedNodes are object as type, but can also come in as string, hacky this is..
-            potentialLinks = potentialLinks.concat(
-              this.getPotentialLinksFromElement(addedNode as HTMLElement)
-            )
-          }
+          potentialLinks = potentialLinks.concat(
+            this.getPotentialLinksFromElement(addedNode as HTMLElement)
+          )
         });
       });
     } else {
-      if (this.contentObserver && !isPostPage())
+      if (this.contentObserver?.element) {
         potentialLinks = this.getPotentialLinksFromElement(this.contentObserver.element);
-
-      if (this.postObserver && isPostPage())
-        potentialLinks = this.getPotentialLinksFromElement(this.postObserver.element);
+      }
     }
 
     potentialLinks.forEach((potentialLink: IPotentialLink) => {
@@ -245,27 +158,24 @@ export default class RedditAgent extends Agent {
     link.preparetBaseHTML();
 
     // mounting can differ based on agent
-    if (link.isCompactVersion)
-      mount(link.wrapper, link, link.wrapper.firstElementChild);
-    if (link.wrapper)
-      mount(link.wrapper, link, link.wrapper.firstElementChild.nextElementSibling);
+    mount(link.wrapper, link, link.wrapper.lastElementChild, true);
   }
 
   getPotentialLinksFromElement(element: HTMLElement): IPotentialLink[] {
     logger.log('RedditAgent: getPotentialLinksFromElement');
 
     const potentials: IPotentialLink[] = [];
-    const posts: NodeListOf<HTMLElement> = element.querySelectorAll('div[data-testid="post-container"]');
+    const posts: HTMLCollectionOf<Element> = element.getElementsByTagName(this.postItemTag);
 
     for (let p = 0; p < posts.length; p++) {
-      const post: HTMLElement = posts[p];
+      const post: HTMLElement = posts[p] as HTMLElement;
 
       if (post.classList.contains(config.defaults.processedClass))
         continue;
 
       post.classList.add(config.defaults.processedClass);
 
-      const wrapperNode: HTMLElement = post.querySelector(`.${this.groupWrapperClasses.join(', .')}`);
+      const wrapperNode: HTMLElement = post.shadowRoot.querySelector('[name="share-button"]')?.parentElement;
 
       if (!wrapperNode)
         continue;
@@ -273,7 +183,7 @@ export default class RedditAgent extends Agent {
       if (wrapperNode.querySelector('.SCDialog'))
         continue;
 
-      const elements: HTMLElement[] = Array.from(post.querySelectorAll('a[target="_blank"], a[data-testid="outbound-link"]'));
+      const elements: HTMLElement[] = Array.from(post.querySelectorAll('a[target="_blank"]'));
 
       if (elements.length === 0) {
         potentials.push({

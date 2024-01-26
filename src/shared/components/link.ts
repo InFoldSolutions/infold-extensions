@@ -382,7 +382,7 @@ export default class Link {
   get isIconVersion(): boolean {
     switch (this.providerType) {
       case 'reddit':
-        return this.isCompactVersion;
+        return true;
       case 'twitter':
         return true;
     }

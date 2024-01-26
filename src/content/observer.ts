@@ -14,6 +14,7 @@ export default class Observer {
   attributes: boolean
   listening: boolean
   cancel: boolean
+  retries: number
 
   callback: MutationCallback
 
@@ -29,12 +30,19 @@ export default class Observer {
     this.subtree = subtree;
     this.attributes = attributes;
     this.listening = false;
+    this.retries = 0;
 
     this.callback = callback;
   }
 
-  async start(): Promise<void> {
+  async start(retry?: boolean): Promise<void> {
     logger.log('Observer: start');
+
+    if (retry)
+      this.retries++;
+
+    if (this.retries > 5)
+      return;
 
     this.element = this.element || this.parent.querySelector(this.selector);
 
@@ -42,7 +50,7 @@ export default class Observer {
       await timeDelay(500);
 
       if (!this.cancel)
-        return this.start();
+        return this.start(true);
       else
         return;
     }
