@@ -20,7 +20,7 @@ export default class Şocial {
         el('span', 'Privacy')
       ]),
       el('a.SCSubmitViewSocialLink.SCActive', { href: 'https://patreon.com/infold', target: '_blank' }, [
-        el('span', [el('img.patreon', { src: 'https://www.infold.ai/assets/images/footer/patreon.png' }), 'Patreon'])
+        el('span', [el('img.patreon', { src: 'https://www.infold.com/assets/images/patreon.png' }), 'Patreon'])
       ])
     ]);
   }
