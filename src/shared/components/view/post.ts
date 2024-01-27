@@ -84,8 +84,11 @@ export default class Post {
     events.off('openSlideshowView', this.openSlideshowViewBind);
   }
 
-  setLoadingUI(msg?: string) {
-    this.postBody = el('.SCPostBody', el('.SCLoaderWrapper', new LoaderIcon()));
+  setLoadingUI() {
+    if (this.agent === 'reddit')
+      this.postBody = el('.SCPostBody', el('.SCLoaderWrapper.pt-sm', new LoaderIcon(30, 30)));
+    else
+      this.postBody = el('.SCPostBody', el('.SCLoaderWrapper', [el('div.SCLoader')]));
   }
 
   setLoadingMsg(msg: string) {
@@ -154,7 +157,11 @@ export default class Post {
 
     this.offEvents();
 
-    unmount(this.article, this.el);
+    if (this.agent === 'reddit')
+      unmount(this.article.parentElement, this.el);
+    else if (this.article)
+      unmount(this.article, this.el);
+
     this.closeCallback();
   }
 }

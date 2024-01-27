@@ -161,15 +161,25 @@ export default class Link {
     let btnWrapperClass: string = (this.isDialog) ? 'SCDialog' : 'SCDialog.SCPost';
 
     if (!this.isTextVersion && !this.isTextCompactVersion) {
-      buttonContent.push(el(`span.SCIconWrapper.flex.text-16.mr-[var(--rem6)]`, new LightbulbIcon()));
+      if (this.providerType === 'twitter') {
+        buttonContent.push(el(`span.SCIconWrapper`, [
+          el('span.SCiconBackground'),
+          el(`i.fad.fa-lightbulb-on`)
+        ]));
+      } else
+        buttonContent.push(el(`span.SCIconWrapper.flex.text-16.mr-[var(--rem6)]`, new LightbulbIcon()));
     }
 
     if (this.isTextCompactVersion)
       btnWrapperClass += '.TextCompact';
 
-    this.countEl = el('span.SCcount.flex.text-12',
-      new LoaderIcon()
-    );
+    if (this.providerType === 'twitter')
+      this.countEl = el('span.SCcount', el('span.SCLoader'));
+    else
+      this.countEl = el('span.SCcount.flex.text-12',
+        new LoaderIcon()
+      );
+
     textContent.push(this.countEl);
 
     if (!this.isIconVersion) {
@@ -210,27 +220,34 @@ export default class Link {
       const iconWrapper = this.el.querySelector('.SCIconWrapper');
 
       if (iconWrapper) {
-        iconWrapper.innerHTML = ''
-        mount(iconWrapper, new LightbulbIconSlash())
-        iconWrapper.classList.remove('mr-[var(--rem6)]')
-        this.el.classList.remove('pr-sm')
+        if (this.providerType === 'twitter') {
+          iconWrapper.querySelector('i').classList.remove('fa-lightbulb-on');
+          iconWrapper.querySelector('i').classList.add('fa-lightbulb-slash');
+        } else {
+          iconWrapper.innerHTML = ''
+          mount(iconWrapper, new LightbulbIconSlash())
+          iconWrapper.classList.remove('mr-[var(--rem6)]')
+          this.el.classList.remove('pr-sm')
+        }
       }
     }
   }
 
   onClick(evt: MouseEvent) {
     logger.log('Link: onClick');
-    console.log(this.isDialog);
-    console.log(isPostPage());
-    console.log(Number(this.article.getAttribute('tabindex')));
 
     evt.preventDefault();
     evt.stopPropagation();
 
     if (this.isDialog) {
+      if (this.providerType === 'twitter')  {
+        this.openDialog();
+        return;
+      }
+
       const linkElement = this.article.querySelector('a[target="_self"]') as HTMLAnchorElement;
 
-      if (linkElement) 
+      if (linkElement)
         linkElement.click();
     }
     else
