@@ -11,7 +11,6 @@ import logger from '../../shared/utils/logger';
 import config from '../../shared/utils/config';
 
 import { timeDelay } from '../../shared/utils/helpers';
-import { isPostPage } from '../../shared/utils/helpers';
 
 export default class RedditAgent extends Agent {
 
@@ -81,6 +80,8 @@ export default class RedditAgent extends Agent {
     logger.log('RedditAgent: onAppChange');
 
     this.currentRoute = this.appObserver.element.getAttribute('routename');
+    
+    this.clearActiveLinks();
     this.startContentObserver();
   }
 
@@ -94,11 +95,12 @@ export default class RedditAgent extends Agent {
       case 'frontpage':
         this.contentBodySelector = this.feedBodySelector;
         break;
+      case 'comments_page':
       case 'post_page':
         this.contentBodySelector = 'main';
         break;
       default:
-        this.contentBodySelector = 'main > div:last-child';
+        this.contentBodySelector = this.contentBodySelector;
         break;
     }
 
