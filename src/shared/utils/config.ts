@@ -2,9 +2,9 @@ const config = {
   'host': 'https://www.infold.com',
   'api': {
     'url': 'https://api.infold.ai',
-    'similarity': 0.72,
+    'similarity': 0.8,
     'maxArticleCount': 15,
-    'lookupConcurrency': 6,
+    'lookupConcurrency': 7,
     'headers': {
       'Accept': 'application/json',
       'Content-Type': 'application/json'

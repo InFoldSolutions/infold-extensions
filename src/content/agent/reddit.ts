@@ -63,7 +63,7 @@ export default class RedditAgent extends Agent {
 
     const appElements: HTMLCollectionOf<Element> = document.body.getElementsByTagName(this.appBodySelector);
 
-    this.appObserver = new Observer(appElements[0] as HTMLElement, document.body, this.onAppChange.bind(this), false, true);
+    this.appObserver = new Observer(appElements[0] as HTMLElement, document.body, this.onAppChange.bind(this), false, true, false);
 
     await this.appObserver.start();
 
@@ -104,12 +104,12 @@ export default class RedditAgent extends Agent {
         break;
     }
 
-    this.contentObserver = new Observer(this.contentBodySelector, document.body, this.onDomChange.bind(this));
+    this.contentObserver = new Observer(this.contentBodySelector, document.body, this.onDomChange.bind(this), true);
 
     await this.contentObserver.start();
 
-    if (this.contentObserver.element)
-      this.onDomChange();
+    if (this.contentObserver.element) 
+      this.onDomChange(); 
   }
 
   stopContentObserver() {
@@ -166,6 +166,9 @@ export default class RedditAgent extends Agent {
 
   getPotentialLinksFromElement(element: HTMLElement): IPotentialLink[] {
     logger.log('RedditAgent: getPotentialLinksFromElement');
+
+    if (!element || !element.getElementsByTagName)
+      return [];
 
     const potentials: IPotentialLink[] = [];
     const posts: HTMLCollectionOf<Element> = element.getElementsByTagName(this.postItemTag);

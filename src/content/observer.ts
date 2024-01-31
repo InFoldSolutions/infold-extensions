@@ -12,13 +12,23 @@ export default class Observer {
 
   subtree: boolean
   attributes: boolean
+  childList: boolean
+  
   listening: boolean
+
   cancel: boolean
   retries: number
 
   callback: MutationCallback
 
-  constructor(selector: string | HTMLElement, parent: HTMLElement = document.body, callback: MutationCallback, subtree: boolean = false, attributes: boolean = false) {
+  constructor(
+    selector: string | HTMLElement,
+    parent: HTMLElement = document.body,
+    callback: MutationCallback,
+    subtree: boolean = false,
+    attributes: boolean = false,
+    childList: boolean = true
+  ) {
     logger.log('Observer: constructor');
 
     if (typeof selector === 'string')
@@ -29,6 +39,7 @@ export default class Observer {
     this.parent = parent;
     this.subtree = subtree;
     this.attributes = attributes;
+    this.childList = childList;
     this.listening = false;
     this.retries = 0;
 
@@ -57,7 +68,7 @@ export default class Observer {
 
     this.observer = new MutationObserver(this.callback);
     this.observer.observe(this.element, {
-      childList: true,
+      childList: this.childList,
       subtree: this.subtree,
       attributes: this.attributes
     });
