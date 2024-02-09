@@ -164,20 +164,10 @@ export default class Link {
 
     buttonContent.push(el(`span.SCIconWrapper`, [
       el('span.SCiconBackground'),
-      (this.providerType === 'twitter') ? new InfoIcon() : new InfoIconRegular()
+      new InfoIcon(this.providerType)
     ]));
 
     if (!this.isIconVersion) {
-      if (this.providerType === 'twitter')
-        this.countEl = el('span.SCcount', el('span.SCLoader'));
-      else {
-        this.countEl = el('span.SCcount.flex.text-12',
-          new LoaderIcon()
-        );
-      }
-
-      textContent.push(this.countEl);
-
       this.textEl = el('span.SCtext');
       textContent.push(this.textEl);
 
@@ -196,7 +186,7 @@ export default class Link {
 
     if (this.providerType === 'reddit') {
       this.el.classList.remove('text-neutral-content-weak', 'opacity-50');
-      this.el.classList.add('text-primary', 'opacity-100');
+      this.el.classList.add('text-secondary', 'opacity-100');
     }
 
     if (this.countEl)

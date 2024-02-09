@@ -2,16 +2,33 @@
 import { svg } from 'redom';
 
 import logger from '../../utils/logger';
+import { isPostPage } from '../../utils/helpers';
 
 export default class InfoIcon {
   el: SVGElement
 
-  constructor() {
+  constructor(provider: string) {
     logger.log('InfoIcon: constructor');
+
+    let width: string = '0.95';
+    let height: string = '0.95';
+
+    switch (provider) {
+      case 'reddit':
+          width = '1.3';
+          height = '1.3';
+        break;
+      case 'twitter':
+        if (isPostPage()) {
+          width = '1.05';
+          height = '1.05';
+        }
+        break;
+    }
 
     this.el = svg(
       'svg',
-      { viewBox: '0 0 192 512', style: 'fill: currentColor; display: flex;' },
+      { viewBox: '0 0 192 512', style: `fill: currentColor; display: flex; width: ${width}em; height: ${height}em;` },
       [
         svg('defs',
           svg('style', '.fa-secondary{opacity:.4}')

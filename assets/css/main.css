@@ -98,19 +98,6 @@
   min-width: calc(1em + 24px);
 }
 
-.SCbuttonWrapper .SCIconWrapper svg {
-  width: 0.9em;
-  height: 0.9em;
-  position: relative;
-}
-
-/** Twitter Button overwrites **/
-
-.SCbuttonWrapper.twitter.SCPost .SCIconWrapper svg {
-  width: 1.1em;
-  height: 1.1em;
-}
-
 /** Reddit Button overwrites **/
 
 .SCbuttonWrapper.reddit {

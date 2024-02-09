@@ -67,7 +67,7 @@ export default class Topic {
 
     // topic title
     this.title = el('a.SCTopicTitle.text-18.mb-0', { href: `${config.host}/topics/${this.topic.slug}`, target: '_blank', title: 'Explore topic on our website' },
-      [`Topic: ${this.topic.title}`, el('i.fad.fa-external-link')]);
+      [`${this.topic.title}`, el('i.fad.fa-external-link')]);
 
     wrapperContents.push(this.title);
 
