@@ -11,7 +11,7 @@ export default class LoaderIcon {
 
     this.el = svg(
       'svg',
-      { viewBox: '0 0 512 512', class: 'animate-spin', style: 'fill: currentColor;', width: `${width}px`, height: `${height}px` },
+      { viewBox: '0 0 512 512', class: 'animate-spin mt-xl', style: 'fill: currentColor;', width: `${width}px`, height: `${height}px` },
       svg('g', [
         svg('path', {
           d: 'M478.71 364.58zm-22 6.11l-27.83-15.9a15.92 15.92 0 0 1-6.94-19.2A184 184 0 1 1 256 72c5.89 0 11.71.29 17.46.83-.74-.07-1.48-.15-2.23-.21-8.49-.69-15.23-7.31-15.23-15.83v-32a16 16 0 0 1 15.34-16C266.24 8.46 261.18 8 256 8 119 8 8 119 8 256s111 248 248 248c98 0 182.42-56.95 222.71-139.42-4.13 7.86-14.23 10.55-22 6.11z',

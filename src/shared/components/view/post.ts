@@ -86,7 +86,7 @@ export default class Post {
 
   setLoadingUI() {
     if (this.agent === 'reddit')
-      this.postBody = el('.SCPostBody', el('.SCLoaderWrapper.pt-sm', new LoaderIcon(30, 30)));
+      this.postBody = el('.SCPostBody', el('.SCLoaderWrapper', new LoaderIcon(30, 30)));
     else
       this.postBody = el('.SCPostBody', el('.SCLoaderWrapper', [el('div.SCLoader')]));
   }
