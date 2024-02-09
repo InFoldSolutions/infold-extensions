@@ -1,6 +1,7 @@
 export type IDataItem = {
   source: ISource
   articles: Array<IArticle>
+  item: IArticle
 }
 
 export type ISourceGroup = {

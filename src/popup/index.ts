@@ -23,7 +23,7 @@ import events from '../shared/services/events';
       if (!url.pathname || url.pathname === '/')
         throw new Error('No path');
 
-      const response = await chrome.runtime.sendMessage({ type: "getData", href: url.href });
+      const response = await chrome.runtime.sendMessage({ type: "getRelated", href: url.href });
 
       if (!response || !response.data || response.data.length === 0) {
         popupDialog.meta = response.meta; // nasty

@@ -15,10 +15,10 @@ import transformSource from '../transformers/source';
 import transformArticle from '../transformers/article';
 import transformTopic from '../transformers/topic';
 
-import events from '../services/events';
-import LightbulbIcon from './svgs/lightbulbIcon';
 import LoaderIcon from './svgs/loaderIcon';
-import LightbulbIconSlash from './svgs/lightbulbIconSlash';
+
+import InfoIconRegular from './svgs/infoIconRegular';
+import InfoIcon from './svgs/infoIcon';
 
 export default class Link {
 
@@ -30,6 +30,7 @@ export default class Link {
   relatedCount: number
 
   active: boolean
+  clicked: boolean
   destroyed: boolean
 
   wrapper: HTMLElement
@@ -124,10 +125,10 @@ export default class Link {
     this.status = status;
   }
 
-  async getData(maxArticleCount: number = config.api.maxArticleCount) {
-    logger.log('Link: getData');
+  async getRelated(maxArticleCount: number = config.api.maxArticleCount) {
+    logger.log('Link: getRelated');
 
-    const response = await chrome.runtime.sendMessage({ type: "getData", href: this.href, maxArticleCount });
+    const response = await chrome.runtime.sendMessage({ type: "getRelated", href: this.href, maxArticleCount });
 
     if (!response || !response.data || response.data.length === 0)
       throw new Error('No data');
@@ -137,6 +138,7 @@ export default class Link {
       .filter((item: any) => item.source.logo) // filter out sources that don't have a parser
       .map((item: any) => {
         return {
+          item: transformArticle(item.item),
           source: transformSource(item.source),
           articles: item.articles.map((article: any) => transformArticle(article))
         }
@@ -160,34 +162,27 @@ export default class Link {
 
     let btnWrapperClass: string = (this.isDialog) ? 'SCDialog' : 'SCDialog.SCPost';
 
-    if (!this.isTextVersion && !this.isTextCompactVersion) {
-      if (this.providerType === 'twitter') {
-        buttonContent.push(el(`span.SCIconWrapper`, [
-          el('span.SCiconBackground'),
-          el(`i.fad.fa-lightbulb-on`)
-        ]));
-      } else
-        buttonContent.push(el(`span.SCIconWrapper.flex.text-16.mr-[var(--rem6)]`, new LightbulbIcon()));
-    }
-
-    if (this.isTextCompactVersion)
-      btnWrapperClass += '.TextCompact';
-
-    if (this.providerType === 'twitter')
-      this.countEl = el('span.SCcount', el('span.SCLoader'));
-    else
-      this.countEl = el('span.SCcount.flex.text-12',
-        new LoaderIcon()
-      );
-
-    textContent.push(this.countEl);
+    buttonContent.push(el(`span.SCIconWrapper`, [
+      el('span.SCiconBackground'),
+      (this.providerType === 'twitter') ? new InfoIcon() : new InfoIconRegular()
+    ]));
 
     if (!this.isIconVersion) {
+      if (this.providerType === 'twitter')
+        this.countEl = el('span.SCcount', el('span.SCLoader'));
+      else {
+        this.countEl = el('span.SCcount.flex.text-12',
+          new LoaderIcon()
+        );
+      }
+
+      textContent.push(this.countEl);
+
       this.textEl = el('span.SCtext');
       textContent.push(this.textEl);
-    }
 
-    buttonContent.push(el(`span.SCTextWrapper`, textContent));
+      buttonContent.push(el(`span.SCTextWrapper`, textContent));
+    }
 
     this.el = el(`.SCbuttonWrapper.${this.providerType}.${btnWrapperClass}`, buttonContent);
     this.el.onclick = this.onClickHandler;
@@ -198,6 +193,11 @@ export default class Link {
 
     this.setStatus('success');
     this.el.classList.add('SCHasResults');
+
+    if (this.providerType === 'reddit') {
+      this.el.classList.remove('text-neutral-content-weak', 'opacity-50');
+      this.el.classList.add('text-primary', 'opacity-100');
+    }
 
     if (this.countEl)
       this.countEl.innerHTML = this.relatedCount.toString();
@@ -216,20 +216,6 @@ export default class Link {
 
       if (this.countEl)
         this.countEl.innerHTML = ''
-
-      const iconWrapper = this.el.querySelector('.SCIconWrapper');
-
-      if (iconWrapper) {
-        if (this.providerType === 'twitter') {
-          iconWrapper.querySelector('i').classList.remove('fa-lightbulb-on');
-          iconWrapper.querySelector('i').classList.add('fa-lightbulb-slash');
-        } else {
-          iconWrapper.innerHTML = ''
-          mount(iconWrapper, new LightbulbIconSlash())
-          iconWrapper.classList.remove('mr-[var(--rem6)]')
-          this.el.classList.remove('pr-sm')
-        }
-      }
     }
   }
 
@@ -240,15 +226,14 @@ export default class Link {
     evt.stopPropagation();
 
     if (this.isDialog) {
-      if (this.providerType === 'twitter')  {
-        this.openDialog();
-        return;
-      }
-
       const linkElement = this.article.querySelector('a[target="_self"]') as HTMLAnchorElement;
+
+      this.clicked = true;
 
       if (linkElement)
         linkElement.click();
+      else
+        this.article.click();
     }
     else
       this.togglePostView();
@@ -281,7 +266,7 @@ export default class Link {
       if (this.topic)
         this.post.openTopicView(this.topic);
       else {
-        await this.getData();
+        await this.getRelated();
 
         if (this.data)
           this.post.openSlideshowView(this.data, this.meta);
@@ -289,56 +274,6 @@ export default class Link {
     } catch (error) {
       logger.error(`Failed openTopicView in post ${error}`);
       this.post.close();
-    }
-  }
-
-  async openDialog() {
-    logger.log('Link: openDialog');
-
-    if (this.dialog) {
-      this.dialog.close();
-      return;
-    }
-
-    events.emit('clearOpenDialogs');
-
-    let Dialog;
-
-    switch (this.providerType) {
-      case 'reddit':
-        Dialog = RedditDialog;
-        break;
-      case 'twitter':
-        Dialog = TwitterDialog;
-        break;
-    }
-
-    this.dialog = new Dialog(
-      this.providerType,
-      this.article,
-      this.wrapper,
-      this.el,
-      this.closeDialog.bind(this)
-    );
-
-    this.toggleActiveState();
-
-    try {
-      await this.getTopic();
-
-      if (this.topic)
-        this.dialog.openTopicView(this.topic);
-      else {
-        await this.getData();
-
-        if (this.data)
-          this.dialog.openSlideshowView(this.data, this.meta);
-      }
-    } catch (error) {
-      logger.error(`Failed to openTopicView in dialog ${error}`);
-
-      if (this.dialog)
-        this.dialog.close();
     }
   }
 

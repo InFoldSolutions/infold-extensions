@@ -158,7 +158,7 @@ export default class RedditAgent extends Agent {
 
     link.preparetBaseHTML();
 
-    link.el.classList.add('button', 'border-md', 'flex', 'flex-row', 'justify-center', 'items-center', 'h-xl', 'font-semibold', 'relative', 'text-12', 'button-secondary', 'inline-flex', 'px-xs', 'pr-sm', 'hover:text-secondary', 'hover:bg-secondary-background-hover', 'hover:border-secondary-background-hover');
+    link.el.classList.add('button', 'border-md', 'flex', 'flex-row', 'text-neutral-content-weak', 'justify-center', 'items-center', 'h-xl', 'font-semibold', 'relative', 'button-secondary', 'inline-flex', 'px-xs', 'opacity-50', 'hover:text-primary', 'hover:bg-secondary-background-hover', 'hover:border-secondary-background-hover');
 
     // mounting can differ based on agent
     mount(link.wrapper, link, link.wrapper.lastElementChild, true);

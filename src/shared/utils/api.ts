@@ -36,8 +36,8 @@ export async function getInfo(href: string, sendResponse: Function) {
   }
 }
 
-export async function getData(href: string, sendResponse: Function, maxRelatedArticles: number) {
-  logger.log('API: getData');
+export async function getRelated(href: string, sendResponse: Function, maxRelatedArticles: number) {
+  logger.log('API: getRelated');
 
   try {
     const url = await settings.get('apiUrl');

@@ -9,7 +9,7 @@ import Link from "../../shared/components/link";
 
 import logger from '../../shared/utils/logger';
 import config from '../../shared/utils/config';
-import { timeDelay } from '../../shared/utils/helpers';
+import { isPostPage, timeDelay } from '../../shared/utils/helpers';
 
 export default class TwitterAgent extends Agent {
 
@@ -83,7 +83,7 @@ export default class TwitterAgent extends Agent {
             potentialLinks = potentialLinks.concat(this.getPotentialLinksFromElement(addedNode));
         });
       })
-    } else if (this.contentObserver.element) { // default to this.contentObserver.element
+    } else if (this.contentObserver.element) {
       logger.log('TwitterAgent: findLinks - default to this.contentObserver.element');
       potentialLinks = this.getPotentialLinksFromElement(this.contentObserver.element);
     }
@@ -103,7 +103,7 @@ export default class TwitterAgent extends Agent {
 
     link.preparetBaseHTML();
 
-    mount(link.wrapper, link, link.wrapper.lastElementChild.previousElementSibling);
+    mount(link.wrapper, link);
   }
 
   getPotentialLinksFromElement(addedNode: Element): IPotentialLink[] {

@@ -1,9 +1,8 @@
 import Link from "../../shared/components/link";
 
 import config from "../../shared/utils/config";
+import { isPostPage } from "../../shared/utils/helpers";
 import logger from "../../shared/utils/logger";
-
-import events from "../../shared/services/events";
 
 export default class Agent {
 
@@ -19,7 +18,6 @@ export default class Agent {
   constructor() {
     logger.log('Agent: constructor');
 
-    this.onEvents();
     this.processing = false;
   }
 
@@ -112,34 +110,26 @@ export default class Agent {
 
     this.currentProcesses.splice(index, 1);
     this.queueLinks();
+
+    if (isPostPage()) {
+      if (this.clickedLink?.href === link.href) {
+        this.clickedLink.clicked = false;
+        link.togglePostView();
+      }
+    }
   }
 
   clearActiveLinks() {
     logger.log('Agent: clearActiveLinks');
 
-    this.pendingProcesses.forEach((link: Link) => link.destroy());
-    this.pendingProcesses = [];
-    this.currentProcesses.forEach((link: Link) => link.destroy());
-    this.currentProcesses = [];
-    this.activeLinks.forEach((link: Link) => link.destroy());
-    this.activeLinks = [];
+    this.pendingProcesses.forEach(this.destroyLink);
+    this.pendingProcesses = this.pendingProcesses.filter((link: Link) => link.clicked);
+    this.currentProcesses.forEach(this.destroyLink);
+    this.currentProcesses = this.currentProcesses.filter((link: Link) => link.clicked);
+    this.activeLinks.forEach(this.destroyLink);
+    this.activeLinks = this.activeLinks.filter((link: Link) => link.clicked);
 
     this.processing = false;
-  }
-
-  clearOpenDialogs() {
-    logger.log('Agent: clearOpenDialogs');
-
-    this.activeLinks.filter((link: Link) => link.dialog)
-      .forEach((link: Link) => {
-        link.dialog.close();
-      });
-  }
-
-  onEvents() {
-    logger.log('Agent: onEvents');
-
-    events.on('clearOpenDialogs', this.clearOpenDialogs.bind(this))
   }
 
   async findLinks(records: MutationRecord[], delay: boolean): Promise<Link[]> {
@@ -156,5 +146,23 @@ export default class Agent {
 
     // Must be overwritten by child
     // Needs an abstract interface
+  }
+
+  destroyLink(link: Link) {
+    logger.log('Agent: destroyLink');
+
+    if (!link.clicked)
+      link.destroy();
+  }
+
+  get clickedLink(): Link {
+    let clicked: Link = this.activeLinks.find((link: Link) => link.clicked);
+
+    if (!clicked)
+      clicked = this.currentProcesses.find((link: Link) => link.clicked);
+    if (!clicked)
+      clicked = this.pendingProcesses.find((link: Link) => link.clicked);
+
+    return clicked
   }
 }
