@@ -33,7 +33,7 @@ export default class RedditAgent extends Agent {
     this.providerType = config.agents.reddit.providerType;
 
     this.postItemTag = 'shreddit-post';
-    this.contentBodySelector = 'main';
+    this.contentBodySelector = 'main > div:last-child';
     this.appBodySelector = 'shreddit-app';
     this.feedBodySelector = 'shreddit-feed';
   }
@@ -80,7 +80,7 @@ export default class RedditAgent extends Agent {
     logger.log('RedditAgent: onAppChange');
 
     this.currentRoute = this.appObserver.element.getAttribute('routename');
-    
+
     this.clearActiveLinks();
     this.startContentObserver();
   }
@@ -91,18 +91,23 @@ export default class RedditAgent extends Agent {
     if (this.contentObserver)
       this.stopContentObserver();
 
+    let contentSelector: string = this.contentBodySelector
+
     switch (this.currentRoute) {
       case 'frontpage':
-        this.contentBodySelector = this.feedBodySelector;
+        contentSelector = this.feedBodySelector;
+        break;
+      case 'post_page':
+        contentSelector = this.postItemTag;
         break;
     }
 
-    this.contentObserver = new Observer(this.contentBodySelector, document.body, this.onDomChange.bind(this), true);
+    this.contentObserver = new Observer(contentSelector, document.body, this.onDomChange.bind(this), true);
 
     await this.contentObserver.start();
 
-    if (this.contentObserver.element) 
-      this.onDomChange(); 
+    if (this.contentObserver.element)
+      this.onDomChange();
   }
 
   stopContentObserver() {
@@ -116,7 +121,7 @@ export default class RedditAgent extends Agent {
     logger.log('RedditAgent: findLinks');
 
     if (delay || !records)
-      await timeDelay(500);
+      await timeDelay(100);
 
     const links: Link[] = [];
 
@@ -164,7 +169,15 @@ export default class RedditAgent extends Agent {
       return [];
 
     const potentials: IPotentialLink[] = [];
-    const posts: HTMLCollectionOf<Element> = element.getElementsByTagName(this.postItemTag);
+
+    let posts: HTMLCollectionOf<Element>;
+
+    if (this.currentRoute === 'post_page' && element.tagName === this.postItemTag.toUpperCase()) {
+      // @ts-ignore
+      posts = [element];
+    } else {
+      posts = element.getElementsByTagName(this.postItemTag);
+    }
 
     for (let p = 0; p < posts.length; p++) {
       const post: HTMLElement = posts[p] as HTMLElement;
