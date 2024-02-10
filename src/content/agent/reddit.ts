@@ -33,7 +33,7 @@ export default class RedditAgent extends Agent {
     this.providerType = config.agents.reddit.providerType;
 
     this.postItemTag = 'shreddit-post';
-    this.contentBodySelector = 'main > div:last-child'
+    this.contentBodySelector = 'main';
     this.appBodySelector = 'shreddit-app';
     this.feedBodySelector = 'shreddit-feed';
   }
@@ -95,13 +95,6 @@ export default class RedditAgent extends Agent {
       case 'frontpage':
         this.contentBodySelector = this.feedBodySelector;
         break;
-      case 'comments_page':
-      case 'post_page':
-        this.contentBodySelector = 'main';
-        break;
-      default:
-        this.contentBodySelector = this.contentBodySelector;
-        break;
     }
 
     this.contentObserver = new Observer(this.contentBodySelector, document.body, this.onDomChange.bind(this), true);
@@ -158,10 +151,10 @@ export default class RedditAgent extends Agent {
 
     link.preparetBaseHTML();
 
-    link.el.classList.add('button', 'border-md', 'flex', 'flex-row', 'text-neutral-content-weak', 'justify-center', 'items-center', 'h-xl', 'font-semibold', 'relative', 'button-secondary', 'inline-flex', 'py-px', 'px-0.5', 'opacity-50', 'hover:text-primary', 'hover:bg-secondary');
+    link.el.classList.add('button', 'border-md', 'flex', 'flex-row', 'text-neutral-content-weak', 'justify-center', 'items-center', 'h-xl', 'transition-all', 'font-semibold', 'relative', 'button-secondary', 'inline-flex', 'py-px', 'px-xs', 'opacity-50', 'hover:text-primary', 'hover:bg-secondary');
 
     // mounting can differ based on agent
-    mount(link.wrapper, link, link.wrapper.lastElementChild, true);
+    mount(link.wrapper, link);
   }
 
   getPotentialLinksFromElement(element: HTMLElement): IPotentialLink[] {
