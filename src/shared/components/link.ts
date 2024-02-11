@@ -138,7 +138,7 @@ export default class Link {
       .filter((item: any) => item.source.logo) // filter out sources that don't have a parser
       .map((item: any) => {
         return {
-          item: transformArticle(item.item),
+          item: transformArticle(response.item),
           source: transformSource(item.source),
           articles: item.articles.map((article: any) => transformArticle(article))
         }
