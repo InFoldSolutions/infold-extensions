@@ -226,7 +226,7 @@ import transformSource from "./source";
 export default function transformTopic(data: any): ITopic {
     const { title, slug, outline, keywords, sources, added_at } = data;
     const transformedData: ITopic = {
-        title,
+        title: title.replace(/(?:\r\n|\r|\n|\*)/g, '').trim(),
         slug,
         keyPoints: outline.map((point: string) => point.replace(/(?:\r\n|\r|\n|\*)/g, '').trim()).filter((point: string) => point && point !== ""),
         keywords: keywords?.data.map((keyword: any) => transformKeyword(keyword)) || [],
