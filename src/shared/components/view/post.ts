@@ -6,12 +6,13 @@ import Groups from '../slideshow/groups';
 import logger from '../../utils/logger';
 import CloseIcon from '../svgs/closeIcon';
 
-import { IDataItem, ITopic } from '../../types';
+import { IArticle, IDataItem, ISource, ITopic } from '../../types';
 import events from '../../services/events';
 
 import SubmitView from './submit';
 import Topic from './topic';
 import LoaderIcon from '../svgs/loaderIcon';
+import ArticleView from './article';
 
 export default class Post {
 
@@ -24,18 +25,19 @@ export default class Post {
   postBody: HTMLElement
   postContent: HTMLElement
 
-  submitView: SubmitView
-
   agent: string
   totalCount: number
 
   data: IDataItem[]
+
   topic: Topic
+  articleView: ArticleView
 
   closeCallback: Function
 
   openSubmitViewBind: EventListener
   openSlideshowViewBind: EventListener
+  openArticleViewBind: EventListener
 
   constructor(agent: string, article: HTMLElement, btnWrapper: HTMLElement, linkElement: HTMLElement, closeCallback: Function) {
     logger.log('Post: constructor');
@@ -70,9 +72,11 @@ export default class Post {
   onEvents() {
     logger.log('Post: onEvents');
 
+    this.openArticleViewBind = this.openArticleView.bind(this);
     this.openSubmitViewBind = this.openSubmitView.bind(this);
     this.openSlideshowViewBind = this.openSlideshowView.bind(this);
 
+    events.on('openArticleView', this.openArticleViewBind);
     events.on('openSubmitView', this.openSubmitViewBind);
     events.on('openSlideshowView', this.openSlideshowViewBind); // default slideshow view, should probably be renamed
   }
@@ -80,6 +84,7 @@ export default class Post {
   offEvents() {
     logger.log('Post: offEvents');
 
+    events.off('openArticleView', this.openArticleViewBind);
     events.off('openSubmitView', this.openSubmitViewBind);
     events.off('openSlideshowView', this.openSlideshowViewBind);
   }
@@ -106,9 +111,7 @@ export default class Post {
       unmount(this.postBody, this.postContent);
 
     this.postContent.innerHTML = '';
-
-    this.submitView = new SubmitView();
-    this.postContent = el('.SCPostContent', this.submitView);
+    this.postContent = el('.SCPostContent', new SubmitView());
 
     mount(this.postBody, this.postContent);
   }
@@ -144,6 +147,21 @@ export default class Post {
 
     this.topic = new Topic(topic, true);
     this.postContent = el('.SCPostContent', this.topic);
+
+    mount(this.postBody, this.postContent);
+  }
+
+  openArticleView(article: IArticle, sources: ISource[]) {
+    logger
+      .log('Post: openTopicView');
+
+    if (this.postContent)
+      unmount(this.postBody, this.postContent);
+
+    this.postBody.innerHTML = '';
+
+    this.articleView = new ArticleView(article, sources);
+    this.postContent = el('.SCPostContent', this.articleView);
 
     mount(this.postBody, this.postContent);
   }

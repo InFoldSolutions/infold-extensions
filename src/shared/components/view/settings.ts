@@ -33,6 +33,10 @@ export default class SettingsView {
   limitInput: HTMLInputElement
   limitInputRow: HTMLElement
 
+  // Topic lookup setting
+  topicLookupInput: HTMLInputElement
+  topicLookupRow: HTMLElement
+
   // Restart button
   restartInput: HTMLButtonElement
 
@@ -123,11 +127,26 @@ export default class SettingsView {
       }
     };
 
+    this.topicLookupInput = el('input.SCSlider.SCSubmitViewInput', { type: 'checkbox' }) as HTMLInputElement;
+    this.topicLookupInput.onchange = async (e) => {
+      const target = e.target as HTMLInputElement;
+      await settings.set('topicLookup', target.checked);
+    }
+
+    this.topicLookupRow = el('.SCSettingsViewRow.SCPaddingVertical7', [
+      el('span.SCSettingsViewLabel', 'Topic Lookup:'),
+      el('label.SCMarginLeftAuto.SCSwitch', [
+        this.topicLookupInput,
+        el('span.SCSlider')
+      ])
+    ]);
+
     this.settingsWrapper = el('.SCAdvancedSettingsWrapper', [
       this.apiInputRow,
       this.searchTypeRow,
       this.similarityInputRow,
       this.limitInputRow,
+      this.topicLookupRow,
       this.restartInput
     ]);
 
@@ -152,5 +171,6 @@ export default class SettingsView {
     this.searchTypeInput.value = await settings.get('searchType');
     this.similarityInput.value = await settings.get('similarityScore');
     this.limitInput.value = await settings.get('articleCount');
+    this.topicLookupInput.checked = await settings.get('topicLookup');
   }
 }

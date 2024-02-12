@@ -1,6 +1,7 @@
 import { el, mount, RedomComponent, unmount } from 'redom';
 
 import TimeAgo from 'javascript-time-ago';
+
 import en from 'javascript-time-ago/locale/en';
 
 TimeAgo.addDefaultLocale(en);
@@ -8,8 +9,6 @@ TimeAgo.addDefaultLocale(en);
 import { ISlideBody } from '../../types';
 
 import logger from '../../utils/logger';
-
-import Tip from '../tip';
 
 import RedditIcon from '../svgs/redditIcon';
 import Keywords from './keywords';
@@ -55,7 +54,7 @@ export default class Slide {
     const score: number = data.score ? Math.round(data.score * 100) : 0;
     const linkText: string = `${data.link.replace(/https\:\/\/|http\:\/\/|www\./gi, '')}`;
     const twitterHandleLink: string = `https://twitter.com/${data.handle.replace('@', '')}`;
-    
+
     this.summaryInfo = [
       el('a.SCHandle.SClink', data.handle, { title: `${data.handle} on Twitter`, href: twitterHandleLink, target: '_blank' }),
       el('span.SCDate.SCIcon', { title: `Publish date` }, [el('i.fad.fa-calendar-alt'), el('span', timeAgo.format(data.timestamp, 'mini'), ' ago')]),
@@ -76,16 +75,16 @@ export default class Slide {
       }
     }
 
-    this.keywords = el('.SCKeywordsWrapper', new Keywords(data.keywords))
+    /*this.keywords = el('.SCKeywordsWrapper', new Keywords(data.keywords))
 
     if (!data.keywords || data.keywords.length === 0)
-      this.keywords.classList.add('SCEmpty');
+      this.keywords.classList.add('SCEmpty');*/
 
     this.summaryBody = el('.SCSummaryBody', [
       el('.SCSummaryTitle', { title: data.title }, `Article: ${data.title}`),
       el('.SCSummaryInfo', this.summaryInfo),
       el('.SCSummaryContent', data.description),
-      this.keywords
+      //this.keywords
     ]);
 
     mount(this.el, this.summaryBody);

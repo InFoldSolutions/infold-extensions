@@ -43,9 +43,9 @@ export async function getRelated(href: string, sendResponse: Function, maxRelate
     const url = await settings.get('apiUrl');
     const similarity = await settings.get('similarityScore');
     const search = await settings.get('searchType');
-    const maxArticleCount = maxRelatedArticles || await settings.get('articleCount');
+    //const maxArticleCount = maxRelatedArticles || await settings.get('articleCount');
 
-    const info = await fetch(`${url}/articles/related?limit=${maxArticleCount}`, {
+    const info = await fetch(`${url}/articles/related`, {
       method: 'POST',
       headers: config.api.headers,
       body: JSON.stringify({

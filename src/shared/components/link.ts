@@ -1,7 +1,7 @@
 import * as path from 'path';
-import { el, mount, unmount } from 'redom';
+import { el, unmount } from 'redom';
 
-import { IDataItem, IPotentialLink, ITopic } from '../types';
+import { IArticle, ISource, IPotentialLink, ITopic, IDataItem } from '../types';
 import config from '../utils/config';
 
 import { isPostPage } from '../utils/helpers';
@@ -19,6 +19,7 @@ import LoaderIcon from './svgs/loaderIcon';
 
 import InfoIconRegular from './svgs/infoIconRegular';
 import InfoIcon from './svgs/infoIcon';
+import settings from '../services/settings';
 
 export default class Link {
 
@@ -44,7 +45,10 @@ export default class Link {
   post: Post
 
   topic: ITopic
-  data: IDataItem[]
+  item: IArticle
+  data: IDataItem
+  sources: ISource[]
+
   meta: any
 
   onClickHandler: EventListener
@@ -70,20 +74,8 @@ export default class Link {
       if (!this.href)
         throw new Error('No href');
 
-      const url: URL = new URL(this.href);
-      const host = url.host.replace('www.', '');
-      const extension: string = path.extname(url.pathname);
-
-      let linkText = this.linkText.replace('www.', '')
-      linkText = linkText.replace('https://', '')
-      linkText = linkText.replace('http://', '')
-
-      if (!config.defaults.supportedProtocols.includes(url.protocol))
-        throw new Error('Unsupported protocol');
-      if (config.defaults.notAllowedExtensions.includes(extension))
-        throw new Error('Not allowed extension');
-      if (config.defaults.blacklistedDomains.includes(host) || config.defaults.blacklistedDomains.includes(linkText))
-        throw new Error('Blacklisted domain');
+      if (!this.isValidURL(this.href))
+        throw new Error('URL not valid')
 
       const data = await chrome.runtime.sendMessage({ type: "getInfo", href: this.href });
 
@@ -92,6 +84,9 @@ export default class Link {
 
       if (data?.meta?.success === false)
         throw new Error('No data');
+
+      if (!data.item?.url || !this.isValidURL(data.item.url))
+        throw new Error('URL not valid')
 
       this.meta = data.meta;
 
@@ -119,6 +114,29 @@ export default class Link {
       callback(this, index);
   }
 
+  isValidURL(href: string) {
+    logger.log('Link: isValidURL');
+
+    const url: URL = new URL(href)
+    const host = url.host.replace('www.', '');
+    const extension: string = path.extname(url.pathname);
+
+    let linkText = this.linkText.replace('www.', '')
+    linkText = linkText.replace('https://', '')
+    linkText = linkText.replace('http://', '')
+
+    if (!config.defaults.supportedProtocols.includes(url.protocol))
+      return false
+    if (config.defaults.notAllowedExtensions.includes(extension))
+      return false
+    if (config.defaults.blacklistedDomains.includes(host) || config.defaults.blacklistedDomains.includes(linkText))
+      return false
+    if (!url.pathname || url.pathname === '/')
+      return false
+
+    return true
+  }
+
   setStatus(status: string) { // TODO: Make this a ENUM
     logger.log('Link: setStatus');
 
@@ -134,12 +152,12 @@ export default class Link {
       throw new Error('No data');
 
     this.meta = response.meta;
-    this.data = response.data
+    this.item = transformArticle(response.item);
+    this.sources = response.data
       .filter((item: any) => item.source.logo) // filter out sources that don't have a parser
       .map((item: any) => {
         return {
-          item: transformArticle(response.item),
-          source: transformSource(item.source),
+          ...transformSource(item.source),
           articles: item.articles.map((article: any) => transformArticle(article))
         }
       });
@@ -215,6 +233,9 @@ export default class Link {
     evt.preventDefault();
     evt.stopPropagation();
 
+    if (!this.isValidURL(this.href))
+      return
+
     if (this.isDialog) {
       const linkElement = this.article.querySelector('a[target="_self"]') as HTMLAnchorElement;
 
@@ -251,18 +272,24 @@ export default class Link {
     this.toggleActiveState();
 
     try {
-      await this.getTopic();
+      const topicLookup = await settings.get('topicLookup');
+      logger.log(`Link: topicLookup ${topicLookup}`);
 
-      if (this.topic)
-        this.post.openTopicView(this.topic);
-      else {
+      if (topicLookup) {
+        await this.getTopic();
+
+        if (this.topic)
+          this.post.openTopicView(this.topic);
+      }
+
+      if (!topicLookup || !this.topic) {
         await this.getRelated();
 
-        if (this.data)
-          this.post.openSlideshowView(this.data, this.meta);
+        if (this.item)
+          this.post.openArticleView(this.item, this.sources);
       }
     } catch (error) {
-      logger.error(`Failed openTopicView in post ${error}`);
+      logger.error(`Failed openArticleView in post ${error}`);
       this.post.close();
     }
   }

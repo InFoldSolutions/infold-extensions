@@ -69,7 +69,7 @@
 
 .SCbuttonWrapper.SCNoResults.active .SCiconBackground,
 .SCbuttonWrapper.SCNoResults:hover .SCiconBackground {
-  background-color: rgba(113, 118, 123, 0.1);
+  background-color: transparent;
 }
 
 .SCIconWrapper {
@@ -186,7 +186,7 @@
 }
 
 .SCPostContent {
-  margin: 16px 0px 10px;
+  margin: 15px 0px;
   padding: 0px 4px;
 }
 
@@ -244,7 +244,11 @@
 .SCPostBodyWrapper.reddit {
   min-height: 170px;
   margin: 0px 5px 0 0px;
-  border-top: 1px solid #343536;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.SCPostBodyWrapper.reddit .SCPostContent {
+  margin: 10px 0 0 0;
 }
 
 .SCPostBodyWrapper.reddit .SCPostBody,
@@ -262,6 +266,7 @@
   font-size: 16px;
   font-weight: 500;
   margin-bottom: 5px;
+  font-family: inherit;
 }
 
 .SCPostBodyWrapper.reddit .SCSummaryInfo {
@@ -270,24 +275,18 @@
 
 .SCPostBodyWrapper.reddit .SCSummaryContent {
   color: rgb(215, 218, 220);
-  font-family: Noto Sans, Arial, sans-serif;
+  font-family: inherit;
   font-size: 14px;
-  line-height: 19px;
-}
-
-.SCPostBodyWrapper.reddit .SCKeywordsWrapper {
-  margin-top: 13px;
-}
-
-.SCPostBodyWrapper.reddit .SCKeyword {
-  font-family: Noto Sans, Arial, sans-serif;
-  font-size: 14px;
+  line-height: 1.25rem;
 }
 
 .SCPostBodyWrapper.reddit .SCRelatedViewBtn {
   bottom: 21px;
 }
 
+.SCPostBodyWrapper.reddit .SCSources {
+  margin-top: 15px;
+}
 
 /* Dialog display */
 
@@ -631,12 +630,19 @@
 .SCSummaryContent {
   margin: 0px;
   color: rgb(231, 233, 234);
-  height: 55px;
+  font-family: inherit;
+  font-size: 15px;
+  height: 80px;
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
+}
+
+.SCSummaryContent.opened {
+  height: auto;
+  -webkit-line-clamp: 20;
 }
 
 /**
@@ -1206,6 +1212,10 @@
   margin-left: auto;
 }
 
+.SCPaddingVertical7 {
+  padding: 7px 0px;
+}
+
 .SCWidthAuto {
   width: auto;
 }
@@ -1220,7 +1230,7 @@
 }
 
 .SCInputWidthSmall {
-  width: 55px;
+  width: 42px;
 }
 
 .SCSettingsViewRow {
@@ -1262,7 +1272,7 @@
 }
 
 .SCSlideshow {
-  min-height: 150px;
+  min-height: 123px;
   width: 100%;
   text-align: left;
   overflow: hidden;
@@ -1317,7 +1327,7 @@
   font-weight: 500;
   font-size: 16px;
   color: rgb(245, 245, 245);
-  margin-bottom: 8px;
+  margin-bottom: 2px;
   width: calc(100% - 25px);
   text-decoration: none;
 }
@@ -1358,17 +1368,17 @@ a.SCTopicTitle:hover {
   margin-bottom: 0.5em;
 }
 
-.SCKeyPoints .SCReadMore {
+.SCReadMore {
   color: rgb(79, 188, 255);
   cursor: pointer;
   margin-left: 4px;
 }
 
-.SCKeyPoints .SCReadMore:hover {
+.SCReadMore:hover {
   text-decoration: underline;
 }
 
-.SCKeyPoints .SCReadMore i {
+.SCReadMore i {
   margin-left: 5px;
   font-size: 10px;
 }
@@ -1377,7 +1387,7 @@ a.SCTopicTitle:hover {
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin: 10px 0px 5px;
+  margin: 10px 0px 0px;
   align-items: center;
 }
 
@@ -1582,7 +1592,7 @@ a.SCTopicTitle:hover {
 }
 
 .SCSources {
-  margin: 0.5rem 0px -1px 0px;
+  margin: 0.75rem 0px -1px 0px;
   position: relative;
   padding: 0 32px;
 }
@@ -1928,108 +1938,6 @@ a.SCTopicTitle:hover {
   }
 }
 
-/** Reddit Dialog overwrites **/
-
-.SCDialogWrapper.reddit {
-  font-family: IBMPlexSans, Arial, sans-serif;
-  color: #D7DADC;
-  position: absolute;
-  min-height: 160px;
-  width: 530px;
-}
-
-.SCDialogWrapper.reddit .SCDialogHeader {
-  border-bottom: 1px solid rgba(215, 218, 220, 0.03);
-  height: 50px;
-}
-
-.SCDialogWrapper.reddit .SCDialogBody {
-  background-color: #1A1A1B;
-  border: 1px solid #343536;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px 0 rgba(215, 218, 220, 0.2);
-  margin: auto;
-  position: relative;
-  width: 540px;
-}
-
-.SCDialogWrapper.reddit .SCDialogCloseWrapper {
-  right: 5px;
-  top: 19px;
-}
-
-.SCDialogWrapper.reddit .SCDialogCloseWrapper:hover {
-  background-color: rgba(215, 218, 220, 0.1);
-}
-
-.SCDialogWrapper.reddit .SCDialogCloseWrapper svg {
-  color: #818384;
-  width: 16px;
-}
-
-.SCDialogWrapper.reddit .SCSlideshow {
-  min-height: 139px;
-}
-
-.SCDialogWrapper.reddit .SCSlideshow .SCSlide {
-  color: rgb(215, 218, 220);
-  top: 0px;
-}
-
-.SCDialogWrapper.reddit .SCSummaryTitle,
-.SCDialogWrapper.reddit .SCSubmitViewTitle {
-  font-weight: 500;
-  font-size: 16px;
-  color: rgb(215, 218, 220);
-  width: calc(100% - 35px);
-  margin-bottom: 5px;
-}
-
-.SCDialogWrapper.reddit .SCSlideshowHeader {
-  font-weight: normal;
-  color: #818384;
-}
-
-.SCDialogWrapper.reddit .SCSlideshowIconWrapper {
-  color: rgba(231, 233, 234, 0.5);
-}
-
-.SCDialogWrapper.reddit .SCSlideshow input+label::after {
-  color: #818384;
-}
-
-.SCDialogWrapper.reddit .SCSummaryInfo {
-  font-size: 14px;
-}
-
-.SCDialogWrapper.reddit .SCSummaryInfo {
-  color: #818384;
-}
-
-.SCDialogWrapper.reddit .SCSummaryContent {
-  color: rgb(215, 218, 220);
-  font-size: 14px;
-  line-height: 16px;
-  height: 50px;
-}
-
-.SCDialogWrapper.reddit .SCKeyword {
-  border: 1px solid rgba(129, 131, 132, 0.2);
-  background-color: rgba(215, 218, 220, 0.01);
-  border-radius: 20px;
-  color: #818384;
-  font-weight: 500;
-}
-
-.SCDialogWrapper.reddit .SCKeyword:hover {
-  background-color: rgba(215, 218, 220, 0.1);
-  color: #D7DADC;
-}
-
-.SCDialogWrapper.reddit .SClink {
-  color: #4FBCFF;
-}
-
 /** Reddit Light mode **/
 
 .theme-light .SCPostBodyWrapper.reddit,
@@ -2038,7 +1946,7 @@ a.SCTopicTitle:hover {
 }
 
 .theme-light .SCPostBodyWrapper.reddit {
-  border-top-color: #EDEFF1;
+  border-top-color: #0000001a;
 }
 
 .theme-light .SCDialogWrapper.reddit .SCDialogBody {
@@ -2107,12 +2015,12 @@ a.SCTopicTitle:hover {
 
 .theme-light .SCPostBodyWrapper.reddit .SCSummaryContent,
 .theme-light .SCDialogWrapper.reddit .SCSummaryContent {
-  color: #1c1c1c;
+  color: rgb(19, 19, 19);
 }
 
 .theme-light .SCPostBodyWrapper.reddit .SCSlideshow input+label::after,
 .theme-light .SCDialogWrapper.reddit .SCSlideshow input+label::after {
-  color: #1c1c1c;
+  color: rgb(19, 19, 19);
 }
 
 .theme-light .SCPostBodyWrapper.reddit .SCSummaryInfo,

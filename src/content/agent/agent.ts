@@ -1,3 +1,5 @@
+import path from "path";
+
 import Link from "../../shared/components/link";
 
 import config from "../../shared/utils/config";

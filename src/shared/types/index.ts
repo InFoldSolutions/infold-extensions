@@ -1,12 +1,12 @@
 export type IDataItem = {
   source: ISource
-  articles: Array<IArticle>
+  articles: IArticle[]
   item: IArticle
 }
 
 export type ISourceGroup = {
   dateGroup: IDateGroup,
-  elements: Array<IDataItem>
+  elements: IDataItem[]
   label?: string
   toDate?: number
 }
@@ -32,9 +32,9 @@ export type ITopic = {
   summary?: string
   shortSummary?: string
   firstSeen: number
-  keyPoints: Array<string>
-  keywords: Array<IKeyword>
-  sources: Array<ISource>
+  keyPoints: string[]
+  keywords: IKeyword[]
+  sources: ISource[]
 }
 
 export type ISource = {
@@ -42,16 +42,18 @@ export type ISource = {
   url?: string
   icon: string
   handle: string
-  articles?: Array<IArticle>
+  articles?: IArticle[]
 }
 
 export type IArticle = {
   body: string
   title?: string
+  author?: string
+  handle?: string
   timestamp?: number
   link?: string
   score?: number
-  keywords?: Array<IKeyword>
+  keywords?: IKeyword[]
 }
 
 export type IKeyword = {
@@ -67,7 +69,7 @@ export type ISlide = {
   timestamp?: number
   icon?: string
   link?: string
-  keywords?: Array<IKeyword>
+  keywords?: IKeyword[]
 }
 
 export type ISlideBody = {
@@ -80,7 +82,7 @@ export type ISlideBody = {
   icon?: string
   score: number
   type?: string
-  keywords?: Array<IKeyword>
+  keywords?: IKeyword[]
 }
 
 export type IDateGroup = {

@@ -8,7 +8,7 @@ class Settings {
 
   synced: boolean = false
 
-  supportedSettings: Array<String> = ['searchType', 'similarityScore', 'articleCount', 'apiUrl', 'redditAgent', 'twitterAgent']
+  supportedSettings: Array<String> = ['searchType', 'similarityScore', 'articleCount', 'apiUrl', 'redditAgent', 'twitterAgent', 'topicLookup']
 
   localSettings: any = {}
   defaultSettings: any = {
@@ -18,6 +18,7 @@ class Settings {
     apiUrl: config.api.url,
     redditAgent: true,
     twitterAgent: true,
+    topicLookup: true
   }
 
   constructor() {
