@@ -95,6 +95,8 @@ export default class RedditAgent extends Agent {
 
     switch (this.currentRoute) {
       case 'frontpage':
+      case 'popular':
+      case 'all':
         contentSelector = this.feedBodySelector;
         break;
       case 'post_page':

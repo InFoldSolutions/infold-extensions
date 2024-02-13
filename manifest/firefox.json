@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "InFold - Get the full story",
+  "name": "InFold",
   "description": "We're here to help you get context, delve deeper, and learn more.",
   "version": "$VERSION",
   "icons": {
