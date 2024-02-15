@@ -1065,7 +1065,7 @@
 }
 
 .SCSettingsViewTitle::before {
-  background: url(../images/icons/icon_128.png) no-repeat center center;
+  background: url(../images/icons/black-128.png) no-repeat center center;
   background-size: 100%;
   content: "";
   position: absolute;
@@ -1733,7 +1733,7 @@ a.SCTopicTitle:hover {
 }
 
 .SCDialogWrapper.popup .SCDialogCloseWrapper::before {
-  background: url(../images/icons/icon_128.png) no-repeat center center;
+  background: url(../images/icons/black-128.png) no-repeat center center;
   background-size: 100%;
   content: "";
   position: absolute;

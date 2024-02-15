@@ -45,7 +45,6 @@ import events from '../shared/services/events';
 
       popupDialog.openSlideshowView(data, response.meta);
     } catch(err) {
-      console.error(err);
       logger.log('Falling back to settings view');
       events.emit('openSettingsView');
     }

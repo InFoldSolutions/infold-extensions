@@ -4,8 +4,11 @@
   "description": "We're here to help you get context, delve deeper, and learn more.",
   "version": "$VERSION",
   "icons": {
-    "64": "images/icons/icon_64.png",
-    "128": "images/icons/icon_128.png"
+    "16": "images/icons/black-16.png",
+    "32": "images/icons/black-32.png",
+    "48": "images/icons/black-48.png",
+    "64": "images/icons/black-64.png",
+    "128": "images/icons/black-128.png"
   },
   "permissions": [
     "tabs",
